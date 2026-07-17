@@ -1,0 +1,5 @@
+file,rule,severity,message
+balancesheet.csv,DQ-02,CRITICAL,"138 duplicate (company_id, year) combinations"
+cashflow.csv,DQ-02,CRITICAL,"46 duplicate (company_id, year) combinations"
+financial_ratios.csv,DQ-02,CRITICAL,"1184 duplicate (company_id, year) combinations"
+profitandloss.csv,DQ-02,CRITICAL,"26 duplicate (company_id, year) combinations"
