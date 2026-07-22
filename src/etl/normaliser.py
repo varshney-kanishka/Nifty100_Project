@@ -3,6 +3,7 @@ normaliser.py
 Contains helper functions to standardize data before loading into the database.
 """
 
+
 def normalize_year(year):
     """
     Convert different year formats to a 4-digit year.

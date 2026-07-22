@@ -1,5 +1,27 @@
 file,rule,severity,message
+analysis.csv,DQ-04,CRITICAL,1 invalid company_id values found
 balancesheet.csv,DQ-02,CRITICAL,"138 duplicate (company_id, year) combinations"
+balancesheet.csv,DQ-04,CRITICAL,7 invalid company_id values found
+balancesheet.csv,DQ-10,WARNING,7 negative numeric values found
 cashflow.csv,DQ-02,CRITICAL,"46 duplicate (company_id, year) combinations"
+cashflow.csv,DQ-04,CRITICAL,9 invalid company_id values found
+cashflow.csv,DQ-08,WARNING,8 missing values found
+cashflow.csv,DQ-10,WARNING,2465 negative numeric values found
+cashflow.csv,DQ-13,WARNING,8 invalid numeric values found
+companies.csv,DQ-08,WARNING,9 missing values found
+companies.csv,DQ-13,WARNING,5 invalid numeric values found
+documents.csv,DQ-04,CRITICAL,8 invalid company_id values found
+documents.csv,DQ-08,WARNING,52 missing values found
 financial_ratios.csv,DQ-02,CRITICAL,"1184 duplicate (company_id, year) combinations"
+financial_ratios.csv,DQ-04,CRITICAL,2 invalid company_id values found
+financial_ratios.csv,DQ-06,CRITICAL,1184 missing year values
+financial_ratios.csv,DQ-08,WARNING,1354 missing values found
+financial_ratios.csv,DQ-10,WARNING,889 negative numeric values found
+financial_ratios.csv,DQ-13,WARNING,1354 invalid numeric values found
 profitandloss.csv,DQ-02,CRITICAL,"26 duplicate (company_id, year) combinations"
+profitandloss.csv,DQ-04,CRITICAL,8 invalid company_id values found
+profitandloss.csv,DQ-08,WARNING,231 missing values found
+profitandloss.csv,DQ-10,WARNING,603 negative numeric values found
+profitandloss.csv,DQ-13,WARNING,231 invalid numeric values found
+prosandcons.csv,DQ-04,CRITICAL,1 invalid company_id values found
+prosandcons.csv,DQ-08,WARNING,6 missing values found

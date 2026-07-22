@@ -1,4 +1,4 @@
-"""
+﻿"""
 validator.py
 
 Sprint 1 - Day 3
@@ -7,20 +7,15 @@ Validates processed CSV files using Data Quality Rules.
 """
 
 from pathlib import Path
+from typing import List
+
 import pandas as pd
 
-# ======================================================
-# Folders
-# ======================================================
-
-PROCESSED_FOLDER = Path("data/processed")
-OUTPUT_FOLDER = Path("output")
+BASE_DIR = Path(__file__).resolve().parents[2]
+PROCESSED_FOLDER = BASE_DIR / "data" / "processed"
+OUTPUT_FOLDER = BASE_DIR / "output"
 
 OUTPUT_FOLDER.mkdir(parents=True, exist_ok=True)
-
-# ======================================================
-# Files having title row
-# ======================================================
 
 SPECIAL_FILES = [
     "analysis.csv",
@@ -29,161 +24,576 @@ SPECIAL_FILES = [
     "companies.csv",
     "documents.csv",
     "profitandloss.csv",
-    "prosandcons.csv"
+    "prosandcons.csv",
 ]
 
-# ======================================================
-# Files for DQ-02
-# ======================================================
-
-DQ02_FILES = [
-    "balancesheet",
-    "cashflow",
-    "financial_ratios",
-    "market_cap",
-    "profitandloss"
+FINANCIAL_TABLES = [
+    "balancesheet.csv",
+    "cashflow.csv",
+    "financial_ratios.csv",
+    "market_cap.csv",
+    "profitandloss.csv",
 ]
 
-# ======================================================
-# Read all CSV files
-# ======================================================
+VALIDATION_COLUMNS = ["file", "rule", "severity", "message"]
 
-csv_files = list(PROCESSED_FOLDER.glob("*.csv"))
 
-validation_results = []
+def list_csv_files(directory: Path) -> List[Path]:
+    return sorted(directory.glob("*.csv"))
 
-print("=" * 70)
-print(f"Total CSV Files : {len(csv_files)}")
-print("=" * 70)
 
-# ======================================================
-# Process each CSV
-# ======================================================
+def load_csv(file_path: Path) -> pd.DataFrame:
+    if file_path.name in SPECIAL_FILES:
+        df = pd.read_csv(file_path, header=1)
+    else:
+        df = pd.read_csv(file_path)
 
-for file in csv_files:
+    df.columns = df.columns.str.strip()
+    return df
+
+
+def validate_companies(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results: List[dict] = []
+
+    if "id" not in df.columns:
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-01",
+                "severity": "CRITICAL",
+                "message": "Missing required column 'id' for companies.csv",
+            }
+        )
+        return results
+
+    duplicate_rows = df[df["id"].duplicated(keep=False)]
+    if not duplicate_rows.empty:
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-01",
+                "severity": "CRITICAL",
+                "message": f"{len(duplicate_rows)} duplicate company IDs found",
+            }
+        )
+
+    return results
+
+
+def validate_financial_table(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results: List[dict] = []
+
+    required_columns = ["company_id", "year"]
+
+    missing_columns = [col for col in required_columns if col not in df.columns]
+
+    if missing_columns:
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-02",
+                "severity": "CRITICAL",
+                "message": f"Missing required columns: {', '.join(missing_columns)}",
+            }
+        )
+        return results
+
+    duplicate_rows = df[df.duplicated(subset=["company_id", "year"], keep=False)]
+
+    if duplicate_rows.empty:
+        print("✅ DQ-02 Passed")
+    else:
+        print("❌ DQ-02 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-02",
+                "severity": "CRITICAL",
+                "message": f"{len(duplicate_rows)} duplicate (company_id, year) combinations",
+            }
+        )
+
+    return results
+
+
+def validate_primary_key(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results: List[dict] = []
+
+    # Check if id column exists
+    if "id" not in df.columns:
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-03",
+                "severity": "CRITICAL",
+                "message": "Missing required column: id",
+            }
+        )
+        return results
+
+    # Count missing primary keys
+    missing_ids = df["id"].isna().sum()
+
+    if missing_ids > 0:
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-03",
+                "severity": "CRITICAL",
+                "message": f"{missing_ids} missing primary key values",
+            }
+        )
+    else:
+        print("✅ DQ-03 Passed")
+
+    return results
+
+
+def validate_foreign_key(df, file_name, valid_company_ids):
+    results = []
+
+    if "company_id" not in df.columns:
+        return results
+
+    invalid_ids = (
+        df.loc[~df["company_id"].isin(valid_company_ids), "company_id"]
+        .dropna()
+        .unique()
+    )
+
+    if len(invalid_ids) == 0:
+        print("✅ DQ-04 Passed")
+        return results
+
+    print("❌ DQ-04 Failed")
+    print("Invalid company IDs:", invalid_ids)
+
+    results.append(
+        {
+            "file": file_name,
+            "rule": "DQ-04",
+            "severity": "CRITICAL",
+            "message": f"{len(invalid_ids)} invalid company_id values found",
+        }
+    )
+
+    return results
+
+
+def validate_company_id(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    if "company_id" not in df.columns:
+        return results
+
+    missing = df["company_id"].isna().sum()
+
+    if missing > 0:
+        print("❌ DQ-05 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-05",
+                "severity": "CRITICAL",
+                "message": f"{missing} missing company_id values",
+            }
+        )
+    else:
+        print("✅ DQ-05 Passed")
+
+    return results
+
+
+def validate_year(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    if "year" not in df.columns:
+        return results
+
+    missing = df["year"].isna().sum()
+
+    if missing > 0:
+        print("❌ DQ-06 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-06",
+                "severity": "CRITICAL",
+                "message": f"{missing} missing year values",
+            }
+        )
+    else:
+        print("✅ DQ-06 Passed")
+
+    return results
+
+
+def validate_empty_strings(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    object_cols = df.select_dtypes(include="object").columns
+
+    empty = 0
+
+    for col in object_cols:
+        empty += (df[col].astype(str).str.strip() == "").sum()
+
+    if empty > 0:
+        print("❌ DQ-07 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-07",
+                "severity": "WARNING",
+                "message": f"{empty} empty string values found",
+            }
+        )
+    else:
+        print("✅ DQ-07 Passed")
+
+    return results
+
+
+def validate_missing_values(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    total_missing = int(df.isna().sum().sum())
+
+    if total_missing > 0:
+        print("❌ DQ-08 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-08",
+                "severity": "WARNING",
+                "message": f"{total_missing} missing values found",
+            }
+        )
+    else:
+        print("✅ DQ-08 Passed")
+
+    return results
+
+
+def validate_duplicate_rows(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    duplicate_rows = df[df.duplicated(keep=False)]
+
+    if not duplicate_rows.empty:
+        print("❌ DQ-09 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-09",
+                "severity": "WARNING",
+                "message": f"{len(duplicate_rows)} duplicate rows found",
+            }
+        )
+    else:
+        print("✅ DQ-09 Passed")
+
+    return results
+
+
+def validate_negative_values(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    numeric_cols = df.select_dtypes(include="number").columns
+
+    negative_count = 0
+
+    for col in numeric_cols:
+        negative_count += (df[col] < 0).sum()
+
+    if negative_count > 0:
+        print("❌ DQ-10 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-10",
+                "severity": "WARNING",
+                "message": f"{negative_count} negative numeric values found",
+            }
+        )
+    else:
+        print("✅ DQ-10 Passed")
+
+    return results
+
+
+def validate_future_dates(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    if "date" not in df.columns:
+        return results
+
+    dates = pd.to_datetime(df["date"], errors="coerce")
+
+    future = (dates > pd.Timestamp.today()).sum()
+
+    if future > 0:
+        print("❌ DQ-11 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-11",
+                "severity": "WARNING",
+                "message": f"{future} future dates found",
+            }
+        )
+    else:
+        print("✅ DQ-11 Passed")
+
+    return results
+
+
+def validate_year_format(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    if "year" not in df.columns:
+        return results
+
+    invalid = df["year"].astype(str).str.strip().eq("").sum()
+
+    if invalid > 0:
+        print("❌ DQ-12 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-12",
+                "severity": "WARNING",
+                "message": f"{invalid} invalid year values found",
+            }
+        )
+    else:
+        print("✅ DQ-12 Passed")
+
+    return results
+
+
+def validate_data_types(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    numeric_columns = df.select_dtypes(include="number").columns
+
+    invalid = 0
+
+    for col in numeric_columns:
+        invalid += pd.to_numeric(df[col], errors="coerce").isna().sum()
+
+    if invalid > 0:
+        print("❌ DQ-13 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-13",
+                "severity": "WARNING",
+                "message": f"{invalid} invalid numeric values found",
+            }
+        )
+    else:
+        print("✅ DQ-13 Passed")
+
+    return results
+
+
+def validate_date_format(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    if "date" not in df.columns:
+        return results
+
+    invalid_dates = pd.to_datetime(df["date"], errors="coerce").isna().sum()
+
+    if invalid_dates > 0:
+        print("❌ DQ-14 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-14",
+                "severity": "WARNING",
+                "message": f"{invalid_dates} invalid date values found",
+            }
+        )
+    else:
+        print("✅ DQ-14 Passed")
+
+    return results
+
+
+def validate_duplicate_columns(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    duplicate_columns = df.columns[df.columns.duplicated()]
+
+    if len(duplicate_columns) > 0:
+        print("❌ DQ-15 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-15",
+                "severity": "WARNING",
+                "message": f"{len(duplicate_columns)} duplicate column names found",
+            }
+        )
+    else:
+        print("✅ DQ-15 Passed")
+
+    return results
+
+
+def validate_empty_dataset(df: pd.DataFrame, file_name: str) -> List[dict]:
+    results = []
+
+    if df.empty:
+        print("❌ DQ-16 Failed")
+
+        results.append(
+            {
+                "file": file_name,
+                "rule": "DQ-16",
+                "severity": "CRITICAL",
+                "message": "Dataset is empty",
+            }
+        )
+    else:
+        print("✅ DQ-16 Passed")
+
+    return results
+
+
+def summarize_dataset(df: pd.DataFrame) -> str:
+    summary_lines = [
+        "First 5 Rows:",
+        str(df.head()),
+        "\nShape:",
+        f"Rows    : {df.shape[0]}",
+        f"Columns : {df.shape[1]}",
+        "\nColumns:",
+        str(df.columns.tolist()),
+        "\nMissing Values:",
+        str(df.isnull().sum()),
+    ]
+    return "\n".join(summary_lines)
+
+
+def validate_file(file_path: Path, valid_company_ids: set) -> List[dict]:
 
     print("\n" + "=" * 70)
-    print(f"Reading File : {file.name}")
+    print(f"Reading File : {file_path.name}")
     print("=" * 70)
 
     try:
+        df = load_csv(file_path)
+    except Exception as error:
+        print(f"\n❌ Error reading {file_path.name}")
+        print(error)
+        return [
+            {
+                "file": file_path.name,
+                "rule": "LOAD",
+                "severity": "CRITICAL",
+                "message": str(error),
+            }
+        ]
 
-        # --------------------------------------------------
-        # Read CSV
-        # --------------------------------------------------
+    results: List[dict] = []
 
-        if file.name in SPECIAL_FILES:
-            df = pd.read_csv(file, header=1)
-        else:
-            df = pd.read_csv(file)
+    # DQ-01
+    if file_path.name == "companies.csv":
+        results.extend(validate_companies(df, file_path.name))
 
-        # --------------------------------------------------
-        # DQ-01 : Primary Key Uniqueness
-        # --------------------------------------------------
+    # DQ-02
+    if file_path.name in FINANCIAL_TABLES:
+        results.extend(validate_financial_table(df, file_path.name))
 
-        if file.name == "companies.csv":
+        # DQ-03
+    results.extend(validate_primary_key(df, file_path.name))
 
-            if "id" in df.columns:
+    # DQ-04
+    results.extend(validate_foreign_key(df, file_path.name, valid_company_ids))
+    # DQ-05
+    results.extend(validate_company_id(df, file_path.name))
 
-                duplicate_rows = df[df["id"].duplicated()]
+    # DQ-06
+    results.extend(validate_year(df, file_path.name))
 
-                if duplicate_rows.empty:
+    # DQ-07
+    results.extend(validate_empty_strings(df, file_path.name))
 
-                    print("\n✅ DQ-01 Passed")
-                    print("No duplicate company IDs found.")
+    # DQ-08
+    results.extend(validate_missing_values(df, file_path.name))
 
-                else:
+    # DQ-09
+    results.extend(validate_duplicate_rows(df, file_path.name))
 
-                    print("\n❌ DQ-01 Failed")
+    # DQ-10
+    results.extend(validate_negative_values(df, file_path.name))
 
-                    validation_results.append({
+    # DQ-11
+    results.extend(validate_future_dates(df, file_path.name))
 
-                        "file": file.name,
-                        "rule": "DQ-01",
-                        "severity": "CRITICAL",
-                        "message": f"{len(duplicate_rows)} duplicate company IDs found"
+    # DQ-12
+    results.extend(validate_year_format(df, file_path.name))
 
-                    })
+    # DQ-13
+    results.extend(validate_data_types(df, file_path.name))
 
-        # --------------------------------------------------
-        # DQ-02 : Duplicate (company_id, year)
-        # --------------------------------------------------
+    # DQ-14
+    results.extend(validate_date_format(df, file_path.name))
 
-        if file.stem in DQ02_FILES:
+    # DQ-15
+    results.extend(validate_duplicate_columns(df, file_path.name))
 
-            if "company_id" in df.columns and "year" in df.columns:
+    # DQ-16
+    results.extend(validate_empty_dataset(df, file_path.name))
 
-                duplicate_rows = df[
-                    df.duplicated(
-                        subset=["company_id", "year"],
-                        keep=False
-                    )
-                ]
+    print(summarize_dataset(df))
+    return results
 
-                if duplicate_rows.empty:
 
-                    print("\n✅ DQ-02 Passed")
+def run_validation() -> pd.DataFrame:
+    csv_files = list_csv_files(PROCESSED_FOLDER)
+    companies_df = load_csv(PROCESSED_FOLDER / "companies.csv")
+    valid_company_ids = set(companies_df["id"].dropna())
+    print("=" * 70)
+    print(f"Total CSV Files : {len(csv_files)}")
+    print("=" * 70)
 
-                else:
+    validation_results: List[dict] = []
+    for csv_file in csv_files:
+        validation_results.extend(validate_file(csv_file, valid_company_ids))
 
-                    print("\n❌ DQ-02 Failed")
+    report = pd.DataFrame(validation_results, columns=VALIDATION_COLUMNS)
 
-                    validation_results.append({
+    print("\n" + "=" * 70)
+    print("Validation Report")
+    print("=" * 70)
 
-                        "file": file.name,
-                        "rule": "DQ-02",
-                        "severity": "CRITICAL",
-                        "message": f"{len(duplicate_rows)} duplicate (company_id, year) combinations"
+    if report.empty:
+        print("✅ No validation failures found.")
+    else:
+        print(report)
 
-                    })
+    report_path = OUTPUT_FOLDER / "validation_failures.csv"
+    report.to_csv(report_path, index=False)
+    print(f"\n✅ Saved validation report to {report_path}")
 
-        # --------------------------------------------------
-        # Dataset Information
-        # --------------------------------------------------
+    return report
 
-        print("\nFirst 5 Rows:")
-        print(df.head())
 
-        print("\nShape:")
-        print(f"Rows    : {df.shape[0]}")
-        print(f"Columns : {df.shape[1]}")
-
-        print("\nColumns:")
-        print(df.columns.tolist())
-
-        print("\nMissing Values:")
-        print(df.isnull().sum())
-
-    except Exception as e:
-
-        print(f"\n❌ Error reading {file.name}")
-        print(e)
-
-# ======================================================
-# Validation Report
-# ======================================================
-
-report = pd.DataFrame(validation_results)
-
-print("\n" + "=" * 70)
-print("Validation Report")
-print("=" * 70)
-
-if report.empty:
-
-    print("✅ No validation failures found.")
-
-else:
-
-    print(report)
-
-# ======================================================
-# Save Validation Report
-# ======================================================
-
-report.to_csv(
-    OUTPUT_FOLDER / "validation_failures.csv",
-    index=False
-)
-
-print("\n✅ validation_failures.csv saved successfully.")
+if __name__ == "__main__":
+    run_validation()
