@@ -22,6 +22,9 @@ PROCESSED_FOLDER = BASE_DIR / "data" / "processed"
 DATABASE_FOLDER = BASE_DIR / "data" / "database"
 DATABASE_FOLDER.mkdir(parents=True, exist_ok=True)
 
+OUTPUT_FOLDER = BASE_DIR / "output"
+OUTPUT_FOLDER.mkdir(parents=True, exist_ok=True)
+
 DB_PATH = DATABASE_FOLDER / "nifty100.db"
 
 # ======================================================
@@ -44,12 +47,11 @@ print("=" * 70)
 # ======================================================
 # Load CSVs into SQLite
 # ======================================================
-
+load_audit = []
 for file in csv_files:
+     print(f"\nLoading : {file.name}")
 
-    print(f"\nLoading : {file.name}")
-
-    try:
+try:
 
         if file.name in [
             "analysis.csv",
@@ -74,12 +76,29 @@ for file in csv_files:
             if_exists="replace",
             index=False,
         )
+        load_audit.append(
+          {
+             "table": table_name,
+             "rows_loaded": len(df),
+             "rejected_rows": 0,
+             "status": "SUCCESS",
+          }
+       )
 
         print(f"✅ Loaded {table_name:<20} {len(df)} rows")
 
-    except Exception as e:
+except Exception as e:
         print(f"❌ Error loading {file.name}")
         print(e)
+        
+        load_audit.append(
+        {
+            "table": file.stem,
+            "rows_loaded": 0,
+            "rejected_rows": 0,
+            "status": "FAILED",
+    }
+ )
 
 # ======================================================
 # Verify Tables
@@ -107,6 +126,7 @@ print("Row Counts")
 print("=" * 70)
 
 with engine.connect() as conn:
+    
 
     for table in tables["name"]:
 
@@ -116,6 +136,40 @@ with engine.connect() as conn:
         )
 
         print(f"{table:<20} {count.iloc[0,0]} rows")
+        fk = pd.read_sql(
+        "PRAGMA foreign_key_check;",
+        conn,
+    )
+
+print("\n" + "=" * 70)
+print("Foreign Key Check")
+print("=" * 70)
+
+if fk.empty:
+    print("✅ No foreign key violations found.")
+else:
+    print(fk)
+        
+# ======================================================
+# Save Load Audit
+# ======================================================
+
+audit_df = pd.DataFrame(load_audit)
+
+audit_path = OUTPUT_FOLDER / "load_audit.csv"
+
+audit_df.to_csv(
+    audit_path,
+    index=False,
+)
+
+print("\n" + "=" * 70)
+print("Load Audit")
+print("=" * 70)
+
+print(audit_df)
+
+print(f"\n✅ Load audit saved to {audit_path}")
 
 print("\n" + "=" * 70)
 print("Database loading completed successfully.")
