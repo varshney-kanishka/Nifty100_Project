@@ -65,12 +65,6 @@ def interest_coverage(operating_profit, other_income, interest):
 
     return (operating_profit + other_income) / interest
 
-def interest_coverage(operating_profit, other_income, interest):
-
-    if interest == 0:
-        return None
-
-    return (operating_profit + other_income) / interest
 
 def icr_label(interest):
 
@@ -96,3 +90,23 @@ def asset_turnover(sales, total_assets):
         return None
 
     return sales / total_assets
+
+def free_cash_flow(operating_activity, investing_activity):
+    return operating_activity + investing_activity
+
+def cash_from_operations(operating_activity):
+    return operating_activity
+
+def book_value_per_share(equity, reserves, shares):
+    if shares == 0:
+        return None
+    return (equity + reserves) / shares
+
+def dividend_payout_ratio(dividend, net_profit):
+    if net_profit == 0:
+        return None
+
+    return (dividend / net_profit) * 100
+
+def total_debt(borrowings):
+    return borrowings
