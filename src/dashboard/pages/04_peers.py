@@ -1,183 +1,99 @@
-import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+import streamlit as st
 
-from dashboard.utils.db import get_peers
-from dashboard.utils.db import get_ratios
-from dashboard.utils.db import get_companies
+from utils.db import get_companies, get_peers, get_pl, get_ratios
 
 st.title("Peer Comparison")
-
 st.markdown("Compare companies within the same peer group.")
+
 peer = get_peers()
-
 ratios = get_ratios()
-
 companies = get_companies()
+profit_loss = get_pl()
+
 if peer.empty:
-
     st.warning("Peer groups not available.")
-
     st.stop()
-groups = sorted(peer["peer_group_name"].dropna().unique())
 
-selected_group = st.selectbox(
+peer_groups = sorted(peer["peer_group_name"].dropna().unique())
+selected_group = st.selectbox("Select Peer Group", peer_groups)
 
-    "Select Peer Group",
+group_df = peer[peer["peer_group_name"] == selected_group].copy()
+if group_df.empty:
+    st.warning("No companies found for this peer group.")
+    st.stop()
 
-    groups
+company_ids = [str(company_id) for company_id in group_df["company_id"].dropna().astype(str).tolist()]
+selected_company = st.selectbox("Select Company", company_ids)
 
-)
-group_df = peer[
-    peer["peer_group_name"] == selected_group
-]
-company = st.selectbox(
+company_lookup = companies.set_index("id") if not companies.empty and "id" in companies.columns else pd.DataFrame(index=[])
 
-    "Select Company",
 
-    group_df["company_id"]
+def _latest_row(df, company_id):
+    if df.empty or "company_id" not in df.columns:
+        return None
 
-)
-company_ratio = ratios[
-    ratios["company_id"] == company
-]
+    company_rows = df[df["company_id"] == company_id]
+    if company_rows.empty:
+        return None
 
-company_ratio = company_ratio.tail(1)
-metrics = [
+    if "year" in company_rows.columns:
+        company_rows = company_rows.sort_values("year", ascending=False)
 
-    "ROE",
+    return company_rows.iloc[0]
 
-    "ROCE",
 
-    "NPM",
+def _safe_float(value):
+    if value is None or pd.isna(value):
+        return 0.0
+    return float(value)
 
-    "D/E",
 
-    "FCF",
+def _build_metric_values(company_id):
+    ratio_row = _latest_row(ratios, company_id)
+    pl_row = _latest_row(profit_loss, company_id)
+    profile_row = company_lookup.loc[company_id] if company_id in company_lookup.index else None
 
-    "PAT",
+    roe = _safe_float(ratio_row.get("return_on_equity_pct")) if ratio_row is not None else 0.0
+    roce = _safe_float(profile_row.get("roce_percentage")) if profile_row is not None and hasattr(profile_row, "get") else 0.0
+    npm = _safe_float(ratio_row.get("net_profit_margin_pct")) if ratio_row is not None else 0.0
+    debt_to_equity = _safe_float(ratio_row.get("debt_to_equity")) if ratio_row is not None else 0.0
+    fcf = _safe_float(ratio_row.get("free_cash_flow_cr")) if ratio_row is not None else 0.0
+    pat = _safe_float(pl_row.get("net_profit")) if pl_row is not None else 0.0
+    revenue = _safe_float(pl_row.get("sales")) if pl_row is not None else 0.0
 
-    "Revenue",
+    return [roe, roce, npm, debt_to_equity, fcf, pat, revenue]
 
-    "Score"
 
-]
+metrics = ["ROE", "ROCE", "NPM", "D/E", "FCF", "PAT", "Revenue"]
+selected_values = _build_metric_values(selected_company)
+peer_values = [_build_metric_values(company_id) for company_id in company_ids]
 
-company_values = [
+peer_averages = []
+for index in range(len(metrics)):
+    values = [row[index] for row in peer_values]
+    peer_averages.append(sum(values) / len(values) if values else 0.0)
 
-    70,
-
-    65,
-
-    60,
-
-    55,
-
-    75,
-
-    80,
-
-    72,
-
-    78
-
-]
-
-peer_average = [
-
-    60,
-
-    60,
-
-    55,
-
-    60,
-
-    65,
-
-    70,
-
-    68,
-
-    70
-
-]
 fig = go.Figure()
-
-fig.add_trace(
-
-    go.Scatterpolar(
-
-        r=company_values,
-
-        theta=metrics,
-
-        fill="toself",
-
-        name=company
-
-    )
-
-)
-
-fig.add_trace(
-
-    go.Scatterpolar(
-
-        r=peer_average,
-
-        theta=metrics,
-
-        name="Peer Average"
-
-    )
-
-)
-
+fig.add_trace(go.Scatterpolar(r=selected_values, theta=metrics, fill="toself", name=selected_company))
+fig.add_trace(go.Scatterpolar(r=peer_averages, theta=metrics, name="Peer Average"))
 fig.update_layout(
-
-    polar=dict(
-
-        radialaxis=dict(
-
-            visible=True,
-
-            range=[0,100]
-
-        )
-
-    ),
-
-    showlegend=True
-
+    polar=dict(radialaxis=dict(visible=True, range=[0, max(100, max(selected_values + peer_averages) * 1.2)])),
+    showlegend=True,
 )
+st.plotly_chart(fig, use_container_width=True)
 
-st.plotly_chart(
-
-    fig,
-
-    use_container_width=True
-
-)
 table = group_df.merge(
-
     companies,
-
     left_on="company_id",
-
-    right_on="company_id",
-
-    how="left"
-
+    right_on="id",
+    how="left",
 )
 
 st.subheader("Peer Companies")
+st.dataframe(table, use_container_width=True)
 
-st.dataframe(table)
-benchmark = table[
-    table["is_benchmark"] == 1
-]
-
+benchmark = table[table["is_benchmark"] == 1]
 st.subheader("Benchmark Company")
-
-st.dataframe(benchmark)    
+st.dataframe(benchmark, use_container_width=True)     

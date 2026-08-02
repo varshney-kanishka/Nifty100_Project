@@ -145,17 +145,21 @@ def get_sectors():
 
 
 @st.cache_data(ttl=600)
-def get_peers(group_name):
+def get_peers(group_name=None):
     conn = get_connection()
     if not _table_exists(conn, "peer_groups"):
         conn.close()
         return pd.DataFrame()
 
-    df = pd.read_sql_query(
-        "SELECT * FROM peer_groups WHERE peer_group_name = ?",
-        conn,
-        params=(group_name,),
-    )
+    if group_name is None:
+        df = pd.read_sql_query("SELECT * FROM peer_groups", conn)
+    else:
+        df = pd.read_sql_query(
+            "SELECT * FROM peer_groups WHERE peer_group_name = ?",
+            conn,
+            params=(group_name,),
+        )
+
     conn.close()
     return df
 
