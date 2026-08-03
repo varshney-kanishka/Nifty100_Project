@@ -1,0 +1,12 @@
+company_id,metric_type,period_years,value_pct,net_profit_margin_pct,difference_pct,manual_review
+SBILIFE,compounded_sales_growth,5,24.0,1.8535745312247738,22.146425468775227,True
+SBILIFE,compounded_sales_growth,3,17.0,1.8535745312247738,15.146425468775226,True
+TCS,compounded_sales_growth,10,11.0,19.440499519997463,8.440499519997463,True
+TCS,compounded_sales_growth,5,10.0,19.440499519997463,9.440499519997463,True
+TCS,compounded_sales_growth,3,14.0,19.440499519997463,5.440499519997463,True
+WIPRO,compounded_sales_growth,10,8.0,14.064330119830615,6.064330119830615,True
+WIPRO,compounded_sales_growth,5,9.0,14.064330119830615,5.064330119830615,True
+HDFCBANK,compounded_sales_growth,3,30.0,21.934095592391998,8.065904407608002,True
+INFY,compounded_sales_growth,10,12.0,17.30567292546941,5.305672925469409,True
+INFY,compounded_sales_growth,3,5.0,17.30567292546941,12.305672925469409,True
+SBILIFE,compounded_sales_growth,10,23.0,1.8535745312247738,21.146425468775227,True
