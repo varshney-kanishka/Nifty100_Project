@@ -5,7 +5,7 @@ st.write("Annual Reports")
 import streamlit as st
 
 from utils.db import get_companies
-st.title("Annual Reports")
+
 
 companies = get_companies()
 

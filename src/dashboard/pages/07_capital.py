@@ -1,10 +1,4 @@
 import streamlit as st
-
-st.title("💰 Capital Allocation")
-
-st.write("Capital Allocation Map")
-
-import streamlit as st
 import plotly.express as px
 
 import pandas as pd
