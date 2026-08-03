@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 
-from dashboard.utils.db import get_ratios
-from dashboard.utils.db import get_companies
-
+from utils.db import get_ratios
+from utils.db import get_companies
+from utils.db import get_sectors
 st.title("Financial Screener")
 
 st.markdown("Filter Nifty 100 companies using financial metrics.")
@@ -11,11 +11,18 @@ st.markdown("Filter Nifty 100 companies using financial metrics.")
 ratios = get_ratios()
 
 companies = get_companies()
-
+sectors = get_sectors()
 df = ratios.merge(
-    companies,
+    companies[["id", "company_name"]],
+    left_on="company_id",
+    right_on="id",
+    how="left",
+)
+
+df = df.merge(
+    sectors[["company_id", "broad_sector"]],
     on="company_id",
-    how="left"
+    how="left",
 )
 st.sidebar.header("Filters")
 
