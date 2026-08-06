@@ -11,25 +11,48 @@ def normalize_year(year):
         FY23 -> 2023
         2022-23 -> 2023
         2023 -> 2023
+        Dec 2012 -> 2012
+        Mar 2014 -> 2014
     """
     if year is None:
         return None
 
-    year = str(year).strip()
+    try:
+        year_value = float(year)
+        if year_value.is_integer():
+            year = str(int(year_value))
+        else:
+            year = str(year)
+    except (TypeError, ValueError):
+        year = str(year)
 
-    if year.startswith("FY"):
-        year = year.replace("FY", "")
+    year = year.strip()
+
+    if not year:
+        return None
+
+    if year.upper().startswith("FY"):
+        year = year[2:].strip()
 
     if "-" in year:
-        year = year.split("-")[-1]
+        parts = [part.strip() for part in year.split("-") if part.strip()]
+        if parts:
+            year = parts[-1]
 
-    if len(year) == 2:
-        year = "20" + year
+    import re
 
-    try:
-        return int(year)
-    except ValueError:
-        return None
+    match = re.fullmatch(r"(20\d{2}|19\d{2})", year)
+    if match:
+        return int(match.group(1))
+
+    match = re.search(r"(20\d{2}|19\d{2})", year)
+    if match:
+        return int(match.group(1))
+
+    if len(year) == 2 and year.isdigit():
+        return int("20" + year)
+
+    return None
 
 
 def normalize_ticker(ticker):

@@ -49,24 +49,20 @@ print("=" * 70)
 # ======================================================
 load_audit = []
 for file in csv_files:
-     print(f"\nLoading : {file.name}")
+    print(f"\nLoading : {file.name}")
 
-try:
-
-        if file.name in [
-            "analysis.csv",
-            "balancesheet.csv",
-            "cashflow.csv",
-            "companies.csv",
-            "documents.csv",
-            "profitandloss.csv",
-            "prosandcons.csv",
-        ]:
-            df = pd.read_csv(file, header=1)
-        else:
-            df = pd.read_csv(file)
-
+    try:
+        df = pd.read_csv(file, dtype={"year": "string", "Year": "string"})
         df.columns = df.columns.str.strip()
+
+        for year_col in ["year", "Year"]:
+            if year_col in df.columns:
+                df[year_col] = df[year_col].astype("string").str.replace(
+                    r"\.0$",
+                    "",
+                    regex=True,
+                ).str.strip()
+                df[year_col] = df[year_col].replace({"nan": pd.NA, "<NA>": pd.NA})
 
         table_name = file.stem
 
@@ -77,28 +73,28 @@ try:
             index=False,
         )
         load_audit.append(
-          {
-             "table": table_name,
-             "rows_loaded": len(df),
-             "rejected_rows": 0,
-             "status": "SUCCESS",
-          }
-       )
+            {
+                "table": table_name,
+                "rows_loaded": len(df),
+                "rejected_rows": 0,
+                "status": "SUCCESS",
+            }
+        )
 
         print(f"✅ Loaded {table_name:<20} {len(df)} rows")
 
-except Exception as e:
+    except Exception as e:
         print(f"❌ Error loading {file.name}")
         print(e)
-        
+
         load_audit.append(
-        {
-            "table": file.stem,
-            "rows_loaded": 0,
-            "rejected_rows": 0,
-            "status": "FAILED",
-    }
- )
+            {
+                "table": file.stem,
+                "rows_loaded": 0,
+                "rejected_rows": 0,
+                "status": "FAILED",
+            }
+        )
 
 # ======================================================
 # Verify Tables
