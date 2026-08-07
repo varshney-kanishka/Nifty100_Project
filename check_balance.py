@@ -1,21 +1,15 @@
+import sqlite3
 import pandas as pd
 
-df = pd.read_excel(
-    "data/raw/balancesheet.xlsx",
-    header=1
-)
+conn = sqlite3.connect("data/database/nifty100.db")   # Use your actual database path
 
-print(
-    df[df["company_id"]=="BEL"][[
-        "company_id",
-        "year",
-        "equity_capital",
-        "reserves",
-        "total_assets"
-    ]]
-)
-print(
-    df[
-        df["company_id"] == "BEL"
-    ][["company_id", "year"]]
-)
+balance = pd.read_sql("SELECT * FROM balancesheet", conn)
+profit = pd.read_sql("SELECT * FROM profitandloss", conn)
+
+print("Balance Columns")
+print(balance.columns.tolist())
+
+print("\nProfit Columns")
+print(profit.columns.tolist())
+
+conn.close()
