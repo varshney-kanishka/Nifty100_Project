@@ -1,0 +1,903 @@
+company_id,type,rule_id,text,confidence_pct
+ABB,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+ABB,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+ABB,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+ABB,pro,P6,Positive earnings per share indicate profitable operations.,75
+ABB,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ABB,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ABB,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+ABB,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ADANIENSOL,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+ADANIENSOL,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+ADANIENSOL,pro,P6,Positive earnings per share indicate profitable operations.,75
+ADANIENSOL,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+ADANIENSOL,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ADANIENSOL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ADANIENSOL,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ADANIENSOL,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+ADANIENSOL,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+ADANIENSOL,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+ADANIENT,pro,P6,Positive earnings per share indicate profitable operations.,75
+ADANIENT,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+ADANIENT,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+ADANIENT,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ADANIENT,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ADANIENT,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+ADANIENT,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ADANIENT,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+ADANIGREEN,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+ADANIGREEN,pro,P6,Positive earnings per share indicate profitable operations.,75
+ADANIGREEN,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+ADANIGREEN,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+ADANIGREEN,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ADANIGREEN,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ADANIGREEN,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ADANIGREEN,con,C1,Debt-to-equity ratio of 6.38 is elevated and warrants monitoring.,90
+ADANIGREEN,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+ADANIGREEN,con,C3,Interest coverage ratio below 1.5x indicates risk in meeting debt obligations.,90
+ADANIGREEN,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+ADANIPORTS,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+ADANIPORTS,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+ADANIPORTS,pro,P6,Positive earnings per share indicate profitable operations.,75
+ADANIPORTS,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ADANIPORTS,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ADANIPORTS,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+ADANIPORTS,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ADANIPOWER,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+ADANIPOWER,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+ADANIPOWER,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+ADANIPOWER,pro,P6,Positive earnings per share indicate profitable operations.,75
+ADANIPOWER,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+ADANIPOWER,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+ADANIPOWER,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ADANIPOWER,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ADANIPOWER,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+AMBUJACEM,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+AMBUJACEM,pro,P6,Positive earnings per share indicate profitable operations.,75
+AMBUJACEM,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+AMBUJACEM,pro,P10,A positive asset base provides capacity to support future business growth.,70
+AMBUJACEM,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+AMBUJACEM,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+AMBUJACEM,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+AMBUJACEM,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+APOLLOHOSP,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+APOLLOHOSP,pro,P6,Positive earnings per share indicate profitable operations.,75
+APOLLOHOSP,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+APOLLOHOSP,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+APOLLOHOSP,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+APOLLOHOSP,pro,P10,A positive asset base provides capacity to support future business growth.,70
+APOLLOHOSP,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+APOLLOHOSP,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ASIANPAINT,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+ASIANPAINT,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+ASIANPAINT,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+ASIANPAINT,pro,P6,Positive earnings per share indicate profitable operations.,75
+ASIANPAINT,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ASIANPAINT,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ASIANPAINT,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+ASIANPAINT,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ATGL,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+ATGL,pro,P6,Positive earnings per share indicate profitable operations.,75
+ATGL,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+ATGL,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ATGL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ATGL,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+AXISBANK,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+AXISBANK,pro,P6,Positive earnings per share indicate profitable operations.,75
+AXISBANK,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+AXISBANK,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+AXISBANK,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+AXISBANK,pro,P10,A positive asset base provides capacity to support future business growth.,70
+AXISBANK,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+AXISBANK,con,C1,Debt-to-equity ratio of 8.25 is elevated and warrants monitoring.,90
+AXISBANK,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+AXISBANK,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+AXISBANK,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+AXISBANK,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+BAJAJ-AUTO,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+BAJAJ-AUTO,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+BAJAJ-AUTO,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+BAJAJ-AUTO,pro,P6,Positive earnings per share indicate profitable operations.,75
+BAJAJ-AUTO,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+BAJAJ-AUTO,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BAJAJ-AUTO,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BAJAJ-AUTO,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BAJAJ-AUTO,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+BAJAJFINSV,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+BAJAJFINSV,pro,P6,Positive earnings per share indicate profitable operations.,75
+BAJAJFINSV,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+BAJAJFINSV,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+BAJAJFINSV,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BAJAJFINSV,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BAJAJFINSV,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BAJAJFINSV,con,C1,Debt-to-equity ratio of 4.66 is elevated and warrants monitoring.,90
+BAJAJFINSV,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+BAJAJFINSV,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+BAJAJFINSV,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+BAJAJHLDNG,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+BAJAJHLDNG,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+BAJAJHLDNG,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+BAJAJHLDNG,pro,P6,Positive earnings per share indicate profitable operations.,75
+BAJAJHLDNG,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+BAJAJHLDNG,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BAJAJHLDNG,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BAJAJHLDNG,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BAJAJHLDNG,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+BAJFINANCE,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+BAJFINANCE,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+BAJFINANCE,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+BAJFINANCE,pro,P6,Positive earnings per share indicate profitable operations.,75
+BAJFINANCE,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+BAJFINANCE,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+BAJFINANCE,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BAJFINANCE,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BAJFINANCE,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BAJFINANCE,con,C1,Debt-to-equity ratio of 3.74 is elevated and warrants monitoring.,90
+BAJFINANCE,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+BAJFINANCE,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+BAJFINANCE,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+BANKBARODA,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+BANKBARODA,pro,P6,Positive earnings per share indicate profitable operations.,75
+BANKBARODA,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+BANKBARODA,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BANKBARODA,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BANKBARODA,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BANKBARODA,con,C1,Debt-to-equity ratio of 12.14 is elevated and warrants monitoring.,90
+BANKBARODA,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+BANKBARODA,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+BANKBARODA,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+BANKBARODA,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+BANKBARODA,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+BEL,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+BEL,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+BEL,pro,P6,Positive earnings per share indicate profitable operations.,75
+BEL,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+BEL,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BEL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BEL,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BEL,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+BEL,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+BEL,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+BHARTIARTL,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+BHARTIARTL,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+BHARTIARTL,pro,P6,Positive earnings per share indicate profitable operations.,75
+BHARTIARTL,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BHARTIARTL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BHARTIARTL,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BHARTIARTL,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+BHARTIARTL,con,C1,Debt-to-equity ratio of 2.59 is elevated and warrants monitoring.,90
+BHEL,pro,P6,Positive earnings per share indicate profitable operations.,75
+BHEL,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BHEL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BHEL,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BHEL,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+BHEL,con,C3,Interest coverage ratio below 1.5x indicates risk in meeting debt obligations.,90
+BHEL,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+BHEL,con,C6,Low operating margin indicates weak profitability.,78
+BHEL,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+BHEL,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+BOSCHLTD,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+BOSCHLTD,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+BOSCHLTD,pro,P6,Positive earnings per share indicate profitable operations.,75
+BOSCHLTD,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+BOSCHLTD,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+BOSCHLTD,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BOSCHLTD,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BOSCHLTD,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BOSCHLTD,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+BPCL,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+BPCL,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+BPCL,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+BPCL,pro,P6,Positive earnings per share indicate profitable operations.,75
+BPCL,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+BPCL,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BPCL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BPCL,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BPCL,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+BPCL,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+BRITANNIA,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+BRITANNIA,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+BRITANNIA,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+BRITANNIA,pro,P6,Positive earnings per share indicate profitable operations.,75
+BRITANNIA,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+BRITANNIA,pro,P10,A positive asset base provides capacity to support future business growth.,70
+BRITANNIA,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+BRITANNIA,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+CANBK,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+CANBK,pro,P6,Positive earnings per share indicate profitable operations.,75
+CANBK,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+CANBK,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+CANBK,pro,P10,A positive asset base provides capacity to support future business growth.,70
+CANBK,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+CANBK,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+CANBK,con,C1,Debt-to-equity ratio of 14.87 is elevated and warrants monitoring.,90
+CANBK,con,C6,Low operating margin indicates weak profitability.,78
+CANBK,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+CANBK,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+CHOLAFIN,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+CHOLAFIN,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+CHOLAFIN,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+CHOLAFIN,pro,P6,Positive earnings per share indicate profitable operations.,75
+CHOLAFIN,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+CHOLAFIN,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+CHOLAFIN,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+CHOLAFIN,pro,P10,A positive asset base provides capacity to support future business growth.,70
+CHOLAFIN,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+CHOLAFIN,con,C1,Debt-to-equity ratio of 7.38 is elevated and warrants monitoring.,90
+CHOLAFIN,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+CHOLAFIN,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+CHOLAFIN,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+CHOLAFIN,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+CIPLA,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+CIPLA,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+CIPLA,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+CIPLA,pro,P6,Positive earnings per share indicate profitable operations.,75
+CIPLA,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+CIPLA,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+CIPLA,pro,P10,A positive asset base provides capacity to support future business growth.,70
+CIPLA,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+CIPLA,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+CIPLA,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+COALINDIA,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+COALINDIA,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+COALINDIA,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+COALINDIA,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+COALINDIA,pro,P6,Positive earnings per share indicate profitable operations.,75
+COALINDIA,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+COALINDIA,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+COALINDIA,pro,P10,A positive asset base provides capacity to support future business growth.,70
+COALINDIA,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+COALINDIA,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+COALINDIA,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+DABUR,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+DABUR,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+DABUR,pro,P6,Positive earnings per share indicate profitable operations.,75
+DABUR,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+DABUR,pro,P10,A positive asset base provides capacity to support future business growth.,70
+DABUR,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+DABUR,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+DABUR,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+DIVISLAB,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+DIVISLAB,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+DIVISLAB,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+DIVISLAB,pro,P6,Positive earnings per share indicate profitable operations.,75
+DIVISLAB,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+DIVISLAB,pro,P10,A positive asset base provides capacity to support future business growth.,70
+DIVISLAB,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+DIVISLAB,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+DLF,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+DLF,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+DLF,pro,P6,Positive earnings per share indicate profitable operations.,75
+DLF,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+DLF,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+DLF,pro,P10,A positive asset base provides capacity to support future business growth.,70
+DLF,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+DLF,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+DLF,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+DLF,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+DMART,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+DMART,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+DMART,pro,P6,Positive earnings per share indicate profitable operations.,75
+DMART,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+DMART,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+DMART,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+DMART,pro,P10,A positive asset base provides capacity to support future business growth.,70
+DMART,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+DMART,con,C6,Low operating margin indicates weak profitability.,78
+DRREDDY,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+DRREDDY,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+DRREDDY,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+DRREDDY,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+DRREDDY,pro,P6,Positive earnings per share indicate profitable operations.,75
+DRREDDY,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+DRREDDY,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+DRREDDY,pro,P10,A positive asset base provides capacity to support future business growth.,70
+DRREDDY,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+DRREDDY,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+EICHERMOT,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+EICHERMOT,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+EICHERMOT,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+EICHERMOT,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+EICHERMOT,pro,P6,Positive earnings per share indicate profitable operations.,75
+EICHERMOT,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+EICHERMOT,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+EICHERMOT,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+EICHERMOT,pro,P10,A positive asset base provides capacity to support future business growth.,70
+EICHERMOT,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+EICHERMOT,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+GAIL,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+GAIL,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+GAIL,pro,P6,Positive earnings per share indicate profitable operations.,75
+GAIL,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+GAIL,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+GAIL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+GAIL,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+GAIL,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+GODREJCP,pro,P10,A positive asset base provides capacity to support future business growth.,70
+GODREJCP,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+GODREJCP,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+GODREJCP,con,C4,Company reported a net loss in the most recent financial year.,95
+GODREJCP,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+GODREJCP,con,C7,Negative earnings per share indicate losses.,95
+GRASIM,pro,P6,Positive earnings per share indicate profitable operations.,75
+GRASIM,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+GRASIM,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+GRASIM,pro,P10,A positive asset base provides capacity to support future business growth.,70
+GRASIM,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+GRASIM,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+GRASIM,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+GRASIM,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+GRASIM,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+HAL,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+HAL,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+HAL,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+HAL,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+HAL,pro,P6,Positive earnings per share indicate profitable operations.,75
+HAL,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+HAL,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+HAL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+HAL,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+HAL,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+HAL,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+HAVELLS,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+HAVELLS,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+HAVELLS,pro,P6,Positive earnings per share indicate profitable operations.,75
+HAVELLS,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+HAVELLS,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+HAVELLS,pro,P10,A positive asset base provides capacity to support future business growth.,70
+HAVELLS,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+HAVELLS,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+HAVELLS,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+HCLTECH,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+HCLTECH,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+HCLTECH,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+HCLTECH,pro,P6,Positive earnings per share indicate profitable operations.,75
+HCLTECH,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+HCLTECH,pro,P10,A positive asset base provides capacity to support future business growth.,70
+HCLTECH,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+HCLTECH,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+HDFCBANK,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+HDFCBANK,pro,P6,Positive earnings per share indicate profitable operations.,75
+HDFCBANK,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+HDFCBANK,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+HDFCBANK,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+HDFCBANK,pro,P10,A positive asset base provides capacity to support future business growth.,70
+HDFCBANK,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+HDFCBANK,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+HDFCBANK,con,C1,Debt-to-equity ratio of 6.81 is elevated and warrants monitoring.,90
+HDFCBANK,con,C3,Interest coverage ratio below 1.5x indicates risk in meeting debt obligations.,90
+HDFCBANK,con,C6,Low operating margin indicates weak profitability.,78
+HDFCBANK,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+HDFCBANK,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+HDFCLIFE,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+HDFCLIFE,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+HDFCLIFE,pro,P6,Positive earnings per share indicate profitable operations.,75
+HDFCLIFE,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+HDFCLIFE,pro,P10,A positive asset base provides capacity to support future business growth.,70
+HDFCLIFE,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+HDFCLIFE,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+HDFCLIFE,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+HDFCLIFE,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+HDFCLIFE,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+HEROMOTOCO,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+HEROMOTOCO,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+HEROMOTOCO,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+HEROMOTOCO,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+HEROMOTOCO,pro,P6,Positive earnings per share indicate profitable operations.,75
+HEROMOTOCO,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+HEROMOTOCO,pro,P10,A positive asset base provides capacity to support future business growth.,70
+HEROMOTOCO,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+HEROMOTOCO,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+HINDALCO,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+HINDALCO,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+HINDALCO,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+HINDALCO,pro,P6,Positive earnings per share indicate profitable operations.,75
+HINDALCO,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+HINDALCO,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+HINDALCO,pro,P10,A positive asset base provides capacity to support future business growth.,70
+HINDALCO,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+HINDALCO,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+HINDALCO,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+HINDUNILVR,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+HINDUNILVR,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+HINDUNILVR,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+HINDUNILVR,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+HINDUNILVR,pro,P6,Positive earnings per share indicate profitable operations.,75
+HINDUNILVR,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+HINDUNILVR,pro,P10,A positive asset base provides capacity to support future business growth.,70
+HINDUNILVR,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+HINDUNILVR,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ICICIBANK,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+ICICIBANK,pro,P6,Positive earnings per share indicate profitable operations.,75
+ICICIBANK,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+ICICIBANK,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+ICICIBANK,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ICICIBANK,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ICICIBANK,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+ICICIBANK,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ICICIBANK,con,C1,Debt-to-equity ratio of 6.45 is elevated and warrants monitoring.,90
+ICICIBANK,con,C3,Interest coverage ratio below 1.5x indicates risk in meeting debt obligations.,90
+ICICIBANK,con,C6,Low operating margin indicates weak profitability.,78
+ICICIBANK,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+ICICIBANK,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+ICICIGI,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+ICICIGI,pro,P3,Debt-free balance sheet provides financial flexibility and eliminates interest burden.,95
+ICICIGI,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+ICICIGI,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+ICICIGI,pro,P6,Positive earnings per share indicate profitable operations.,75
+ICICIGI,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+ICICIGI,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ICICIGI,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ICICIGI,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+ICICIGI,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ICICIPRULI,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+ICICIPRULI,pro,P3,Debt-free balance sheet provides financial flexibility and eliminates interest burden.,95
+ICICIPRULI,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+ICICIPRULI,pro,P6,Positive earnings per share indicate profitable operations.,75
+ICICIPRULI,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ICICIPRULI,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ICICIPRULI,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+ICICIPRULI,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+ICICIPRULI,con,C6,Low operating margin indicates weak profitability.,78
+ICICIPRULI,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+ICICIPRULI,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+INDIGO,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+INDIGO,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+INDIGO,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+INDIGO,pro,P6,Positive earnings per share indicate profitable operations.,75
+INDIGO,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+INDIGO,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+INDIGO,pro,P10,A positive asset base provides capacity to support future business growth.,70
+INDIGO,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+INDIGO,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+INDUSINDBK,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+INDUSINDBK,pro,P6,Positive earnings per share indicate profitable operations.,75
+INDUSINDBK,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+INDUSINDBK,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+INDUSINDBK,pro,P10,A positive asset base provides capacity to support future business growth.,70
+INDUSINDBK,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+INDUSINDBK,con,C1,Debt-to-equity ratio of 6.89 is elevated and warrants monitoring.,90
+INDUSINDBK,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+INDUSINDBK,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+INDUSINDBK,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+INDUSINDBK,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+INDUSINDBK,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+INFY,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+INFY,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+INFY,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+INFY,pro,P6,Positive earnings per share indicate profitable operations.,75
+INFY,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+INFY,pro,P10,A positive asset base provides capacity to support future business growth.,70
+INFY,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+IOC,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+IOC,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+IOC,pro,P6,Positive earnings per share indicate profitable operations.,75
+IOC,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+IOC,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+IOC,pro,P10,A positive asset base provides capacity to support future business growth.,70
+IOC,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+IOC,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+IRCTC,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+IRCTC,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+IRCTC,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+IRCTC,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+IRCTC,pro,P6,Positive earnings per share indicate profitable operations.,75
+IRCTC,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+IRCTC,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+IRCTC,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+IRCTC,pro,P10,A positive asset base provides capacity to support future business growth.,70
+IRCTC,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+IRCTC,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+IRFC,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+IRFC,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+IRFC,pro,P6,Positive earnings per share indicate profitable operations.,75
+IRFC,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+IRFC,pro,P10,A positive asset base provides capacity to support future business growth.,70
+IRFC,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+IRFC,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+IRFC,con,C1,Debt-to-equity ratio of 7.83 is elevated and warrants monitoring.,90
+IRFC,con,C3,Interest coverage ratio below 1.5x indicates risk in meeting debt obligations.,90
+IRFC,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+IRFC,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+IRFC,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+ITC,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+ITC,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+ITC,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+ITC,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+ITC,pro,P6,Positive earnings per share indicate profitable operations.,75
+ITC,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ITC,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ITC,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+ITC,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+JINDALSTEL,pro,P6,Positive earnings per share indicate profitable operations.,75
+JINDALSTEL,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+JINDALSTEL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+JINDALSTEL,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+JINDALSTEL,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+JINDALSTEL,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+JINDALSTEL,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+JIOFIN,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+JIOFIN,pro,P3,Debt-free balance sheet provides financial flexibility and eliminates interest burden.,95
+JIOFIN,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+JIOFIN,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+JIOFIN,pro,P6,Positive earnings per share indicate profitable operations.,75
+JIOFIN,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+JIOFIN,pro,P10,A positive asset base provides capacity to support future business growth.,70
+JIOFIN,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+JIOFIN,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+JIOFIN,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+JSWENERGY,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+JSWENERGY,pro,P6,Positive earnings per share indicate profitable operations.,75
+JSWENERGY,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+JSWENERGY,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+JSWENERGY,pro,P10,A positive asset base provides capacity to support future business growth.,70
+JSWENERGY,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+JSWENERGY,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+JSWENERGY,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+JSWENERGY,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+JSWENERGY,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+JSWENERGY,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+JSWSTEEL,pro,P6,Positive earnings per share indicate profitable operations.,75
+JSWSTEEL,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+JSWSTEEL,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+JSWSTEEL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+JSWSTEEL,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+JSWSTEEL,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+JSWSTEEL,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+JSWSTEEL,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+KOTAKBANK,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+KOTAKBANK,pro,P6,Positive earnings per share indicate profitable operations.,75
+KOTAKBANK,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+KOTAKBANK,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+KOTAKBANK,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+KOTAKBANK,pro,P10,A positive asset base provides capacity to support future business growth.,70
+KOTAKBANK,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+KOTAKBANK,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+KOTAKBANK,con,C1,Debt-to-equity ratio of 4.00 is elevated and warrants monitoring.,90
+KOTAKBANK,con,C3,Interest coverage ratio below 1.5x indicates risk in meeting debt obligations.,90
+KOTAKBANK,con,C6,Low operating margin indicates weak profitability.,78
+KOTAKBANK,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+KOTAKBANK,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+LICI,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+LICI,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+LICI,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+LICI,pro,P6,Positive earnings per share indicate profitable operations.,75
+LICI,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+LICI,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+LICI,pro,P10,A positive asset base provides capacity to support future business growth.,70
+LICI,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+LICI,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+LICI,con,C6,Low operating margin indicates weak profitability.,78
+LICI,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+LODHA,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+LODHA,pro,P6,Positive earnings per share indicate profitable operations.,75
+LODHA,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+LODHA,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+LODHA,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+LODHA,pro,P10,A positive asset base provides capacity to support future business growth.,70
+LODHA,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+LODHA,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+LT,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+LT,pro,P6,Positive earnings per share indicate profitable operations.,75
+LT,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+LT,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+LT,pro,P10,A positive asset base provides capacity to support future business growth.,70
+LT,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+LT,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+LT,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+LTIM,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+LTIM,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+LTIM,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+LTIM,pro,P6,Positive earnings per share indicate profitable operations.,75
+LTIM,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+LTIM,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+LTIM,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+LTIM,pro,P10,A positive asset base provides capacity to support future business growth.,70
+LTIM,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+LTIM,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+LTIM,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+M&M,pro,P6,Positive earnings per share indicate profitable operations.,75
+M&M,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+M&M,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+M&M,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+M&M,pro,P10,A positive asset base provides capacity to support future business growth.,70
+M&M,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+M&M,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+M&M,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+MARUTI,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+MARUTI,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+MARUTI,pro,P6,Positive earnings per share indicate profitable operations.,75
+MARUTI,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+MARUTI,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+MARUTI,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+MARUTI,pro,P10,A positive asset base provides capacity to support future business growth.,70
+MARUTI,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+MARUTI,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+MOTHERSON,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+MOTHERSON,pro,P6,Positive earnings per share indicate profitable operations.,75
+MOTHERSON,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+MOTHERSON,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+MOTHERSON,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+MOTHERSON,pro,P10,A positive asset base provides capacity to support future business growth.,70
+MOTHERSON,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+MOTHERSON,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+MOTHERSON,con,C6,Low operating margin indicates weak profitability.,78
+NAUKRI,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+NAUKRI,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+NAUKRI,pro,P6,Positive earnings per share indicate profitable operations.,75
+NAUKRI,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+NAUKRI,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+NAUKRI,pro,P10,A positive asset base provides capacity to support future business growth.,70
+NAUKRI,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+NAUKRI,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+NAUKRI,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+NAUKRI,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+NAUKRI,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+NAUKRI,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+NESTLEIND,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+NESTLEIND,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+NESTLEIND,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+NESTLEIND,pro,P6,Positive earnings per share indicate profitable operations.,75
+NESTLEIND,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+NESTLEIND,pro,P10,A positive asset base provides capacity to support future business growth.,70
+NESTLEIND,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+NESTLEIND,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+NESTLEIND,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+NHPC,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+NHPC,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+NHPC,pro,P6,Positive earnings per share indicate profitable operations.,75
+NHPC,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+NHPC,pro,P10,A positive asset base provides capacity to support future business growth.,70
+NHPC,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+NHPC,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+NHPC,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+NHPC,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+NTPC,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+NTPC,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+NTPC,pro,P6,Positive earnings per share indicate profitable operations.,75
+NTPC,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+NTPC,pro,P10,A positive asset base provides capacity to support future business growth.,70
+NTPC,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+NTPC,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ONGC,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+ONGC,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+ONGC,pro,P6,Positive earnings per share indicate profitable operations.,75
+ONGC,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+ONGC,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+ONGC,pro,P10,A positive asset base provides capacity to support future business growth.,70
+ONGC,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+ONGC,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+ONGC,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+PFC,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+PFC,pro,P6,Positive earnings per share indicate profitable operations.,75
+PFC,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+PFC,pro,P10,A positive asset base provides capacity to support future business growth.,70
+PFC,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+PFC,con,C1,Debt-to-equity ratio of 8.27 is elevated and warrants monitoring.,90
+PFC,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+PFC,con,C3,Interest coverage ratio below 1.5x indicates risk in meeting debt obligations.,90
+PFC,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+PFC,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+PFC,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+PIDILITIND,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+PIDILITIND,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+PIDILITIND,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+PIDILITIND,pro,P6,Positive earnings per share indicate profitable operations.,75
+PIDILITIND,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+PIDILITIND,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+PIDILITIND,pro,P10,A positive asset base provides capacity to support future business growth.,70
+PIDILITIND,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+PIDILITIND,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+PNB,pro,P6,Positive earnings per share indicate profitable operations.,75
+PNB,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+PNB,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+PNB,pro,P10,A positive asset base provides capacity to support future business growth.,70
+PNB,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+PNB,con,C1,Debt-to-equity ratio of 3.68 is elevated and warrants monitoring.,90
+PNB,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+PNB,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+PNB,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+PNB,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+PNB,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+PNB,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+POWERGRID,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+POWERGRID,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+POWERGRID,pro,P6,Positive earnings per share indicate profitable operations.,75
+POWERGRID,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+POWERGRID,pro,P10,A positive asset base provides capacity to support future business growth.,70
+POWERGRID,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+POWERGRID,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+POWERGRID,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+RECLTD,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+RECLTD,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+RECLTD,pro,P6,Positive earnings per share indicate profitable operations.,75
+RECLTD,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+RECLTD,pro,P10,A positive asset base provides capacity to support future business growth.,70
+RECLTD,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+RECLTD,con,C1,Debt-to-equity ratio of 6.58 is elevated and warrants monitoring.,90
+RECLTD,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+RECLTD,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+RECLTD,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+RELIANCE,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+RELIANCE,pro,P6,Positive earnings per share indicate profitable operations.,75
+RELIANCE,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+RELIANCE,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+RELIANCE,pro,P10,A positive asset base provides capacity to support future business growth.,70
+RELIANCE,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+RELIANCE,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+RELIANCE,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+RELIANCE,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+SBILIFE,pro,P3,Debt-free balance sheet provides financial flexibility and eliminates interest burden.,95
+SBILIFE,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+SBILIFE,pro,P6,Positive earnings per share indicate profitable operations.,75
+SBILIFE,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+SBILIFE,pro,P10,A positive asset base provides capacity to support future business growth.,70
+SBILIFE,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+SBILIFE,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+SBILIFE,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+SBILIFE,con,C6,Low operating margin indicates weak profitability.,78
+SBILIFE,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+SBIN,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+SBIN,pro,P6,Positive earnings per share indicate profitable operations.,75
+SBIN,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+SBIN,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+SBIN,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+SBIN,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+SBIN,con,C3,Interest coverage ratio below 1.5x indicates risk in meeting debt obligations.,90
+SBIN,con,C6,Low operating margin indicates weak profitability.,78
+SBIN,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+SHREECEM,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+SHREECEM,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+SHREECEM,pro,P6,Positive earnings per share indicate profitable operations.,75
+SHREECEM,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+SHREECEM,pro,P10,A positive asset base provides capacity to support future business growth.,70
+SHREECEM,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+SHREECEM,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+SHRIRAMFIN,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+SHRIRAMFIN,pro,P6,Positive earnings per share indicate profitable operations.,75
+SHRIRAMFIN,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+SHRIRAMFIN,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+SHRIRAMFIN,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+SHRIRAMFIN,pro,P10,A positive asset base provides capacity to support future business growth.,70
+SHRIRAMFIN,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+SHRIRAMFIN,con,C1,Debt-to-equity ratio of 3.97 is elevated and warrants monitoring.,90
+SHRIRAMFIN,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+SHRIRAMFIN,con,C3,Interest coverage ratio below 1.5x indicates risk in meeting debt obligations.,90
+SHRIRAMFIN,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+SHRIRAMFIN,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+SHRIRAMFIN,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+SIEMENS,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+SIEMENS,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+SIEMENS,pro,P6,Positive earnings per share indicate profitable operations.,75
+SIEMENS,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+SIEMENS,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+SIEMENS,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+SIEMENS,pro,P10,A positive asset base provides capacity to support future business growth.,70
+SIEMENS,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+SIEMENS,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+SUNPHARMA,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+SUNPHARMA,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+SUNPHARMA,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+SUNPHARMA,pro,P6,Positive earnings per share indicate profitable operations.,75
+SUNPHARMA,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+SUNPHARMA,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+SUNPHARMA,pro,P10,A positive asset base provides capacity to support future business growth.,70
+SUNPHARMA,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+SUNPHARMA,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+TATACONSUM,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+TATACONSUM,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+TATACONSUM,pro,P6,Positive earnings per share indicate profitable operations.,75
+TATACONSUM,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+TATACONSUM,pro,P10,A positive asset base provides capacity to support future business growth.,70
+TATACONSUM,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+TATACONSUM,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+TATACONSUM,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+TATAMOTORS,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+TATAMOTORS,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+TATAMOTORS,pro,P6,Positive earnings per share indicate profitable operations.,75
+TATAMOTORS,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+TATAMOTORS,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+TATAMOTORS,pro,P10,A positive asset base provides capacity to support future business growth.,70
+TATAMOTORS,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+TATAMOTORS,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+TATAPOWER,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+TATAPOWER,pro,P6,Positive earnings per share indicate profitable operations.,75
+TATAPOWER,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+TATAPOWER,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+TATAPOWER,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+TATAPOWER,pro,P10,A positive asset base provides capacity to support future business growth.,70
+TATAPOWER,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+TATAPOWER,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+TATAPOWER,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+TATASTEEL,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+TATASTEEL,pro,P10,A positive asset base provides capacity to support future business growth.,70
+TATASTEEL,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+TATASTEEL,con,C4,Company reported a net loss in the most recent financial year.,95
+TATASTEEL,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+TATASTEEL,con,C7,Negative earnings per share indicate losses.,95
+TATASTEEL,con,C11,Return on capital employed below 10% suggests the business is generating limited returns on invested capital.,85
+TATASTEEL,con,C12,Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.,75
+TCS,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+TCS,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+TCS,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+TCS,pro,P6,Positive earnings per share indicate profitable operations.,75
+TCS,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+TCS,pro,P10,A positive asset base provides capacity to support future business growth.,70
+TCS,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+TCS,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+TCS,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+TECHM,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+TECHM,pro,P5,Very high interest coverage ratio reflects negligible financial stress from debt servicing.,88
+TECHM,pro,P6,Positive earnings per share indicate profitable operations.,75
+TECHM,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+TECHM,pro,P10,A positive asset base provides capacity to support future business growth.,70
+TECHM,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+TECHM,con,C5,Return on equity below 10% suggests weak capital efficiency.,80
+TECHM,con,C6,Low operating margin indicates weak profitability.,78
+TECHM,con,C10,Dividend payout ratio above 100% may indicate distributions exceeding reported earnings.,90
+TITAN,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+TITAN,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+TITAN,pro,P6,Positive earnings per share indicate profitable operations.,75
+TITAN,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+TITAN,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+TITAN,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+TITAN,pro,P10,A positive asset base provides capacity to support future business growth.,70
+TITAN,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+TITAN,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+TITAN,con,C1,Debt-to-equity ratio of 2.22 is elevated and warrants monitoring.,90
+TITAN,con,C8,Borrowings represent a high proportion of total assets and increase financial leverage risk.,82
+TORNTPHARM,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+TORNTPHARM,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+TORNTPHARM,pro,P4,Operating profit margin above 25% indicates strong pricing power and cost discipline.,85
+TORNTPHARM,pro,P6,Positive earnings per share indicate profitable operations.,75
+TORNTPHARM,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+TORNTPHARM,pro,P10,A positive asset base provides capacity to support future business growth.,70
+TORNTPHARM,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+TORNTPHARM,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+TRENT,pro,P1,Consistently high return on equity above 20% demonstrates exceptional capital efficiency.,90
+TRENT,pro,P2,Positive free cash flow indicates healthy business fundamentals.,80
+TRENT,pro,P6,Positive earnings per share indicate profitable operations.,75
+TRENT,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+TRENT,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+TRENT,pro,P10,A positive asset base provides capacity to support future business growth.,70
+TRENT,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+TRENT,pro,P12,Positive operating cash flow demonstrates the ability of the business to generate cash from operations.,85
+TVSMOTOR,pro,P6,Positive earnings per share indicate profitable operations.,75
+TVSMOTOR,pro,P7,Revenue growing at above 15% CAGR over 5 years reflects strong business momentum.,90
+TVSMOTOR,pro,P8,Net profit compounding at above 20% over 5 years creates significant shareholder value.,90
+TVSMOTOR,pro,P9,Positive earnings and net profit indicate a profitable operating base.,78
+TVSMOTOR,pro,P10,A positive asset base provides capacity to support future business growth.,70
+TVSMOTOR,pro,P11,A sustainable dividend payout reflects shareholder distribution supported by earnings.,70
+TVSMOTOR,con,C2,Negative free cash flow raises concern about cash generation quality.,85
+TVSMOTOR,con,C9,Negative operating cash flow indicates pressure on cash generation from core operations.,88
+ABB,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+ADANIPORTS,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+ADANIPOWER,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+APOLLOHOSP,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+ASIANPAINT,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+ATGL,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+BAJAJ-AUTO,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+BAJAJHLDNG,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+BOSCHLTD,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+BRITANNIA,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+DIVISLAB,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+DRREDDY,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+EICHERMOT,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+GAIL,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+HCLTECH,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+HEROMOTOCO,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+HINDUNILVR,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+ICICIGI,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+INFY,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+IOC,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+IRCTC,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+ITC,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+MARUTI,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+NTPC,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+PIDILITIND,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+SHREECEM,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+SIEMENS,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+SUNPHARMA,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+TATAMOTORS,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+TORNTPHARM,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
+TRENT,con,C_FALLBACK,"The company should continue to be monitored across profitability, leverage and cash-flow indicators.",65
