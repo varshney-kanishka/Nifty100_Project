@@ -2389,6 +2389,14 @@ def main():
             "Generate the 5 Day-33 test companies"
         ),
     )
+    
+    parser.add_argument(
+    "--batch",
+    action="store_true",
+    help=(
+        "Generate tearsheets for all companies"
+        ),
+    )
 
     args = parser.parse_args()
 
@@ -2476,24 +2484,30 @@ def main():
     # --------------------------------------------------------
 
     if args.company:
-
         company_id = normalize_company_id(
             args.company
         )
-
         company_ids = [company_id]
 
-    elif args.test:
+    elif args.batch:
+        # Day 34:
+        # Generate tearsheets for all companies.
+        company_ids = sorted(
+            companies["id"]
+            .dropna()
+            .astype(str)
+            .str.strip()
+            .unique()
+        )
 
+    elif args.test:
         company_ids = select_test_companies(
             companies
         )
 
     else:
-
         # Default Day 33 behaviour:
         # Generate the required 5 test companies.
-
         company_ids = select_test_companies(
             companies
         )
