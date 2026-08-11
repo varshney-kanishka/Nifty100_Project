@@ -1,4 +1,5 @@
-1,ABB,Dec 2012,8.77,12,22.41,0,Unnamed: 7,1.8225,42,59,68,3.081,25,0.1,101
+id,company_id,year,net_profit_margin_pct,operating_profit_margin_pct,return_on_equity_pct,debt_to_equity,interest_coverage,asset_turnover,free_cash_flow_cr,capex_cr,earnings_per_share,book_value_per_share,dividend_payout_ratio_pct,total_debt_cr,cash_from_operations_cr
+1,ABB,Dec 2012,8.77,12.0,22.41,0.0,,1.8225,42.0,59.0,68.0,3.081,25.0,0,101.0
 2,ABB,Mar 2014,8.7,12.0,25.13,0.0,,1.9982,11.0,144.0,93.0,3.7524,25.0,0,155.0
 3,ABB,Mar 2014,8.7,12.0,25.13,0.0,,1.9982,0.0,0.0,93.0,3.7524,25.0,0,0.0
 4,ABB,Mar 2015,10.0,14.0,24.44,0.0,,1.6659,28.0,187.0,108.0,4.4619,29.0,0,215.0

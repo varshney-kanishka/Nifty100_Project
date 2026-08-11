@@ -17,15 +17,7 @@ OUTPUT_FOLDER = BASE_DIR / "output"
 
 OUTPUT_FOLDER.mkdir(parents=True, exist_ok=True)
 
-SPECIAL_FILES = [
-    "analysis.csv",
-    "balancesheet.csv",
-    "cashflow.csv",
-    "companies.csv",
-    "documents.csv",
-    "profitandloss.csv",
-    "prosandcons.csv",
-]
+
 
 FINANCIAL_TABLES = [
     "balancesheet.csv",
@@ -43,12 +35,11 @@ def list_csv_files(directory: Path) -> List[Path]:
 
 
 def load_csv(file_path: Path) -> pd.DataFrame:
-    if file_path.name in SPECIAL_FILES:
-        df = pd.read_csv(file_path, header=1)
-    else:
-        df = pd.read_csv(file_path)
+    """Load a processed CSV using its first row as the header."""
+    df = pd.read_csv(file_path, header=0)
 
-    df.columns = df.columns.str.strip()
+    df.columns = df.columns.astype(str).str.strip()
+
     return df
 
 
