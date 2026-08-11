@@ -1,32 +1,20 @@
+"""
+Nifty100 Project - Clean Excel -> CSV ETL
+"""
+from normaliser import normalize_company_id
 from pathlib import Path
 import pandas as pd
 
-# Import normalization functions
-from normaliser import normalize_ticker, normalize_year
-
-
-# ============================================================
-# PROJECT PATHS
-# ============================================================
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 RAW_FOLDER = BASE_DIR / "data" / "raw"
 PROCESSED_FOLDER = BASE_DIR / "data" / "processed"
 
-# Create processed folder if it doesn't exist
 PROCESSED_FOLDER.mkdir(parents=True, exist_ok=True)
 
 
-# ============================================================
-# HEADER ROW CONFIGURATION
-# ============================================================
-#
-# 0 = first Excel row contains the column headers
-# 1 = second Excel row contains the column headers
-#
-
-HEADER_ROWS = {
+FILES = {
     "analysis": 1,
     "balancesheet": 1,
     "cashflow": 1,
@@ -42,230 +30,125 @@ HEADER_ROWS = {
 }
 
 
-# ============================================================
-# BALANCE SHEET YEAR NORMALIZATION
-# ============================================================
+def clean_columns(df):
+    df.columns = (
+        df.columns
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .str.replace(" ", "_", regex=False)
+    )
+    return df
 
-def normalize_balancesheet_years(balance_df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Preserve balance sheet reporting periods while
-    normalizing text formatting.
-    """
 
-    if balance_df.empty:
-        return balance_df
-
-    balance = balance_df.copy()
-
-    if "company_id" in balance.columns:
-        balance["company_id"] = (
-            balance["company_id"]
-            .astype(str)
-            .str.strip()
+def clean_company_id(df):
+    if "company_id" in df.columns:
+        df["company_id"] = (
+            df["company_id"]
+            .apply(normalize_company_id)
         )
 
-    if "year" in balance.columns:
-        balance["year"] = (
-            balance["year"]
+    return df
+
+
+def clean_ticker(df):
+    if "ticker" in df.columns:
+        df["ticker"] = (
+            df["ticker"]
+            .astype("string")
+            .str.strip()
+            .str.upper()
+        )
+
+    return df
+
+
+def clean_year(df):
+    if "year" in df.columns:
+        df["year"] = (
+            df["year"]
             .astype("string")
             .str.strip()
         )
 
-    return balance
+    return df
 
 
-# ============================================================
-# FIND ALL EXCEL FILES
-# ============================================================
+def process_file(name, header_row):
 
-excel_files = sorted(RAW_FOLDER.glob("*.xlsx"))
+    source = RAW_FOLDER / f"{name}.xlsx"
+    output = PROCESSED_FOLDER / f"{name}.csv"
 
-print("=" * 70)
-print(f"Total Excel Files Found: {len(excel_files)}")
-print("=" * 70)
-
-
-# ============================================================
-# PROCESS EACH EXCEL FILE
-# ============================================================
-
-for file in excel_files:
+    if not source.exists():
+        print(f"SKIP - missing: {source}")
+        return
 
     print("\n" + "=" * 70)
-    print(f"Reading File : {file.name}")
+    print(f"PROCESSING: {name}")
     print("=" * 70)
 
-    try:
+    df = pd.read_excel(
+        source,
+        header=header_row
+    )
 
-        # ----------------------------------------------------
-        # SELECT CORRECT HEADER ROW
-        # ----------------------------------------------------
+    print("Raw shape:", df.shape)
 
-        header_row = HEADER_ROWS.get(file.stem, 0)
+    df = clean_columns(df)
+    df = clean_company_id(df)
+    df = clean_ticker(df)
+    df = clean_year(df)
 
-        print(f"Header Row : {header_row}")
+    # Remove completely empty rows only.
+    df = df.dropna(how="all").reset_index(drop=True)
+    if name in {"balancesheet", "cashflow", "financial_ratios", "profitandloss"}:
+     if "company_id" in df.columns and "year" in df.columns:
+        before = len(df)
 
-        df = pd.read_excel(
-            file,
-            header=header_row
-        )
+        df = df.drop_duplicates(
+            subset=["company_id", "year"],
+            keep="first"
+        ).reset_index(drop=True)
 
-        # ----------------------------------------------------
-        # DISPLAY FIRST 5 ROWS
-        # ----------------------------------------------------
+        removed = before - len(df)
 
-        print("\nFirst 5 Rows:")
-        print(df.head())
-
-        # ----------------------------------------------------
-        # DISPLAY SHAPE
-        # ----------------------------------------------------
-
-        print("\nShape:")
-        print(f"Rows    : {df.shape[0]}")
-        print(f"Columns : {df.shape[1]}")
-
-        # ----------------------------------------------------
-        # DISPLAY COLUMN NAMES
-        # ----------------------------------------------------
-
-        print("\nColumns:")
-        print(df.columns.tolist())
-
-        # ----------------------------------------------------
-        # DISPLAY MISSING VALUES
-        # ----------------------------------------------------
-
-        print("\nMissing Values:")
-        print(df.isnull().sum())
-
-        # ====================================================
-        # BALANCE SHEET NORMALIZATION
-        # ====================================================
-
-        if file.stem == "balancesheet":
-            df = normalize_balancesheet_years(df)
-
-        # ====================================================
-        # NORMALIZE TICKER COLUMN
-        # ====================================================
-
-        if "ticker" in df.columns:
-
-            df["ticker"] = df["ticker"].apply(
-                normalize_ticker
+        if removed > 0:
+            print(
+                f"Removed {removed} duplicate "
+                f"(company_id, year) records"
             )
 
-        elif "Ticker" in df.columns:
+    # Convert accidental unnamed columns away.
+    df = df.loc[
+        :,
+        ~df.columns.astype(str).str.startswith("unnamed")
+    ]
 
-            df["Ticker"] = df["Ticker"].apply(
-                normalize_ticker
-            )
+    df.to_csv(
+        output,
+        index=False
+    )
 
-        # ====================================================
-        # NORMALIZE YEAR COLUMN
-        # ====================================================
+    print("Saved:", output)
+    print("Shape:", df.shape)
+    print("Columns:", df.columns.tolist())
 
-        # These datasets contain reporting periods such as:
-        # Dec 2012, Mar 2014, etc.
-        #
-        # Therefore preserve them as text.
-
-        if file.stem in {
-            "balancesheet",
-            "profitandloss",
-            "cashflow",
-            "financial_ratios"
-        }:
-
-            if "year" in df.columns:
-
-                df["year"] = (
-                    df["year"]
-                    .astype("string")
-                    .str.strip()
-                )
-
-            elif "Year" in df.columns:
-
-                df["Year"] = (
-                    df["Year"]
-                    .astype("string")
-                    .str.strip()
-                )
-
-        # ====================================================
-        # NORMALIZE NUMERIC YEAR DATASETS
-        # ====================================================
-
-        else:
-
-            if "year" in df.columns:
-
-                df["year"] = df["year"].apply(
-                    normalize_year
-                )
-
-                df["year"] = df["year"].apply(
-                    lambda y: (
-                        str(int(y))
-                        if pd.notna(y)
-                        else pd.NA
-                    )
-                )
-
-                df["year"] = (
-                    df["year"]
-                    .astype("string")
-                    .str.strip()
-                )
-
-            elif "Year" in df.columns:
-
-                df["Year"] = df["Year"].apply(
-                    normalize_year
-                )
-
-                df["Year"] = df["Year"].apply(
-                    lambda y: (
-                        str(int(y))
-                        if pd.notna(y)
-                        else pd.NA
-                    )
-                )
-
-                df["Year"] = (
-                    df["Year"]
-                    .astype("string")
-                    .str.strip()
-                )
-
-        # ====================================================
-        # SAVE PROCESSED CSV
-        # ====================================================
-
-        output_file = (
-            PROCESSED_FOLDER /
-            f"{file.stem}.csv"
+    if "company_id" in df.columns:
+        print(
+            "Companies:",
+            df["company_id"].nunique()
         )
 
-        df.to_csv(
-            output_file,
-            index=False
-        )
 
-        print(f"\nSaved: {output_file}")
+def main():
 
-    except Exception as e:
+    for name, header in FILES.items():
+        process_file(name, header)
 
-        print(f"\nERROR processing {file.name}")
-        print(f"Error: {e}")
+    print("\n" + "=" * 70)
+    print("ETL COMPLETE")
+    print("=" * 70)
 
 
-# ============================================================
-# COMPLETION MESSAGE
-# ============================================================
-
-print("\n" + "=" * 70)
-print("All files processed.")
-print("=" * 70)
+if __name__ == "__main__":
+    main()
