@@ -1,9 +1,9 @@
 table,rows_loaded,rejected_rows,status
 companies,92,0,SUCCESS
 analysis,16,4,SUCCESS
-balancesheet,1140,85,SUCCESS
-cashflow,1075,89,SUCCESS
-documents,1457,128,SUCCESS
+balancesheet,1058,79,SUCCESS
+cashflow,1064,89,SUCCESS
+documents,1456,128,SUCCESS
 financial_ratios,1041,24,SUCCESS
 market_cap,552,0,SUCCESS
 peer_groups,56,0,SUCCESS

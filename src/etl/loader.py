@@ -65,12 +65,52 @@ def clean_ticker(df):
 
 def clean_year(df):
     if "year" in df.columns:
-        df["year"] = (
+
+        year = (
             df["year"]
             .astype("string")
             .str.strip()
         )
 
+        # Convert values like:
+        # 2013.0 -> 2013
+        # 2024.5 -> 2024
+        year = year.str.replace(
+            r"\.0$",
+            "",
+            regex=True
+        )
+
+        # Convert values like:
+        # "Mar 2013" -> "2013"
+        # "Mar 2024" -> "2024"
+        year = year.str.extract(
+            r"(\d{4})",
+            expand=False
+        )
+
+        # Keep only valid 4-digit years
+        year = year.where(
+            year.str.fullmatch(r"\d{4}"),
+            pd.NA
+        )
+
+        df["year"] = year
+
+    return df
+def clean_null_values(df):
+    df = df.replace(
+        {
+            "Null": pd.NA,
+            "NULL": pd.NA,
+            "null": pd.NA,
+            "None": pd.NA,
+            "none": pd.NA,
+            "nan": pd.NA,
+            "NaN": pd.NA,
+            "": pd.NA,
+        }
+    )
     return df
 
 
@@ -98,17 +138,52 @@ def process_file(name, header_row):
     df = clean_company_id(df)
     df = clean_ticker(df)
     df = clean_year(df)
+    df = clean_null_values(df)
 
     # Remove completely empty rows only.
     df = df.dropna(how="all").reset_index(drop=True)
-    if name in {"balancesheet", "cashflow", "financial_ratios", "profitandloss"}:
+    if name in {
+    "balancesheet",
+    "cashflow",
+    "financial_ratios",
+    "profitandloss",
+    "documents",
+}:
      if "company_id" in df.columns and "year" in df.columns:
+
         before = len(df)
 
-        df = df.drop_duplicates(
-            subset=["company_id", "year"],
-            keep="first"
-        ).reset_index(drop=True)
+        # For documents, prefer the row containing an annual report URL.
+        if name == "documents" and "annual_report" in df.columns:
+
+            # Put rows with an actual annual_report first
+            df["_has_report"] = (
+                df["annual_report"]
+                .notna()
+                .astype(int)
+            )
+
+            df = (
+                df.sort_values(
+                    ["company_id", "year", "_has_report"],
+                    ascending=[True, True, False]
+                )
+                .drop_duplicates(
+                    subset=["company_id", "year"],
+                    keep="first"
+                )
+                .drop(columns=["_has_report"])
+                .reset_index(drop=True)
+            )
+
+        else:
+            df = (
+                df.drop_duplicates(
+                    subset=["company_id", "year"],
+                    keep="first"
+                )
+                .reset_index(drop=True)
+            )
 
         removed = before - len(df)
 
