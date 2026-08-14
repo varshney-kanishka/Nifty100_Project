@@ -2,9 +2,9 @@ from pathlib import Path
 import sqlite3
 import pandas as pd
 
-from ratios import *
-from cagr import *
-from cashflow_kpis import *
+from src.analytics.ratios import *
+from src.analytics.cagr import *
+from src.analytics.cashflow_kpis import *
 
 # =====================================================
 # DATABASE CONNECTION
@@ -308,6 +308,7 @@ final = df[
         "net_profit_margin_pct",
         "operating_profit_margin_pct",
         "return_on_equity_pct",
+        "return_on_capital_employed_pct",
 
         "debt_to_equity",
         "interest_coverage",

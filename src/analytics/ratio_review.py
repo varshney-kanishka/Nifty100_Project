@@ -110,10 +110,23 @@ print(
     df["high_leverage_flag"].sum(),
 
 )
-print("\nROCE comparison skipped.")
-print("Reason: return_on_capital_employed_pct not yet stored in financial_ratios.")
+# =====================================================
+# ROCE VALIDATION
+# =====================================================
 
-roce_anomalies = pd.DataFrame()
+df["roce_difference"] = (
+    df["return_on_capital_employed_pct"]
+    - df["roce_percentage"]
+).abs()
+
+roce_anomalies = df[
+    df["roce_difference"] > 5
+]
+
+print(
+    "\nROCE Anomalies",
+    len(roce_anomalies),
+)
 
 df["roe_difference"] = (
 
