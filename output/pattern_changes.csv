@@ -1,10 +1,4 @@
 company_id,previous_year,current_year,previous_pattern,current_pattern
-ABB,2014.0,2015,Cash Accumulator,Growth Funded by Debt
-ABB,2015.0,2016,Growth Funded by Debt,Reinvestor
-ABB,2017.0,2018,Reinvestor,Mixed
-ABB,2020.0,2021,Mixed,Reinvestor
-ABB,2022.0,2023,Reinvestor,Mixed
-ABB,2023.0,2024,Mixed,Reinvestor
 ADANIENSOL,2014.0,2015,Cash Accumulator,Growth Funded by Debt
 ADANIENSOL,2015.0,2016,Growth Funded by Debt,Reinvestor
 ADANIENSOL,2017.0,2018,Reinvestor,Mixed

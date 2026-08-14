@@ -24,7 +24,7 @@ import sqlite3
 import numpy as np
 import pandas as pd
 
-from cashflow_kpis import capital_allocation_pattern
+from .cashflow_kpis import capital_allocation_pattern
 
 
 # ============================================================

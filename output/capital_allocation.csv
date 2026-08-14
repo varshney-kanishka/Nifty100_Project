@@ -1,15 +1,15 @@
 company_id,year,cfo_sign,cfi_sign,cff_sign,pattern_label
 ABB,2012,+,-,-,Reinvestor
-ABB,2014,+,+,+,Cash Accumulator
-ABB,2015,-,-,+,Growth Funded by Debt
+ABB,2014,+,-,-,Reinvestor
+ABB,2015,+,-,-,Reinvestor
 ABB,2016,+,-,-,Reinvestor
 ABB,2017,+,-,-,Reinvestor
-ABB,2018,+,-,+,Mixed
-ABB,2019,+,-,+,Mixed
-ABB,2020,+,-,+,Mixed
+ABB,2018,+,-,-,Reinvestor
+ABB,2019,+,-,-,Reinvestor
+ABB,2020,+,-,-,Reinvestor
 ABB,2021,+,-,-,Reinvestor
 ABB,2022,+,-,-,Reinvestor
-ABB,2023,+,-,+,Mixed
+ABB,2023,+,-,-,Reinvestor
 ABB,2024,+,-,-,Reinvestor
 ADANIENSOL,2014,+,+,+,Cash Accumulator
 ADANIENSOL,2015,-,-,+,Growth Funded by Debt
