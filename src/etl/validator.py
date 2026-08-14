@@ -225,7 +225,7 @@ def validate_year(df: pd.DataFrame, file_name: str) -> List[dict]:
 def validate_empty_strings(df: pd.DataFrame, file_name: str) -> List[dict]:
     results = []
 
-    object_cols = df.select_dtypes(include="object").columns
+    object_cols = df.select_dtypes(include=["object", "string"]).columns
 
     empty = 0
 
@@ -252,24 +252,34 @@ def validate_empty_strings(df: pd.DataFrame, file_name: str) -> List[dict]:
 def validate_missing_values(df: pd.DataFrame, file_name: str) -> List[dict]:
     results = []
 
-    total_missing = int(df.isna().sum().sum())
+    missing_by_column = df.isna().sum()
+    missing_by_column = missing_by_column[missing_by_column > 0]
 
-    if total_missing > 0:
+    if not missing_by_column.empty:
+        total_missing = int(missing_by_column.sum())
+
         print("❌ DQ-08 Failed")
+        print("Missing values by column:")
+
+        for column, count in missing_by_column.items():
+            print(f"   {column}: {count}")
 
         results.append(
             {
                 "file": file_name,
                 "rule": "DQ-08",
                 "severity": "WARNING",
-                "message": f"{total_missing} missing values found",
+                "message": (
+                    f"{total_missing} missing values found "
+                    f"across {len(missing_by_column)} columns"
+                ),
             }
         )
+
     else:
         print("✅ DQ-08 Passed")
 
     return results
-
 
 def validate_duplicate_rows(df: pd.DataFrame, file_name: str) -> List[dict]:
     results = []
@@ -296,12 +306,65 @@ def validate_duplicate_rows(df: pd.DataFrame, file_name: str) -> List[dict]:
 def validate_negative_values(df: pd.DataFrame, file_name: str) -> List[dict]:
     results = []
 
-    numeric_cols = df.select_dtypes(include="number").columns
+    # Columns where negative values are legitimate
+    allowed_negative_columns = {
+        "cashflow.csv": [
+            "operating_activity",
+            "investing_activity",
+            "financing_activity",
+            "net_cash_flow",
+        ],
+
+        "financial_ratios.csv": [
+            "net_profit_margin_pct",
+            "operating_profit_margin_pct",
+            "return_on_equity_pct",
+            "interest_coverage",
+            "free_cash_flow_cr",
+            "earnings_per_share",
+            "dividend_payout_ratio_pct",
+            "cash_from_operations_cr",
+        ],
+
+        "profitandloss.csv": [
+            "operating_profit",
+            "opm_percentage",
+            "other_income",
+            "interest",
+            "profit_before_tax",
+            "tax_percentage",
+            "net_profit",
+            "eps",
+            "dividend_payout",
+            "expenses",
+        ],
+
+        "balancesheet.csv": [
+            "reserves",
+        ],
+    }
+
+    # Numeric columns
+    numeric_cols = df.select_dtypes(include="number").columns.tolist()
+
+    # Never check ID/year for negative values
+    numeric_cols = [
+        col for col in numeric_cols
+        if col not in ["id", "year"]
+    ]
+
+    # Remove columns where negatives are expected
+    allowed = allowed_negative_columns.get(file_name, [])
+
+    check_cols = [
+        col for col in numeric_cols
+        if col not in allowed
+    ]
 
     negative_count = 0
 
-    for col in numeric_cols:
-        negative_count += (df[col] < 0).sum()
+    for col in check_cols:
+        negative_count += int((df[col] < 0).sum())
 
     if negative_count > 0:
         print("❌ DQ-10 Failed")
@@ -375,12 +438,21 @@ def validate_year_format(df: pd.DataFrame, file_name: str) -> List[dict]:
 def validate_data_types(df: pd.DataFrame, file_name: str) -> List[dict]:
     results = []
 
-    numeric_columns = df.select_dtypes(include="number").columns
+    numeric_columns = df.select_dtypes(
+        include=["int64", "float64", "Int64", "Float64"]
+    ).columns
 
     invalid = 0
 
     for col in numeric_columns:
-        invalid += pd.to_numeric(df[col], errors="coerce").isna().sum()
+        original = df[col]
+
+        # Only test values that are NOT already missing
+        non_missing = original.dropna()
+
+        converted = pd.to_numeric(non_missing, errors="coerce")
+
+        invalid += converted.isna().sum()
 
     if invalid > 0:
         print("❌ DQ-13 Failed")
@@ -397,7 +469,6 @@ def validate_data_types(df: pd.DataFrame, file_name: str) -> List[dict]:
         print("✅ DQ-13 Passed")
 
     return results
-
 
 def validate_date_format(df: pd.DataFrame, file_name: str) -> List[dict]:
     results = []

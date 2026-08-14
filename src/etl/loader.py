@@ -1,8 +1,10 @@
 """
 Nifty100 Project - Clean Excel -> CSV ETL
 """
-from normaliser import normalize_company_id
+
+from .normaliser import normalize_company_id
 from pathlib import Path
+import re
 import pandas as pd
 
 
@@ -64,40 +66,84 @@ def clean_ticker(df):
 
 
 def clean_year(df):
-    if "year" in df.columns:
+    """
+    Convert different year formats into integer years.
 
-        year = (
-            df["year"]
-            .astype("string")
-            .str.strip()
+    Examples:
+        2024       -> 2024
+        2024.0     -> 2024
+        Mar 2024   -> 2024
+        Mar-24     -> 2024
+        TTM        -> <NA>
+    """
+
+    if "year" not in df.columns:
+        return df
+
+    def parse_year(value):
+
+        if pd.isna(value):
+            return pd.NA
+
+        value = str(value).strip()
+
+        # TTM is NOT an annual year
+        if value.upper() == "TTM":
+            return pd.NA
+
+        # 2024.0
+        match = re.fullmatch(
+            r"(19|20)\d{2}\.0",
+            value
         )
 
-        # Convert values like:
-        # 2013.0 -> 2013
-        # 2024.5 -> 2024
-        year = year.str.replace(
-            r"\.0$",
-            "",
-            regex=True
+        if match:
+            return int(float(value))
+
+        # 2024
+        match = re.fullmatch(
+            r"(19|20)\d{2}",
+            value
         )
 
-        # Convert values like:
-        # "Mar 2013" -> "2013"
-        # "Mar 2024" -> "2024"
-        year = year.str.extract(
-            r"(\d{4})",
-            expand=False
+        if match:
+            return int(value)
+
+        # Mar 2024 / Mar-2024
+        match = re.search(
+            r"(19|20)\d{2}",
+            value
         )
 
-        # Keep only valid 4-digit years
-        year = year.where(
-            year.str.fullmatch(r"\d{4}"),
-            pd.NA
+        if match:
+            return int(match.group(0))
+
+        # Mar-24 / Mar 24
+        match = re.search(
+            r"(?:Mar|March)[\s-]*(\d{2})$",
+            value,
+            re.IGNORECASE
         )
 
-        df["year"] = year
+        if match:
+            yy = int(match.group(1))
+
+            if yy <= 49:
+                return 2000 + yy
+            else:
+                return 1900 + yy
+
+        return pd.NA
+
+    df["year"] = (
+        df["year"]
+        .apply(parse_year)
+        .astype("Int64")
+    )
 
     return df
+
+
 def clean_null_values(df):
     df = df.replace(
         {
@@ -111,6 +157,123 @@ def clean_null_values(df):
             "": pd.NA,
         }
     )
+
+    return df
+
+
+def remove_non_annual_rows(df, name):
+
+    annual_datasets = {
+        "balancesheet",
+        "cashflow",
+        "financial_ratios",
+        "profitandloss",
+    }
+
+    if name not in annual_datasets:
+        return df
+
+    if "year" not in df.columns:
+        return df
+
+    before = len(df)
+
+    df = (
+        df.dropna(subset=["year"])
+        .reset_index(drop=True)
+    )
+
+    removed = before - len(df)
+
+    if removed > 0:
+        print(
+            f"Removed {removed} non-annual records"
+        )
+
+    return df
+
+
+def remove_duplicates(df, name):
+
+    datasets = {
+        "balancesheet",
+        "cashflow",
+        "financial_ratios",
+        "profitandloss",
+        "documents",
+    }
+
+    if name not in datasets:
+        return df
+
+    if "company_id" not in df.columns:
+        return df
+
+    if "year" not in df.columns:
+        return df
+
+    before = len(df)
+
+    # Documents need special handling because
+    # multiple rows may exist for the same company/year.
+    if (
+        name == "documents"
+        and "annual_report" in df.columns
+    ):
+
+        df["_has_report"] = (
+            df["annual_report"]
+            .notna()
+            .astype(int)
+        )
+
+        df = (
+            df.sort_values(
+                [
+                    "company_id",
+                    "year",
+                    "_has_report"
+                ],
+                ascending=[
+                    True,
+                    True,
+                    False
+                ]
+            )
+            .drop_duplicates(
+                subset=[
+                    "company_id",
+                    "year"
+                ],
+                keep="first"
+            )
+            .drop(
+                columns=["_has_report"]
+            )
+            .reset_index(drop=True)
+        )
+
+    else:
+
+        df = (
+            df.drop_duplicates(
+                subset=[
+                    "company_id",
+                    "year"
+                ],
+                keep="first"
+            )
+            .reset_index(drop=True)
+        )
+
+    removed = before - len(df)
+
+    if removed > 0:
+        print(
+            f"Removed {removed} duplicate "
+            f"(company_id, year) records"
+        )
+
     return df
 
 
@@ -134,70 +297,51 @@ def process_file(name, header_row):
 
     print("Raw shape:", df.shape)
 
+    # -------------------------
+    # CLEANING
+    # -------------------------
+
     df = clean_columns(df)
+
     df = clean_company_id(df)
+
     df = clean_ticker(df)
-    df = clean_year(df)
+
     df = clean_null_values(df)
 
-    # Remove completely empty rows only.
-    df = df.dropna(how="all").reset_index(drop=True)
-    if name in {
-    "balancesheet",
-    "cashflow",
-    "financial_ratios",
-    "profitandloss",
-    "documents",
-}:
-     if "company_id" in df.columns and "year" in df.columns:
+    df = clean_year(df)
 
-        before = len(df)
+    # Remove completely empty rows
+    df = (
+        df.dropna(
+            how="all"
+        )
+        .reset_index(drop=True)
+    )
 
-        # For documents, prefer the row containing an annual report URL.
-        if name == "documents" and "annual_report" in df.columns:
+    # Remove TTM rows
+    df = remove_non_annual_rows(
+        df,
+        name
+    )
 
-            # Put rows with an actual annual_report first
-            df["_has_report"] = (
-                df["annual_report"]
-                .notna()
-                .astype(int)
-            )
+    # Remove duplicates
+    df = remove_duplicates(
+        df,
+        name
+    )
 
-            df = (
-                df.sort_values(
-                    ["company_id", "year", "_has_report"],
-                    ascending=[True, True, False]
-                )
-                .drop_duplicates(
-                    subset=["company_id", "year"],
-                    keep="first"
-                )
-                .drop(columns=["_has_report"])
-                .reset_index(drop=True)
-            )
-
-        else:
-            df = (
-                df.drop_duplicates(
-                    subset=["company_id", "year"],
-                    keep="first"
-                )
-                .reset_index(drop=True)
-            )
-
-        removed = before - len(df)
-
-        if removed > 0:
-            print(
-                f"Removed {removed} duplicate "
-                f"(company_id, year) records"
-            )
-
-    # Convert accidental unnamed columns away.
+    # Remove accidental unnamed columns
     df = df.loc[
         :,
-        ~df.columns.astype(str).str.startswith("unnamed")
+        ~df.columns
+        .astype(str)
+        .str.startswith("unnamed")
     ]
+
+    # -------------------------
+    # SAVE
+    # -------------------------
 
     df.to_csv(
         output,
@@ -206,7 +350,10 @@ def process_file(name, header_row):
 
     print("Saved:", output)
     print("Shape:", df.shape)
-    print("Columns:", df.columns.tolist())
+    print(
+        "Columns:",
+        df.columns.tolist()
+    )
 
     if "company_id" in df.columns:
         print(
@@ -214,11 +361,20 @@ def process_file(name, header_row):
             df["company_id"].nunique()
         )
 
+    if "year" in df.columns:
+        print(
+            "Missing years:",
+            df["year"].isna().sum()
+        )
+
 
 def main():
 
     for name, header in FILES.items():
-        process_file(name, header)
+        process_file(
+            name,
+            header
+        )
 
     print("\n" + "=" * 70)
     print("ETL COMPLETE")

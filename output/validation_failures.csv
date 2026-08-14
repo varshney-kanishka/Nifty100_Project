@@ -1,17 +1,7 @@
 file,rule,severity,message
-balancesheet.csv,DQ-10,WARNING,7 negative numeric values found
-cashflow.csv,DQ-06,CRITICAL,1 missing year values
-cashflow.csv,DQ-08,WARNING,9 missing values found
-cashflow.csv,DQ-10,WARNING,2399 negative numeric values found
-cashflow.csv,DQ-13,WARNING,9 invalid numeric values found
-companies.csv,DQ-08,WARNING,97 missing values found
-companies.csv,DQ-13,WARNING,37 invalid numeric values found
-documents.csv,DQ-08,WARNING,371 missing values found
-financial_ratios.csv,DQ-08,WARNING,72 missing values found
-financial_ratios.csv,DQ-10,WARNING,790 negative numeric values found
-financial_ratios.csv,DQ-13,WARNING,72 invalid numeric values found
-profitandloss.csv,DQ-06,CRITICAL,99 missing year values
-profitandloss.csv,DQ-08,WARNING,328 missing values found
-profitandloss.csv,DQ-10,WARNING,603 negative numeric values found
-profitandloss.csv,DQ-13,WARNING,328 invalid numeric values found
-prosandcons.csv,DQ-08,WARNING,6 missing values found
+cashflow.csv,DQ-08,WARNING,8 missing values found across 4 columns
+companies.csv,DQ-08,WARNING,9 missing values found across 8 columns
+documents.csv,DQ-08,WARNING,336 missing values found across 1 columns
+financial_ratios.csv,DQ-08,WARNING,72 missing values found across 9 columns
+profitandloss.csv,DQ-08,WARNING,33 missing values found across 4 columns
+prosandcons.csv,DQ-08,WARNING,4 missing values found across 2 columns
