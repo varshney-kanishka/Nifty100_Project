@@ -1,0 +1,17 @@
+check,value,status
+Total Records,902.0,INFO
+Total Companies,92.0,PASS
+Pros,695.0,INFO
+Cons,207.0,INFO
+Missing Company IDs,0.0,PASS
+Missing Types,0.0,PASS
+Missing Rule IDs,0.0,PASS
+Missing Text,0.0,PASS
+Blank Text,0.0,PASS
+Missing Confidence,0.0,PASS
+Invalid Confidence,0.0,PASS
+Invalid Type,0.0,PASS
+Companies Without Pro,0.0,PASS
+Companies Without Con,0.0,PASS
+Duplicate Company/Type/Rule,0.0,PASS
+Quality Score,100.0,PASS

@@ -56,17 +56,23 @@ conn.close()
 
 
 # ============================================================
-# NORMALIZE
+# NORMALIZE IDS
 # ============================================================
 
-companies["company_id"] = (
-    companies["company_id"]
+companies["id"] = (
+    companies["id"]
     .astype(str)
     .str.strip()
 )
 
 ratios["company_id"] = (
     ratios["company_id"]
+    .astype(str)
+    .str.strip()
+)
+
+sectors["company_id"] = (
+    sectors["company_id"]
     .astype(str)
     .str.strip()
 )
@@ -79,37 +85,30 @@ ratios["year"] = (
 
 
 # ============================================================
-# FIND COMPANY / SECTOR COLUMNS
+# YEAR SORTING
 # ============================================================
 
-def find_column(df, candidates):
-    for candidate in candidates:
-        if candidate in df.columns:
-            return candidate
-    return None
+def year_sort_key(value):
+    value = str(value)
+
+    digits = "".join(
+        ch for ch in value
+        if ch.isdigit()
+    )
+
+    if digits:
+        return int(digits[:4])
+
+    return 0
 
 
-ticker_col = find_column(
-    companies,
-    ["ticker", "symbol", "stock_code"],
+ratios["_year_sort"] = ratios["year"].apply(
+    year_sort_key
 )
 
-name_col = find_column(
-    companies,
-    ["company_name", "name"],
+ratios = ratios.sort_values(
+    ["company_id", "_year_sort"]
 )
-
-sector_col = find_column(
-    companies,
-    ["broad_sector", "sector"],
-)
-
-
-if ticker_col is None:
-    raise RuntimeError("Could not find ticker column in companies table.")
-
-if name_col is None:
-    raise RuntimeError("Could not find company name column in companies table.")
 
 
 # ============================================================
@@ -118,71 +117,25 @@ if name_col is None:
 
 sector_map = {}
 
-if "company_id" in sectors.columns:
-    possible_sector = find_column(
-        sectors,
-        ["broad_sector", "sector", "sector_name"],
+if not sectors.empty:
+
+    sector_map = dict(
+        zip(
+            sectors["company_id"],
+            sectors["broad_sector"].fillna("Unknown"),
+        )
     )
 
-    if possible_sector:
-        sector_map = dict(
-            zip(
-                sectors["company_id"].astype(str).str.strip(),
-                sectors[possible_sector].astype(str),
-            )
-        )
-
 
 # ============================================================
-# NUMERIC COLUMNS
+# TICKER
 # ============================================================
 
-KPI_COLUMNS = {
-    "ROE": "return_on_equity_pct",
-    "ROCE": None,
-    "Revenue CAGR": None,
-    "OPM": "operating_profit_margin_pct",
-    "Debt / Equity": "debt_to_equity",
-    "FCF": "free_cash_flow_cr",
-}
+# The companies table has no ticker column.
+# The company ID is therefore used as the ticker/code.
 
-
-# ============================================================
-# OPTIONAL ROCE / CAGR DATA
-# ============================================================
-
-# ROCE may not exist in financial_ratios.
-# Use companies table if available.
-
-roce_col = find_column(
-    companies,
-    ["roce_pct", "roce_percentage", "return_on_capital_employed_pct"],
-)
-
-if roce_col:
-    KPI_COLUMNS["ROCE"] = roce_col
-
-
-# ============================================================
-# YEAR SORTING
-# ============================================================
-
-def year_sort_key(value):
-    value = str(value)
-
-    digits = "".join(ch for ch in value if ch.isdigit())
-
-    if digits:
-        return int(digits[:4])
-
-    return 0
-
-
-ratios["_year_sort"] = ratios["year"].apply(year_sort_key)
-
-ratios = ratios.sort_values(
-    ["company_id", "_year_sort"]
-)
+ticker_col = "id"
+name_col = "company_name"
 
 
 # ============================================================
@@ -190,13 +143,6 @@ ratios = ratios.sort_values(
 # ============================================================
 
 def trend_arrow(current, previous):
-    """
-    Return trend arrow.
-
-    Improved = ↑
-    Declined = ↓
-    Flat within 2% = →
-    """
 
     if pd.isna(current) or pd.isna(previous):
         return "→"
@@ -208,13 +154,19 @@ def trend_arrow(current, previous):
         return "→"
 
     if previous == 0:
+
         if current > 0:
             return "↑"
+
         if current < 0:
             return "↓"
+
         return "→"
 
-    change = (current - previous) / abs(previous)
+    change = (
+        (current - previous)
+        / abs(previous)
+    )
 
     if abs(change) <= 0.02:
         return "→"
@@ -230,11 +182,13 @@ def trend_arrow(current, previous):
 # ============================================================
 
 def fmt(value, suffix=""):
+
     if pd.isna(value):
         return "N/A"
 
     try:
         return f"{float(value):,.2f}{suffix}"
+
     except (TypeError, ValueError):
         return "N/A"
 
@@ -245,33 +199,45 @@ def fmt(value, suffix=""):
 
 company_rows = []
 
+
 for _, company in companies.iterrows():
 
-    company_id = str(company["company_id"]).strip()
-
-    ticker = str(
-        company[ticker_col]
+    company_id = str(
+        company["id"]
     ).strip()
+
+    ticker = company_id
 
     company_name = str(
         company[name_col]
     ).strip()
 
-    if sector_col:
-        sector = str(company[sector_col]).strip()
-    else:
-        sector = sector_map.get(company_id, "Unknown")
+    sector = sector_map.get(
+        company_id,
+        "Unknown",
+    )
+
+
+    # --------------------------------------------------------
+    # Company ratios
+    # --------------------------------------------------------
 
     company_ratio = ratios[
         ratios["company_id"] == company_id
     ].copy()
 
+
     if company_ratio.empty:
         continue
 
-    company_ratio = company_ratio.sort_values("_year_sort")
+
+    company_ratio = company_ratio.sort_values(
+        "_year_sort"
+    )
+
 
     latest = company_ratio.iloc[-1]
+
 
     previous = (
         company_ratio.iloc[-2]
@@ -279,22 +245,54 @@ for _, company in companies.iterrows():
         else None
     )
 
+
+    # --------------------------------------------------------
+    # Metrics
+    # --------------------------------------------------------
+
     metrics = {}
 
+
     # ROE
-    metrics["ROE"] = latest.get(
+    roe_ratio = latest.get(
         "return_on_equity_pct",
         float("nan"),
     )
 
+    roe_company = company.get(
+        "roe_percentage",
+        float("nan"),
+    )
+
+    metrics["ROE"] = (
+        roe_company
+        if not pd.isna(roe_company)
+        else roe_ratio
+    )
+
+
     # ROCE
-    if roce_col:
-        metrics["ROCE"] = company.get(
-            roce_col,
-            float("nan"),
-        )
-    else:
-        metrics["ROCE"] = float("nan")
+    roce_company = company.get(
+        "roce_percentage",
+        float("nan"),
+    )
+
+    roce_ratio = latest.get(
+        "return_on_capital_employed_pct",
+        float("nan"),
+    )
+
+    metrics["ROCE"] = (
+        roce_company
+        if not pd.isna(roce_company)
+        else roce_ratio
+    )
+
+
+    # Revenue CAGR
+    # Not available in current schema.
+    metrics["Revenue CAGR"] = float("nan")
+
 
     # OPM
     metrics["OPM"] = latest.get(
@@ -302,11 +300,13 @@ for _, company in companies.iterrows():
         float("nan"),
     )
 
-    # D/E
+
+    # Debt / Equity
     metrics["Debt / Equity"] = latest.get(
         "debt_to_equity",
         float("nan"),
     )
+
 
     # FCF
     metrics["FCF"] = latest.get(
@@ -314,34 +314,89 @@ for _, company in companies.iterrows():
         float("nan"),
     )
 
-    # Revenue CAGR is not guaranteed to exist in ratios.
-    # Leave it unavailable rather than inventing it.
-    metrics["Revenue CAGR"] = float("nan")
+
+    # --------------------------------------------------------
+    # Trends
+    # --------------------------------------------------------
 
     trends = {}
 
-    for metric, value in metrics.items():
 
-        column = KPI_COLUMNS.get(metric)
+    if previous is not None:
 
-        if (
-            metric == "ROCE"
-            and roce_col
-        ):
-            trends[metric] = "→"
+        trends["ROE"] = trend_arrow(
+            latest.get(
+                "return_on_equity_pct",
+                float("nan"),
+            ),
+            previous.get(
+                "return_on_equity_pct",
+                float("nan"),
+            ),
+        )
 
-        elif (
-            column
-            and column in company_ratio.columns
-            and previous is not None
-        ):
-            trends[metric] = trend_arrow(
-                latest[column],
-                previous[column],
-            )
 
-        else:
-            trends[metric] = "→"
+        trends["ROCE"] = trend_arrow(
+            latest.get(
+                "return_on_capital_employed_pct",
+                float("nan"),
+            ),
+            previous.get(
+                "return_on_capital_employed_pct",
+                float("nan"),
+            ),
+        )
+
+
+        trends["OPM"] = trend_arrow(
+            latest.get(
+                "operating_profit_margin_pct",
+                float("nan"),
+            ),
+            previous.get(
+                "operating_profit_margin_pct",
+                float("nan"),
+            ),
+        )
+
+
+        trends["Debt / Equity"] = trend_arrow(
+            latest.get(
+                "debt_to_equity",
+                float("nan"),
+            ),
+            previous.get(
+                "debt_to_equity",
+                float("nan"),
+            ),
+        )
+
+
+        trends["FCF"] = trend_arrow(
+            latest.get(
+                "free_cash_flow_cr",
+                float("nan"),
+            ),
+            previous.get(
+                "free_cash_flow_cr",
+                float("nan"),
+            ),
+        )
+
+    else:
+
+        trends = {
+            "ROE": "→",
+            "ROCE": "→",
+            "Revenue CAGR": "→",
+            "OPM": "→",
+            "Debt / Equity": "→",
+            "FCF": "→",
+        }
+
+
+    trends["Revenue CAGR"] = "→"
+
 
     company_rows.append(
         {
@@ -363,13 +418,40 @@ company_rows.sort(
 )
 
 
+# ============================================================
+# VALIDATION
+# ============================================================
+
 print("=" * 70)
 print("DAY 35 - PORTFOLIO SUMMARY PDF")
 print("=" * 70)
 
 print(
-    f"Companies included: {len(company_rows)}"
+    f"Companies in database: {len(companies)}"
 )
+
+print(
+    f"Companies included in report: {len(company_rows)}"
+)
+
+
+if len(company_rows) != len(companies):
+
+    missing = set(
+        companies["id"]
+    ) - {
+        row["ticker"]
+        for row in company_rows
+    }
+
+    print(
+        f"WARNING: {len(missing)} companies have no ratio data."
+    )
+
+    print(
+        "Missing:",
+        sorted(missing),
+    )
 
 
 # ============================================================
@@ -420,7 +502,7 @@ value_style = ParagraphStyle(
 
 
 # ============================================================
-# PDF
+# PDF DOCUMENT
 # ============================================================
 
 doc = SimpleDocTemplate(
@@ -432,6 +514,7 @@ doc = SimpleDocTemplate(
     bottomMargin=15 * mm,
 )
 
+
 story = []
 
 
@@ -440,6 +523,10 @@ story = []
 # ============================================================
 
 for index, row in enumerate(company_rows):
+
+    # --------------------------------------------------------
+    # Title
+    # --------------------------------------------------------
 
     story.append(
         Paragraph(
@@ -452,9 +539,15 @@ for index, row in enumerate(company_rows):
         Spacer(1, 3 * mm)
     )
 
+
+    # --------------------------------------------------------
+    # Company metadata
+    # --------------------------------------------------------
+
     story.append(
         Paragraph(
-            f"<b>{row['ticker']}</b> &nbsp;&nbsp; | &nbsp;&nbsp; "
+            f"<b>{row['ticker']}</b> "
+            f"&nbsp;&nbsp; | &nbsp;&nbsp; "
             f"{row['sector']}",
             subtitle_style,
         )
@@ -463,6 +556,11 @@ for index, row in enumerate(company_rows):
     story.append(
         Spacer(1, 8 * mm)
     )
+
+
+    # --------------------------------------------------------
+    # KPI heading
+    # --------------------------------------------------------
 
     story.append(
         Paragraph(
@@ -475,7 +573,11 @@ for index, row in enumerate(company_rows):
         Spacer(1, 3 * mm)
     )
 
-    # Six KPI cards
+
+    # --------------------------------------------------------
+    # KPI cards
+    # --------------------------------------------------------
+
     kpi_names = [
         "ROE",
         "ROCE",
@@ -486,6 +588,7 @@ for index, row in enumerate(company_rows):
     ]
 
     kpi_cells = []
+
 
     for metric in kpi_names:
 
@@ -499,26 +602,43 @@ for index, row in enumerate(company_rows):
             "→",
         )
 
+
         if metric in {
             "ROE",
             "ROCE",
             "Revenue CAGR",
             "OPM",
         }:
-            display_value = fmt(value, "%")
+
+            display_value = fmt(
+                value,
+                "%",
+            )
 
         elif metric == "Debt / Equity":
-            display_value = fmt(value, "x")
+
+            display_value = fmt(
+                value,
+                "x",
+            )
 
         else:
-            display_value = fmt(value, " Cr")
+
+            display_value = fmt(
+                value,
+                " Cr",
+            )
+
 
         cell = [
             Paragraph(
                 metric,
                 kpi_style,
             ),
-            Spacer(1, 1 * mm),
+            Spacer(
+                1,
+                1 * mm,
+            ),
             Paragraph(
                 f"{display_value} {arrow}",
                 value_style,
@@ -527,10 +647,12 @@ for index, row in enumerate(company_rows):
 
         kpi_cells.append(cell)
 
+
     table_data = [
         kpi_cells[0:3],
         kpi_cells[3:6],
     ]
+
 
     kpi_table = Table(
         table_data,
@@ -544,6 +666,7 @@ for index, row in enumerate(company_rows):
             28 * mm,
         ],
     )
+
 
     kpi_table.setStyle(
         TableStyle(
@@ -584,11 +707,17 @@ for index, row in enumerate(company_rows):
         )
     )
 
+
     story.append(kpi_table)
 
     story.append(
         Spacer(1, 10 * mm)
     )
+
+
+    # --------------------------------------------------------
+    # Trend interpretation
+    # --------------------------------------------------------
 
     story.append(
         Paragraph(
@@ -601,11 +730,13 @@ for index, row in enumerate(company_rows):
         Spacer(1, 3 * mm)
     )
 
+
     trend_text = (
         "↑ Improved &nbsp;&nbsp;&nbsp; "
         "↓ Declined &nbsp;&nbsp;&nbsp; "
         "→ Flat (within ±2%)"
     )
+
 
     story.append(
         Paragraph(
@@ -614,9 +745,15 @@ for index, row in enumerate(company_rows):
         )
     )
 
+
     story.append(
         Spacer(1, 10 * mm)
     )
+
+
+    # --------------------------------------------------------
+    # Portfolio snapshot
+    # --------------------------------------------------------
 
     story.append(
         Paragraph(
@@ -628,6 +765,7 @@ for index, row in enumerate(company_rows):
     story.append(
         Spacer(1, 3 * mm)
     )
+
 
     snapshot = [
         [
@@ -641,12 +779,25 @@ for index, row in enumerate(company_rows):
         [
             row["ticker"],
             row["sector"],
-            fmt(row["metrics"]["ROE"], "%"),
-            fmt(row["metrics"]["ROCE"], "%"),
-            fmt(row["metrics"]["OPM"], "%"),
-            fmt(row["metrics"]["Debt / Equity"], "x"),
+            fmt(
+                row["metrics"]["ROE"],
+                "%",
+            ),
+            fmt(
+                row["metrics"]["ROCE"],
+                "%",
+            ),
+            fmt(
+                row["metrics"]["OPM"],
+                "%",
+            ),
+            fmt(
+                row["metrics"]["Debt / Equity"],
+                "x",
+            ),
         ],
     ]
+
 
     snapshot_table = Table(
         snapshot,
@@ -659,6 +810,7 @@ for index, row in enumerate(company_rows):
             25 * mm,
         ],
     )
+
 
     snapshot_table.setStyle(
         TableStyle(
@@ -716,10 +868,19 @@ for index, row in enumerate(company_rows):
         )
     )
 
+
     story.append(snapshot_table)
 
+
+    # --------------------------------------------------------
+    # New page
+    # --------------------------------------------------------
+
     if index < len(company_rows) - 1:
-        story.append(PageBreak())
+
+        story.append(
+            PageBreak()
+        )
 
 
 # ============================================================
@@ -728,9 +889,13 @@ for index, row in enumerate(company_rows):
 
 doc.build(story)
 
-print("\nPDF generated:")
+
+print()
+print("PDF generated:")
 print(PDF_PATH)
 
 print(
     f"Pages expected: {len(company_rows)}"
 )
+
+print("=" * 70)

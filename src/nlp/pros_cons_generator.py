@@ -1,3 +1,4 @@
+
 import sqlite3
 from pathlib import Path
 
@@ -9,9 +10,9 @@ print("=" * 70)
 print("DAY 30 - AUTO PROS & CONS GENERATOR")
 print("=" * 70)
 
-# ---------------------------------------------------------
+# =========================================================
 # PATHS
-# ---------------------------------------------------------
+# =========================================================
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
@@ -20,9 +21,9 @@ OUTPUT = BASE_DIR / "output"
 
 OUTPUT.mkdir(exist_ok=True)
 
-# ---------------------------------------------------------
+# =========================================================
 # DATABASE
-# ---------------------------------------------------------
+# =========================================================
 
 conn = sqlite3.connect(DB)
 
@@ -61,22 +62,24 @@ print("Cash Flow :", len(cashflow))
 print("Analysis  :", len(analysis))
 
 
-# ---------------------------------------------------------
+# =========================================================
 # HELPER - CLEAN YEAR
-# ---------------------------------------------------------
+# =========================================================
 
 def extract_year(value):
     """
     Converts values such as:
-    Dec 2012
-    Mar 2024
-    2024
-    TTM
+        Dec 2012
+        Mar 2024
+        2024
+        TTM
 
     into a numeric year.
     """
 
-    match = pd.Series([str(value)]).str.extract(r"(\d{4})")[0].iloc[0]
+    match = pd.Series([str(value)]).str.extract(
+        r"(\d{4})"
+    )[0].iloc[0]
 
     if pd.isna(match):
         return np.nan
@@ -84,18 +87,18 @@ def extract_year(value):
     return int(match)
 
 
-# ---------------------------------------------------------
+# =========================================================
 # PREPARE FINANCIAL TABLES
-# ---------------------------------------------------------
+# =========================================================
 
 profit["year_num"] = profit["year"].apply(extract_year)
 balance["year_num"] = balance["year"].apply(extract_year)
 cashflow["year_num"] = cashflow["year"].apply(extract_year)
 
 
-# ---------------------------------------------------------
+# =========================================================
 # LATEST PROFIT
-# ---------------------------------------------------------
+# =========================================================
 
 latest_profit = (
     profit
@@ -110,9 +113,9 @@ print("\nLatest Records")
 print("Profit    :", len(latest_profit))
 
 
-# ---------------------------------------------------------
+# =========================================================
 # LATEST BALANCE
-# ---------------------------------------------------------
+# =========================================================
 
 latest_balance = (
     balance
@@ -126,9 +129,9 @@ latest_balance = (
 print("Balance   :", len(latest_balance))
 
 
-# ---------------------------------------------------------
+# =========================================================
 # LATEST CASH FLOW
-# ---------------------------------------------------------
+# =========================================================
 
 latest_cashflow = (
     cashflow
@@ -142,9 +145,9 @@ latest_cashflow = (
 print("Cash Flow :", len(latest_cashflow))
 
 
-# ---------------------------------------------------------
+# =========================================================
 # MERGE ALL LATEST DATA
-# ---------------------------------------------------------
+# =========================================================
 
 latest = latest_profit.merge(
     latest_balance[
@@ -177,9 +180,9 @@ latest = latest.merge(
 )
 
 
-# ---------------------------------------------------------
-# COMPANY NAME
-# ---------------------------------------------------------
+# =========================================================
+# COMPANY INFORMATION
+# =========================================================
 
 latest = latest.merge(
     companies[
@@ -195,12 +198,16 @@ latest = latest.merge(
     how="left"
 )
 
-latest.drop(columns=["id"], inplace=True, errors="ignore")
+latest.drop(
+    columns=["id"],
+    inplace=True,
+    errors="ignore"
+)
 
 
-# ---------------------------------------------------------
+# =========================================================
 # NUMERIC CLEANING
-# ---------------------------------------------------------
+# =========================================================
 
 numeric_columns = [
     "sales",
@@ -227,15 +234,16 @@ numeric_columns = [
 for col in numeric_columns:
 
     if col in latest.columns:
+
         latest[col] = pd.to_numeric(
             latest[col],
             errors="coerce"
         )
 
 
-# ---------------------------------------------------------
+# =========================================================
 # DERIVED METRICS
-# ---------------------------------------------------------
+# =========================================================
 
 latest["equity"] = (
     latest["equity_capital"].fillna(0)
@@ -250,8 +258,8 @@ latest["debt_to_equity"] = np.where(
 
 latest["interest_coverage"] = np.where(
     latest["interest"].abs() > 0,
-    latest["operating_profit"] /
-    latest["interest"].abs(),
+    latest["operating_profit"]
+    / latest["interest"].abs(),
     np.nan
 )
 
@@ -260,19 +268,21 @@ latest["free_cash_flow"] = (
     + latest["investing_activity"].fillna(0)
 )
 
-latest["fcf_positive"] = latest["free_cash_flow"] > 0
+latest["fcf_positive"] = (
+    latest["free_cash_flow"] > 0
+)
 
 latest["debt_to_assets"] = np.where(
     latest["total_assets"] != 0,
-    latest["borrowings"] /
-    latest["total_assets"],
+    latest["borrowings"]
+    / latest["total_assets"],
     np.nan
 )
 
 
-# ---------------------------------------------------------
+# =========================================================
 # DISPLAY
-# ---------------------------------------------------------
+# =========================================================
 
 print("\nMerged Latest Dataset :", len(latest))
 
@@ -283,10 +293,6 @@ print(latest.columns.tolist())
 # =========================================================
 # HISTORICAL DATA FOR TREND RULES
 # =========================================================
-
-# ---------------------------------------------------------
-# PROFIT HISTORY
-# ---------------------------------------------------------
 
 profit_history = profit.copy()
 
@@ -311,23 +317,9 @@ profit_history["opm_percentage"] = pd.to_numeric(
 )
 
 
-# ---------------------------------------------------------
-# ROE HISTORY
-# ---------------------------------------------------------
-
-roe_history = companies[
-    ["id", "roe_percentage"]
-].copy()
-
-roe_history.rename(
-    columns={"id": "company_id"},
-    inplace=True
-)
-
-
-# ---------------------------------------------------------
-# HELPER FUNCTIONS
-# ---------------------------------------------------------
+# =========================================================
+# HELPER - CAGR
+# =========================================================
 
 def cagr(first, last, years):
 
@@ -343,32 +335,18 @@ def cagr(first, last, years):
     )
 
 
-def has_consecutive_condition(
-    df,
-    column,
-    condition,
-    count
-):
+# =========================================================
+# COMPANY LIST
+# =========================================================
 
-    values = df[column].dropna().tolist()
+all_companies = (
+    companies["id"]
+    .astype(str)
+    .str.strip()
+    .unique()
+)
 
-    if len(values) < count:
-        return False
-
-    streak = 0
-
-    for value in values:
-
-        if condition(value):
-            streak += 1
-
-            if streak >= count:
-                return True
-
-        else:
-            streak = 0
-
-    return False
+print("\nCompanies to process :", len(all_companies))
 
 
 # =========================================================
@@ -377,17 +355,24 @@ def has_consecutive_condition(
 
 records = []
 
-all_companies = companies["id"].astype(str).str.strip().unique()
-
 
 for company in all_companies:
 
+    # -----------------------------------------------------
+    # FIND LATEST COMPANY DATA
+    # -----------------------------------------------------
+
     row_match = latest[
-        latest["company_id"].astype(str).str.strip()
+        latest["company_id"]
+        .astype(str)
+        .str.strip()
         == company
     ]
 
     if row_match.empty:
+        print(
+            f"WARNING: No latest financial data for {company}"
+        )
         continue
 
     row = row_match.iloc[0]
@@ -398,12 +383,79 @@ for company in all_companies:
     )
 
 
-    # -----------------------------------------------------
-    # PRO RULE 1
-    # ROE > 20%
-    # -----------------------------------------------------
+    # =====================================================
+    # CURRENT METRICS
+    # =====================================================
 
-    roe = row.get("roe_percentage", np.nan)
+    roe = row.get(
+        "roe_percentage",
+        np.nan
+    )
+
+    roce = row.get(
+        "roce_percentage",
+        np.nan
+    )
+
+    opm = row.get(
+        "opm_percentage",
+        np.nan
+    )
+
+    eps = row.get(
+        "eps",
+        np.nan
+    )
+
+    net_profit = row.get(
+        "net_profit",
+        np.nan
+    )
+
+    payout = row.get(
+        "dividend_payout",
+        np.nan
+    )
+
+    de = row.get(
+        "debt_to_equity",
+        np.nan
+    )
+
+    icr = row.get(
+        "interest_coverage",
+        np.nan
+    )
+
+    cfo = row.get(
+        "operating_activity",
+        np.nan
+    )
+
+    net_cf = row.get(
+        "net_cash_flow",
+        np.nan
+    )
+
+    free_cash_flow = row.get(
+        "free_cash_flow",
+        np.nan
+    )
+
+    total_assets = row.get(
+        "total_assets",
+        np.nan
+    )
+
+    borrowings = row.get(
+        "borrowings",
+        np.nan
+    )
+
+
+    # =====================================================
+    # PRO RULE 1 - ROE > 20%
+    # =====================================================
 
     if pd.notna(roe) and roe > 20:
 
@@ -417,12 +469,11 @@ for company in all_companies:
         })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 2
-    # FCF POSITIVE
-    # -----------------------------------------------------
+    # =====================================================
+    # PRO RULE 2 - POSITIVE FCF
+    # =====================================================
 
-    if row.get("free_cash_flow", 0) > 0:
+    if pd.notna(free_cash_flow) and free_cash_flow > 0:
 
         records.append({
             "company_id": company,
@@ -434,12 +485,9 @@ for company in all_companies:
         })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 3
-    # DEBT FREE
-    # -----------------------------------------------------
-
-    de = row.get("debt_to_equity", np.nan)
+    # =====================================================
+    # PRO RULE 3 - DEBT FREE
+    # =====================================================
 
     if pd.notna(de) and de == 0:
 
@@ -453,15 +501,9 @@ for company in all_companies:
         })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 4
-    # OPM > 25%
-    # -----------------------------------------------------
-
-    opm = row.get(
-        "opm_percentage",
-        np.nan
-    )
+    # =====================================================
+    # PRO RULE 4 - OPM > 25%
+    # =====================================================
 
     if pd.notna(opm) and opm > 25:
 
@@ -475,15 +517,9 @@ for company in all_companies:
         })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 5
-    # HIGH INTEREST COVERAGE
-    # -----------------------------------------------------
-
-    icr = row.get(
-        "interest_coverage",
-        np.nan
-    )
+    # =====================================================
+    # PRO RULE 5 - HIGH INTEREST COVERAGE
+    # =====================================================
 
     if pd.notna(icr) and icr > 10:
 
@@ -497,12 +533,9 @@ for company in all_companies:
         })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 6
-    # POSITIVE EPS
-    # -----------------------------------------------------
-
-    eps = row.get("eps", np.nan)
+    # =====================================================
+    # PRO RULE 6 - POSITIVE EPS
+    # =====================================================
 
     if pd.notna(eps) and eps > 0:
 
@@ -516,17 +549,25 @@ for company in all_companies:
         })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 7
-    # REVENUE CAGR > 15%
-    # -----------------------------------------------------
+    # =====================================================
+    # HISTORICAL DATA
+    # =====================================================
 
     hist = (
         profit_history[
-            profit_history["company_id"] == company
+            profit_history["company_id"]
+            .astype(str)
+            .str.strip()
+            == company
         ]
+        .dropna(subset=["year_num"])
         .sort_values("year_num")
     )
+
+
+    # =====================================================
+    # PRO RULE 7 - REVENUE CAGR > 15%
+    # =====================================================
 
     if len(hist) >= 5:
 
@@ -539,7 +580,10 @@ for company in all_companies:
             4
         )
 
-        if pd.notna(revenue_cagr) and revenue_cagr > 15:
+        if (
+            pd.notna(revenue_cagr)
+            and revenue_cagr > 15
+        ):
 
             records.append({
                 "company_id": company,
@@ -551,10 +595,9 @@ for company in all_companies:
             })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 8
-    # PAT CAGR > 20%
-    # -----------------------------------------------------
+    # =====================================================
+    # PRO RULE 8 - PAT CAGR > 20%
+    # =====================================================
 
         first_profit = hist.iloc[-5]["net_profit"]
         last_profit = hist.iloc[-1]["net_profit"]
@@ -565,7 +608,10 @@ for company in all_companies:
             4
         )
 
-        if pd.notna(pat_cagr) and pat_cagr > 20:
+        if (
+            pd.notna(pat_cagr)
+            and pat_cagr > 20
+        ):
 
             records.append({
                 "company_id": company,
@@ -577,16 +623,15 @@ for company in all_companies:
             })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 9
-    # EPS POSITIVE + PROFIT GROWTH
-    # -----------------------------------------------------
+    # =====================================================
+    # PRO RULE 9 - EPS + NET PROFIT POSITIVE
+    # =====================================================
 
     if (
         pd.notna(eps)
         and eps > 0
-        and pd.notna(row.get("net_profit"))
-        and row.get("net_profit") > 0
+        and pd.notna(net_profit)
+        and net_profit > 0
     ):
 
         records.append({
@@ -599,14 +644,13 @@ for company in all_companies:
         })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 10
-    # ASSET GROWTH
-    # -----------------------------------------------------
+    # =====================================================
+    # PRO RULE 10 - POSITIVE ASSET BASE
+    # =====================================================
 
     if (
-        pd.notna(row.get("total_assets"))
-        and row.get("total_assets") > 0
+        pd.notna(total_assets)
+        and total_assets > 0
     ):
 
         records.append({
@@ -619,17 +663,14 @@ for company in all_companies:
         })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 11
-    # DIVIDEND PAYOUT
-    # -----------------------------------------------------
+    # =====================================================
+    # PRO RULE 11 - DIVIDEND PAYOUT
+    # =====================================================
 
-    payout = row.get(
-        "dividend_payout",
-        np.nan
-    )
-
-    if pd.notna(payout) and 0 < payout <= 100:
+    if (
+        pd.notna(payout)
+        and 0 < payout <= 100
+    ):
 
         records.append({
             "company_id": company,
@@ -641,15 +682,9 @@ for company in all_companies:
         })
 
 
-    # -----------------------------------------------------
-    # PRO RULE 12
-    # POSITIVE OPERATING CASH FLOW
-    # -----------------------------------------------------
-
-    cfo = row.get(
-        "operating_activity",
-        np.nan
-    )
+    # =====================================================
+    # PRO RULE 12 - POSITIVE CFO
+    # =====================================================
 
     if pd.notna(cfo) and cfo > 0:
 
@@ -668,8 +703,7 @@ for company in all_companies:
     # =====================================================
 
     # -----------------------------------------------------
-    # CON 1
-    # HIGH D/E
+    # CON 1 - HIGH D/E
     # -----------------------------------------------------
 
     if pd.notna(de) and de > 2:
@@ -685,11 +719,13 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 2
-    # NEGATIVE FCF
+    # CON 2 - NEGATIVE FCF
     # -----------------------------------------------------
 
-    if row.get("free_cash_flow", 0) < 0:
+    if (
+        pd.notna(free_cash_flow)
+        and free_cash_flow < 0
+    ):
 
         records.append({
             "company_id": company,
@@ -702,8 +738,7 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 3
-    # LOW ICR
+    # CON 3 - LOW ICR
     # -----------------------------------------------------
 
     if pd.notna(icr) and icr < 1.5:
@@ -719,14 +754,8 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 4
-    # NEGATIVE PROFIT
+    # CON 4 - NEGATIVE PROFIT
     # -----------------------------------------------------
-
-    net_profit = row.get(
-        "net_profit",
-        np.nan
-    )
 
     if pd.notna(net_profit) and net_profit < 0:
 
@@ -741,8 +770,7 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 5
-    # LOW ROE
+    # CON 5 - LOW ROE
     # -----------------------------------------------------
 
     if pd.notna(roe) and roe < 10:
@@ -758,8 +786,7 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 6
-    # LOW OPM
+    # CON 6 - LOW OPM
     # -----------------------------------------------------
 
     if pd.notna(opm) and opm < 10:
@@ -775,8 +802,7 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 7
-    # NEGATIVE EPS
+    # CON 7 - NEGATIVE EPS
     # -----------------------------------------------------
 
     if pd.notna(eps) and eps < 0:
@@ -792,15 +818,14 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 8
-    # HIGH BORROWINGS
+    # CON 8 - HIGH BORROWINGS
     # -----------------------------------------------------
 
     if (
-        pd.notna(row.get("borrowings"))
-        and pd.notna(row.get("total_assets"))
-        and row["total_assets"] > 0
-        and row["borrowings"] / row["total_assets"] > 0.5
+        pd.notna(borrowings)
+        and pd.notna(total_assets)
+        and total_assets > 0
+        and borrowings / total_assets > 0.5
     ):
 
         records.append({
@@ -814,8 +839,7 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 9
-    # NEGATIVE CFO
+    # CON 9 - NEGATIVE CFO
     # -----------------------------------------------------
 
     if pd.notna(cfo) and cfo < 0:
@@ -831,8 +855,7 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 10
-    # HIGH DIVIDEND PAYOUT
+    # CON 10 - HIGH DIVIDEND PAYOUT
     # -----------------------------------------------------
 
     if pd.notna(payout) and payout > 100:
@@ -848,14 +871,8 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 11
-    # LOW ROCE
+    # CON 11 - LOW ROCE
     # -----------------------------------------------------
-
-    roce = row.get(
-        "roce_percentage",
-        np.nan
-    )
 
     if pd.notna(roce) and roce < 10:
 
@@ -870,14 +887,8 @@ for company in all_companies:
 
 
     # -----------------------------------------------------
-    # CON 12
-    # NEGATIVE NET CASH FLOW
+    # CON 12 - NEGATIVE NET CASH FLOW
     # -----------------------------------------------------
-
-    net_cf = row.get(
-        "net_cash_flow",
-        np.nan
-    )
 
     if pd.notna(net_cf) and net_cf < 0:
 
@@ -911,59 +922,387 @@ if not pros_cons.empty:
 
 # =========================================================
 # GUARANTEE 1 PRO + 1 CON FOR EVERY COMPANY
+#
+# IMPORTANT:
+# Fallback logic must run INSIDE the company loop.
 # =========================================================
-
-covered_pro = set(
-    pros_cons.loc[
-        pros_cons["type"] == "pro",
-        "company_id"
-    ]
-)
-
-covered_con = set(
-    pros_cons.loc[
-        pros_cons["type"] == "con",
-        "company_id"
-    ]
-)
-
 
 for company in all_companies:
 
-    if company not in covered_pro:
+    # -----------------------------------------------------
+    # Current company records
+    # -----------------------------------------------------
 
-        pros_cons = pd.concat(
-            [
-                pros_cons,
-                pd.DataFrame([{
+    company_records = pros_cons[
+        pros_cons["company_id"] == company
+    ]
+
+    has_pro = (
+        (company_records["type"] == "pro").any()
+    )
+
+    has_con = (
+        (company_records["type"] == "con").any()
+    )
+
+
+    # -----------------------------------------------------
+    # GUARANTEE PRO
+    # -----------------------------------------------------
+
+    if not has_pro:
+
+        row_match = latest[
+            latest["company_id"]
+            .astype(str)
+            .str.strip()
+            == company
+        ]
+
+        if not row_match.empty:
+
+            row = row_match.iloc[0]
+
+            roe = row.get(
+                "roe_percentage",
+                np.nan
+            )
+
+            opm = row.get(
+                "opm_percentage",
+                np.nan
+            )
+
+            eps = row.get(
+                "eps",
+                np.nan
+            )
+
+            cfo = row.get(
+                "operating_activity",
+                np.nan
+            )
+
+            total_assets = row.get(
+                "total_assets",
+                np.nan
+            )
+
+            # Neutral but factual positive fallback
+            if (
+                pd.notna(eps)
+                and eps > 0
+            ):
+
+                fallback_pro = {
                     "company_id": company,
                     "type": "pro",
-                    "rule_id": "P_FALLBACK",
+                    "rule_id": "P_FALLBACK_EPS",
                     "text":
-                        "The company has measurable financial data available for fundamental analysis.",
+                        "Positive earnings per share provide evidence of profitable operations.",
+                    "confidence_pct": 70
+                }
+
+            elif (
+                pd.notna(cfo)
+                and cfo > 0
+            ):
+
+                fallback_pro = {
+                    "company_id": company,
+                    "type": "pro",
+                    "rule_id": "P_FALLBACK_CFO",
+                    "text":
+                        "Positive operating cash flow indicates the business is generating cash from core operations.",
+                    "confidence_pct": 70
+                }
+
+            elif (
+                pd.notna(opm)
+                and opm > 0
+            ):
+
+                fallback_pro = {
+                    "company_id": company,
+                    "type": "pro",
+                    "rule_id": "P_FALLBACK_OPM",
+                    "text":
+                        f"Positive operating profit margin of {opm:.2f}% indicates the business generates operating profit.",
+                    "confidence_pct": 68
+                }
+
+            elif (
+                pd.notna(total_assets)
+                and total_assets > 0
+            ):
+
+                fallback_pro = {
+                    "company_id": company,
+                    "type": "pro",
+                    "rule_id": "P_FALLBACK_ASSETS",
+                    "text":
+                        "The company maintains a positive asset base supporting its operating activities.",
                     "confidence_pct": 65
-                }])
-            ],
-            ignore_index=True
-        )
+                }
+
+            else:
+
+                fallback_pro = {
+                    "company_id": company,
+                    "type": "pro",
+                    "rule_id": "P_MONITORING",
+                    "text":
+                        "The company has identifiable operating and financial indicators that should be monitored for future improvement.",
+                    "confidence_pct": 65
+                }
+
+            pros_cons = pd.concat(
+                [
+                    pros_cons,
+                    pd.DataFrame([fallback_pro])
+                ],
+                ignore_index=True
+            )
 
 
-    if company not in covered_con:
+    # -----------------------------------------------------
+    # GUARANTEE CON
+    # -----------------------------------------------------
 
-        pros_cons = pd.concat(
-            [
-                pros_cons,
-                pd.DataFrame([{
+    if not has_con:
+
+        row_match = latest[
+            latest["company_id"]
+            .astype(str)
+            .str.strip()
+            == company
+        ]
+
+        if not row_match.empty:
+
+            row = row_match.iloc[0]
+
+            roe = row.get(
+                "roe_percentage",
+                np.nan
+            )
+
+            roce = row.get(
+                "roce_percentage",
+                np.nan
+            )
+
+            opm = row.get(
+                "opm_percentage",
+                np.nan
+            )
+
+            de = row.get(
+                "debt_to_equity",
+                np.nan
+            )
+
+            debt_assets = row.get(
+                "debt_to_assets",
+                np.nan
+            )
+
+            icr = row.get(
+                "interest_coverage",
+                np.nan
+            )
+
+            payout = row.get(
+                "dividend_payout",
+                np.nan
+            )
+
+            net_cf = row.get(
+                "net_cash_flow",
+                np.nan
+            )
+
+            fallback_con = None
+
+            # -------------------------------------------------
+            # FALLBACK 1 - MODERATE ROCE
+            # -------------------------------------------------
+
+            if (
+                pd.notna(roce)
+                and roce < 15
+            ):
+
+                fallback_con = {
                     "company_id": company,
                     "type": "con",
-                    "rule_id": "C_FALLBACK",
+                    "rule_id": "C_FALLBACK_ROCE",
                     "text":
-                        "The company should continue to be monitored across profitability, leverage and cash-flow indicators.",
+                        f"Return on capital employed of {roce:.2f}% is below 15%, indicating moderate capital efficiency.",
+                    "confidence_pct": 72
+                }
+
+
+            # -------------------------------------------------
+            # FALLBACK 2 - MODERATE ROE
+            # -------------------------------------------------
+
+            elif (
+                pd.notna(roe)
+                and roe < 15
+            ):
+
+                fallback_con = {
+                    "company_id": company,
+                    "type": "con",
+                    "rule_id": "C_FALLBACK_ROE",
+                    "text":
+                        f"Return on equity of {roe:.2f}% is below 15%, indicating moderate shareholder return efficiency.",
+                    "confidence_pct": 72
+                }
+
+
+            # -------------------------------------------------
+            # FALLBACK 3 - MODERATE OPM
+            # -------------------------------------------------
+
+            elif (
+                pd.notna(opm)
+                and opm < 15
+            ):
+
+                fallback_con = {
+                    "company_id": company,
+                    "type": "con",
+                    "rule_id": "C_FALLBACK_OPM",
+                    "text":
+                        f"Operating profit margin of {opm:.2f}% is below 15%, indicating moderate operating profitability.",
+                    "confidence_pct": 72
+                }
+
+
+            # -------------------------------------------------
+            # FALLBACK 4 - MODERATE DEBT
+            # -------------------------------------------------
+
+            elif (
+                pd.notna(de)
+                and de > 1
+            ):
+
+                fallback_con = {
+                    "company_id": company,
+                    "type": "con",
+                    "rule_id": "C_FALLBACK_DE",
+                    "text":
+                        f"Debt-to-equity ratio of {de:.2f} indicates moderate financial leverage.",
+                    "confidence_pct": 72
+                }
+
+
+            # -------------------------------------------------
+            # FALLBACK 5 - DEBT TO ASSETS
+            # -------------------------------------------------
+
+            elif (
+                pd.notna(debt_assets)
+                and debt_assets > 0.30
+            ):
+
+                debt_assets_pct = (
+                    debt_assets * 100
+                )
+
+                fallback_con = {
+                    "company_id": company,
+                    "type": "con",
+                    "rule_id": "C_FALLBACK_DTA",
+                    "text":
+                        f"Borrowings account for approximately {debt_assets_pct:.1f}% of total assets, indicating elevated leverage exposure.",
+                    "confidence_pct": 72
+                }
+
+
+            # -------------------------------------------------
+            # FALLBACK 6 - INTEREST COVERAGE
+            # -------------------------------------------------
+
+            elif (
+                pd.notna(icr)
+                and icr < 3
+            ):
+
+                fallback_con = {
+                    "company_id": company,
+                    "type": "con",
+                    "rule_id": "C_FALLBACK_ICR",
+                    "text":
+                        f"Interest coverage of {icr:.2f}x is below 3x and should be monitored for debt-servicing risk.",
+                    "confidence_pct": 75
+                }
+
+
+            # -------------------------------------------------
+            # FALLBACK 7 - HIGH PAYOUT
+            # -------------------------------------------------
+
+            elif (
+                pd.notna(payout)
+                and payout > 80
+            ):
+
+                fallback_con = {
+                    "company_id": company,
+                    "type": "con",
+                    "rule_id": "C_FALLBACK_PAYOUT",
+                    "text":
+                        f"Dividend payout of {payout:.1f}% leaves a relatively smaller portion of earnings available for reinvestment.",
+                    "confidence_pct": 70
+                }
+
+
+            # -------------------------------------------------
+            # FALLBACK 8 - NEGATIVE NET CASH FLOW
+            # -------------------------------------------------
+
+            elif (
+                pd.notna(net_cf)
+                and net_cf < 0
+            ):
+
+                fallback_con = {
+                    "company_id": company,
+                    "type": "con",
+                    "rule_id": "C_FALLBACK_NETCF",
+                    "text":
+                        "Negative net cash flow indicates that total cash outflows exceeded inflows during the latest period.",
+                    "confidence_pct": 75
+                }
+
+
+            # -------------------------------------------------
+            # FINAL NEUTRAL FALLBACK
+            # -------------------------------------------------
+
+            else:
+
+                fallback_con = {
+                    "company_id": company,
+                    "type": "con",
+                    "rule_id": "C_MONITORING",
+                    "text":
+                        "No major negative financial threshold was triggered; profitability, leverage and cash-flow indicators should continue to be monitored.",
                     "confidence_pct": 65
-                }])
-            ],
-            ignore_index=True
-        )
+                }
+
+
+            pros_cons = pd.concat(
+                [
+                    pros_cons,
+                    pd.DataFrame([fallback_con])
+                ],
+                ignore_index=True
+            )
 
 
 # =========================================================
@@ -982,19 +1321,20 @@ pros_cons = pros_cons[
 
 
 # =========================================================
-# SAVE
+# REMOVE DUPLICATES
 # =========================================================
 
-output_file = OUTPUT / "pros_cons_generated.csv"
-
-pros_cons.to_csv(
-    output_file,
-    index=False
-)
+pros_cons = pros_cons.drop_duplicates(
+    subset=[
+        "company_id",
+        "type",
+        "rule_id"
+    ]
+).reset_index(drop=True)
 
 
 # =========================================================
-# VALIDATION
+# FINAL VALIDATION
 # =========================================================
 
 pro_count = (
@@ -1026,14 +1366,45 @@ missing_con = [
 ]
 
 
+# =========================================================
+# SAVE
+# =========================================================
+
+output_file = OUTPUT / "pros_cons_generated.csv"
+
+pros_cons.to_csv(
+    output_file,
+    index=False
+)
+
+
+# =========================================================
+# VALIDATION REPORT
+# =========================================================
+
 print("\n" + "=" * 70)
 print("DAY 30 VALIDATION")
 print("=" * 70)
 
-print("Total Companies :", len(all_companies))
-print("Total Records   :", len(pros_cons))
-print("Total Pros      :", (pros_cons["type"] == "pro").sum())
-print("Total Cons      :", (pros_cons["type"] == "con").sum())
+print(
+    "Total Companies :",
+    len(all_companies)
+)
+
+print(
+    "Total Records   :",
+    len(pros_cons)
+)
+
+print(
+    "Total Pros      :",
+    (pros_cons["type"] == "pro").sum()
+)
+
+print(
+    "Total Cons      :",
+    (pros_cons["type"] == "con").sum()
+)
 
 print(
     "Companies with Pro :",
@@ -1051,8 +1422,113 @@ print(
     ].nunique()
 )
 
-print("Missing Pro :", missing_pro)
-print("Missing Con :", missing_con)
+print(
+    "Missing Pro :",
+    missing_pro
+)
+
+print(
+    "Missing Con :",
+    missing_con
+)
+
+
+# =========================================================
+# FALLBACK SUMMARY
+# =========================================================
+
+fallback_rows = pros_cons[
+    pros_cons["rule_id"].str.startswith(
+        "C_FALLBACK",
+        na=False
+    )
+]
+
+monitoring_rows = pros_cons[
+    pros_cons["rule_id"] == "C_MONITORING"
+]
+
+print("\n" + "=" * 70)
+print("FALLBACK SUMMARY")
+print("=" * 70)
+
+print(
+    "Fallback Cons :",
+    len(fallback_rows)
+)
+
+print(
+    "Neutral Monitoring Cons :",
+    len(monitoring_rows)
+)
+
+
+# =========================================================
+# RULE USAGE
+# =========================================================
+
+print("\n" + "=" * 70)
+print("RULE USAGE")
+print("=" * 70)
+
+rule_usage = (
+    pros_cons
+    .groupby(["type", "rule_id"])
+    .size()
+    .sort_values(ascending=False)
+)
+
+print(rule_usage)
+
+
+# =========================================================
+# COMPANY SUMMARY
+# =========================================================
+
+print("\n" + "=" * 70)
+print("PROS/CONS BY COMPANY")
+print("=" * 70)
+
+company_summary = pd.crosstab(
+    pros_cons["company_id"],
+    pros_cons["type"]
+)
+
+if "pro" not in company_summary.columns:
+    company_summary["pro"] = 0
+
+if "con" not in company_summary.columns:
+    company_summary["con"] = 0
+
+company_summary = company_summary[
+    ["con", "pro"]
+].sort_index()
+
+print(company_summary)
+
+
+# =========================================================
+# CONFIDENCE SUMMARY
+# =========================================================
+
+print("\n" + "=" * 70)
+print("AVERAGE CONFIDENCE")
+print("=" * 70)
+
+confidence_summary = (
+    pros_cons
+    .groupby("type")["confidence_pct"]
+    .agg(
+        ["count", "mean", "min", "max"]
+    )
+)
+
+print(confidence_summary)
+
+
+# =========================================================
+# OUTPUT
+# =========================================================
 
 print("\nOutput:")
 print(output_file)
@@ -1060,3 +1536,4 @@ print(output_file)
 print("\n" + "=" * 70)
 print("DAY 30 COMPLETED")
 print("=" * 70)
+
