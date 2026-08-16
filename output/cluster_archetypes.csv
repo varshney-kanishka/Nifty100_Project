@@ -1,0 +1,110 @@
+company_id,company_name,sector,cluster,archetype
+BAJAJHLDNG,Bajaj Holdings & Investment Ltd,Financials,0,"High-Margin, Low-Leverage Leaders"
+BEL,Bharat Electronics Ltd,Industrials,0,"High-Margin, Low-Leverage Leaders"
+DIVISLAB,Divis Laboratories Ltd,Healthcare,0,"High-Margin, Low-Leverage Leaders"
+HAL,Hindustan Aeronautics Ltd,Industrials,0,"High-Margin, Low-Leverage Leaders"
+ITC,"ITC Ltd
+",Consumer Staples,0,"High-Margin, Low-Leverage Leaders"
+LICI,Life Insurance Corporation of India,Financials,0,"High-Margin, Low-Leverage Leaders"
+SBILIFE,SBI Life Insurance Company Ltd,Financials,0,"High-Margin, Low-Leverage Leaders"
+ADANIPORTS,"Adani Ports & Special Economic Zone Ltd
+",Industrials,1,High-Operating-Margin Growth Companies
+BHARTIARTL,Bharti Airtel Ltd,Communication Services,1,High-Operating-Margin Growth Companies
+CIPLA,"Cipla Ltd
+",Healthcare,1,High-Operating-Margin Growth Companies
+COALINDIA,Coal India Ltd,Materials,1,High-Operating-Margin Growth Companies
+HDFCLIFE,HDFC Life Insurance Company Ltd,Financials,1,High-Operating-Margin Growth Companies
+HEROMOTOCO,"Hero MotoCorp Ltd
+",Consumer Discretionary,1,High-Operating-Margin Growth Companies
+HINDALCO,Hindalco Industries Ltd,Materials,1,High-Operating-Margin Growth Companies
+HINDUNILVR,"Hindustan Unilever Ltd
+",Consumer Staples,1,High-Operating-Margin Growth Companies
+ICICIGI,ICICI Lombard General Insurance Company Ltd,Financials,1,High-Operating-Margin Growth Companies
+INDIGO,Interglobe Aviation Ltd,Consumer Discretionary,1,High-Operating-Margin Growth Companies
+JSWENERGY,JSW Energy Ltd,Energy,1,High-Operating-Margin Growth Companies
+NHPC,"NHPC Ltd
+",Energy,1,High-Operating-Margin Growth Companies
+POWERGRID,Power Grid Corporation of India Ltd,Energy,1,High-Operating-Margin Growth Companies
+AXISBANK,Axis Bank Ltd,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+BAJFINANCE,Bajaj Finance Ltd,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+BAJAJFINSV,Bajaj Finserv Ltd,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+BANKBARODA,Bank of Baroda,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+BHEL,"Bharat Heavy Electricals Limited
+",Industrials,2,High-Leverage / Weak-Cash-Flow Companies
+CHOLAFIN,Cholamandalam Investment & Finance Company Ltd,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+GRASIM,Grasim Industries Ltd,Industrials,2,High-Leverage / Weak-Cash-Flow Companies
+ICICIPRULI,ICICI Prudential Life Insurance Company Ltd,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+INDUSINDBK,IndusInd Bank Ltd,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+JIOFIN,Jio Financial Services Ltd,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+M&M,"Mahindra & Mahindra Ltd
+",Consumer Discretionary,2,High-Leverage / Weak-Cash-Flow Companies
+PFC,Power Finance Corporation Ltd,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+PNB,Punjab National Bank,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+RECLTD,REC Ltd,Financials,2,High-Leverage / Weak-Cash-Flow Companies
+SHRIRAMFIN,"Shriram Finance Ltd
+",Financials,2,High-Leverage / Weak-Cash-Flow Companies
+TVSMOTOR,TVS Motor Company Ltd,Consumer Discretionary,2,High-Leverage / Weak-Cash-Flow Companies
+ABB,Abbott India Ltd,Industrials,3,Diversified Core Large-Cap Companies
+ADANIENSOL,Adani Energy Solutions Ltd,Energy,3,Diversified Core Large-Cap Companies
+ADANIENT,Adani Enterprises Ltd,Industrials,3,Diversified Core Large-Cap Companies
+ADANIPOWER,Adani Power Ltd,Energy,3,Diversified Core Large-Cap Companies
+ATGL,Adani Total Gas Ltd,Energy,3,Diversified Core Large-Cap Companies
+AMBUJACEM,Ambuja Cements Ltd,Materials,3,Diversified Core Large-Cap Companies
+APOLLOHOSP,"Apollo Hospitals
+Chain of Indian private hospitals",Healthcare,3,Diversified Core Large-Cap Companies
+ASIANPAINT,"Asian Paints
+Indian Multi-National Paint and Coating Manufacturing Company",Materials,3,Diversified Core Large-Cap Companies
+DMART,Avenue Supermarts Ltd,Consumer Discretionary,3,Diversified Core Large-Cap Companies
+BAJAJ-AUTO,Bajaj Auto Ltd,Consumer Discretionary,3,Diversified Core Large-Cap Companies
+BPCL,Bharat Petroleum Corporation Ltd,Energy,3,Diversified Core Large-Cap Companies
+BOSCHLTD,Bosch Ltd,Consumer Discretionary,3,Diversified Core Large-Cap Companies
+BRITANNIA,Britannia Industries Ltd,Consumer Staples,3,Diversified Core Large-Cap Companies
+DLF,DLF Ltd,Real Estate,3,Diversified Core Large-Cap Companies
+DABUR,Dabur India Ltd,Consumer Staples,3,Diversified Core Large-Cap Companies
+DRREDDY,Dr Reddys Laboratories Ltd,Healthcare,3,Diversified Core Large-Cap Companies
+EICHERMOT,Eicher Motors Ltd,Consumer Discretionary,3,Diversified Core Large-Cap Companies
+GAIL,GAIL (India) Ltd,Energy,3,Diversified Core Large-Cap Companies
+GODREJCP,Godrej Consumer Products Ltd,Consumer Staples,3,Diversified Core Large-Cap Companies
+HCLTECH,HCL Technologies Ltd,Information Technology,3,Diversified Core Large-Cap Companies
+HAVELLS,Havells India Ltd,Industrials,3,Diversified Core Large-Cap Companies
+IOC,"Indian Oil Corporation
+",Energy,3,Diversified Core Large-Cap Companies
+IRCTC,Indian Railway Catering & Tourism Corporation Ltd,Consumer Discretionary,3,Diversified Core Large-Cap Companies
+NAUKRI,Info Edge (India) Ltd,Communication Services,3,Diversified Core Large-Cap Companies
+INFY,Infosys Ltd,Information Technology,3,Diversified Core Large-Cap Companies
+JSWSTEEL,JSW Steel Ltd,Materials,3,Diversified Core Large-Cap Companies
+JINDALSTEL,Jindal Steel & Power Ltd,Materials,3,Diversified Core Large-Cap Companies
+LTIM,LTIMindtree Ltd,Information Technology,3,Diversified Core Large-Cap Companies
+LT,Larsen & Toubro Ltd,Industrials,3,Diversified Core Large-Cap Companies
+LODHA,Macrotech Developers Ltd,Real Estate,3,Diversified Core Large-Cap Companies
+MARUTI,Maruti Suzuki India Ltd,Consumer Discretionary,3,Diversified Core Large-Cap Companies
+NTPC,NTPC Ltd,Energy,3,Diversified Core Large-Cap Companies
+NESTLEIND,Nestle India Ltd,Consumer Staples,3,Diversified Core Large-Cap Companies
+ONGC,Oil & Natural Gas Corpn Ltd,Energy,3,Diversified Core Large-Cap Companies
+PIDILITIND,Pidilite Industries Ltd,Materials,3,Diversified Core Large-Cap Companies
+RELIANCE,"Reliance Industries Ltd
+",Energy,3,Diversified Core Large-Cap Companies
+MOTHERSON,Samvardhana Motherson International Ltd,Consumer Discretionary,3,Diversified Core Large-Cap Companies
+SHREECEM,Shree Cement Ltd,Materials,3,Diversified Core Large-Cap Companies
+SIEMENS,Siemens Ltd,Industrials,3,Diversified Core Large-Cap Companies
+SBIN,State Bank of India,Financials,3,Diversified Core Large-Cap Companies
+SUNPHARMA,Sun Pharmaceuticals Industries Ltd,Healthcare,3,Diversified Core Large-Cap Companies
+TCS,Tata Consultancy Services Ltd,Information Technology,3,Diversified Core Large-Cap Companies
+TATACONSUM,Tata Consumer Products Ltd,Consumer Staples,3,Diversified Core Large-Cap Companies
+TATAMOTORS,Tata Motors Ltd,Consumer Discretionary,3,Diversified Core Large-Cap Companies
+TATAPOWER,"Tata Power Company Ltd
+",Energy,3,Diversified Core Large-Cap Companies
+TATASTEEL,"Tata Steel Ltd
+",Materials,3,Diversified Core Large-Cap Companies
+TECHM,Tech Mahindra Ltd,Information Technology,3,Diversified Core Large-Cap Companies
+TITAN,"Titan Company Ltd
+",Consumer Discretionary,3,Diversified Core Large-Cap Companies
+TORNTPHARM,Torrent Pharmaceuticals Ltd,Healthcare,3,Diversified Core Large-Cap Companies
+TRENT,Trent Ltd,Consumer Discretionary,3,Diversified Core Large-Cap Companies
+ADANIGREEN,Adani Green Energy Ltd,Energy,4,Highly Leveraged Financial Companies
+CANBK,Canara Bank,Financials,4,Highly Leveraged Financial Companies
+HDFCBANK,HDFC Bank Ltd,Financials,4,Highly Leveraged Financial Companies
+ICICIBANK,ICICI Bank Ltd,Financials,4,Highly Leveraged Financial Companies
+IRFC,Indian Railway Finance Corporation Ltd,Financials,4,Highly Leveraged Financial Companies
+KOTAKBANK,"Kotak Mahindra Bank Ltd
+",Financials,4,Highly Leveraged Financial Companies

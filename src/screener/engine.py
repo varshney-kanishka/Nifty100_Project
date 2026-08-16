@@ -1,4 +1,11 @@
-from presets import *
+from .presets import (
+    quality_compounder,
+    value_pick,
+    growth_accelerator,
+    dividend_champion,
+    debt_free_bluechip,
+    turnaround_watch,
+)
 from pathlib import Path
 import sqlite3
 
