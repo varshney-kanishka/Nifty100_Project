@@ -1,0 +1,6 @@
+cluster,company_count,dominant_sector,profile_description
+0,11,Financials,High leverage | Weak cash generation | Negative FCF conversion | Low interest coverage | Low capital intensity
+1,46,Consumer Discretionary,Low leverage | Strong cash generation | Strong FCF conversion | High ROE | High interest coverage
+2,8,Materials,Very low leverage | Extremely high ROCE | High operating margin | Strong interest coverage | Moderate FCF conversion
+3,12,Financials,High leverage | Weak CFO generation | Negative FCF conversion | Low interest coverage | Low profitability
+4,15,Energy,Very high capital intensity | Strong CFO generation | Moderate leverage | Lower ROCE | Positive FCF conversion
