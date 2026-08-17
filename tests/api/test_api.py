@@ -257,3 +257,94 @@ def test_company_performance_not_found():
     )
 
     assert response.status_code == 404
+# ============================================================
+# ADDITIONAL API COVERAGE
+# ============================================================
+
+def test_get_companies_limit_capped():
+    response = client.get("/companies?limit=500")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["limit"] == 100
+    assert data["count"] <= 100
+
+
+def test_get_companies_negative_offset():
+    response = client.get("/companies?limit=5&offset=-10")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["offset"] == 0
+    assert data["count"] <= 5
+
+
+def test_get_company_case_insensitive():
+    response = client.get("/companies/reliance")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["id"] == "RELIANCE"
+
+
+def test_growth_accelerator_screener():
+    response = client.get("/screener/growth_accelerator")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["preset"] == "growth_accelerator"
+    assert "results" in data
+    assert data["count"] <= 20
+
+
+def test_dividend_champion_screener():
+    response = client.get("/screener/dividend_champion")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["preset"] == "dividend_champion"
+    assert "results" in data
+
+
+def test_peers_case_insensitive():
+    response = client.get("/peers/reliance")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["company_id"] == "RELIANCE"
+    assert "peers" in data
+
+
+def test_company_prices_case_insensitive():
+    response = client.get("/companies/reliance/prices")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["company_id"] == "RELIANCE"
+    assert "prices" in data
+
+
+def test_company_performance_case_insensitive():
+    response = client.get("/companies/reliance/performance")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["company_id"] == "RELIANCE"
+    assert "start_date" in data
+    assert "end_date" in data
