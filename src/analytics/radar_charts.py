@@ -1,8 +1,10 @@
-from pathlib import Path
 import sqlite3
-import pandas as pd
-import numpy as np
+from pathlib import Path
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
 print("=" * 70)
 print("DAY 19 - RADAR CHARTS")
 print("=" * 70)

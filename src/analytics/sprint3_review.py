@@ -1,6 +1,8 @@
-from pathlib import Path
 import sqlite3
+from pathlib import Path
+
 import pandas as pd
+
 print("=" * 70)
 print("DAY 21 - SPRINT 3 REVIEW")
 print("=" * 70)

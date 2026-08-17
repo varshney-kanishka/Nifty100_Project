@@ -1,13 +1,30 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from utils.db import (
+    get_companies,
+    get_market_cap,
+    get_pl,
+    get_ratios,
+    get_sectors,
+    get_years,
+)
+from utils.theme import (
+    apply_theme,
+    format_percentage,
+    format_ratio,
+    render_metric_card,
+    render_page_header,
+    render_section_header,
+)
 
-from utils.db import get_companies, get_market_cap, get_pl, get_ratios, get_sectors, get_years
+apply_theme()
 
-
-st.title("Nifty 100 Analytics Dashboard")
-
-
+render_page_header(
+    "Nifty 100 Analytics",
+    "Market snapshot, performance quality, and sector distribution for the active year.",
+    status="Live fundamentals",
+)
 def _extract_year(value):
     if pd.isna(value):
         return None
@@ -88,38 +105,42 @@ companies = get_companies()
 sectors = get_sectors()
 market_cap = get_market_cap(year=_extract_year(selected_year))
 
-st.markdown(f"## Market snapshot for {selected_year}")
-
 if ratios.empty:
     st.warning(f"No financial ratios are available for {selected_year}.")
     st.stop()
 
 active_company_ids = [company_id for company_id in ratios["company_id"].dropna().astype(str).tolist() if company_id]
 
+render_section_header(f"Market Snapshot | {selected_year}")
+st.caption("Use this view to monitor market quality, leverage profile, and sector concentration for the selected year.")
+
+cagr_values = []
+for company_id in active_company_ids:
+    cagr_value = _calculate_revenue_cagr(get_pl(company_id))
+    if cagr_value is not None:
+        cagr_values.append(cagr_value)
+
+median_revenue_cagr = _safe_median(pd.Series(cagr_values))
+median_roe = _safe_median(ratios["return_on_equity_pct"]) if "return_on_equity_pct" in ratios.columns else None
+median_pe = _safe_median(market_cap["pe_ratio"]) if not market_cap.empty and "pe_ratio" in market_cap.columns else None
+median_de = _safe_median(ratios["debt_to_equity"]) if "debt_to_equity" in ratios.columns else None
+debt_free_companies = int((pd.to_numeric(ratios["debt_to_equity"], errors="coerce") <= 0.01).sum()) if "debt_to_equity" in ratios.columns else 0
+
 kpi_columns = st.columns(3)
-metric_specs = [
-    ("Average ROE", _safe_median(ratios["return_on_equity_pct"]) if "return_on_equity_pct" in ratios.columns else None, "%"),
-    ("Median PE", _safe_median(market_cap["pe_ratio"]) if not market_cap.empty and "pe_ratio" in market_cap.columns else None, "x"),
-    ("Median Debt to Equity", _safe_median(ratios["debt_to_equity"]) if "debt_to_equity" in ratios.columns else None, "x"),
-    ("Total Companies", len(active_company_ids), ""),
-    ("Median Revenue CAGR", None, "%"),
-    ("Debt Free Companies", int((pd.to_numeric(ratios["debt_to_equity"], errors="coerce") <= 0.01).sum()) if "debt_to_equity" in ratios.columns else 0, ""),
-]
+with kpi_columns[0]:
+    render_metric_card("Median ROE", format_percentage(median_roe), "Across active universe")
+with kpi_columns[1]:
+    render_metric_card("Median PE", format_ratio(median_pe), "Valuation center")
+with kpi_columns[2]:
+    render_metric_card("Median Debt/Equity", format_ratio(median_de), "Balance-sheet leverage")
 
-for index, (label, value, suffix) in enumerate(metric_specs):
-    if label == "Median Revenue CAGR":
-        cagr_values = []
-        for company_id in active_company_ids:
-            cagr_value = _calculate_revenue_cagr(get_pl(company_id))
-            if cagr_value is not None:
-                cagr_values.append(cagr_value)
-        value = _safe_median(pd.Series(cagr_values))
-
-    display_value = "N/A"
-    if value is not None:
-        display_value = f"{value:.2f}{suffix}" if isinstance(value, (int, float)) else str(value)
-
-    kpi_columns[index % 3].metric(label, display_value)
+kpi_columns_2 = st.columns(3)
+with kpi_columns_2[0]:
+    render_metric_card("Total Companies", len(active_company_ids), "Coverage in selected year")
+with kpi_columns_2[1]:
+    render_metric_card("Median Revenue CAGR", format_percentage(median_revenue_cagr), "Multi-year growth")
+with kpi_columns_2[2]:
+    render_metric_card("Debt Free Companies", debt_free_companies, "Debt/Equity <= 0.01")
 
 st.markdown("---")
 
@@ -138,8 +159,45 @@ if not sectors.empty and "company_id" in sectors.columns and "broad_sector" in s
             values="company_count",
             hole=0.45,
             title="Company count by sector",
+            color_discrete_sequence=["#3B82F6", "#22C55E", "#F59E0B", "#EF4444", "#06B6D4", "#8B5CF6", "#F97316"],
+        )
+        fig.update_layout(
+            paper_bgcolor="#111827",
+            plot_bgcolor="#111827",
+            font={"color": "#F8FAFC"},
+            legend_title_text="Sector",
+            margin={"l": 10, "r": 10, "t": 60, "b": 10},
         )
         st.plotly_chart(fig, use_container_width=True)
+
+        sector_quality = ratios.merge(sectors[["company_id", "broad_sector"]], on="company_id", how="left")
+        if "return_on_equity_pct" in sector_quality.columns:
+            sector_roe = (
+                sector_quality.groupby("broad_sector", dropna=False)["return_on_equity_pct"]
+                .median()
+                .reset_index(name="median_roe")
+                .dropna()
+                .sort_values("median_roe", ascending=False)
+                .head(8)
+            )
+            if not sector_roe.empty:
+                bar_fig = px.bar(
+                    sector_roe,
+                    x="median_roe",
+                    y="broad_sector",
+                    orientation="h",
+                    title="Top Sectors by Median ROE",
+                    color="median_roe",
+                    color_continuous_scale="Blues",
+                )
+                bar_fig.update_layout(
+                    paper_bgcolor="#111827",
+                    plot_bgcolor="#111827",
+                    font={"color": "#F8FAFC"},
+                    coloraxis_showscale=False,
+                    margin={"l": 10, "r": 10, "t": 60, "b": 10},
+                )
+                st.plotly_chart(bar_fig, use_container_width=True)
     else:
         st.info("Sector information is not available for the selected year.")
 else:
@@ -163,7 +221,15 @@ if not ranked_ratios.empty and "composite_quality_score" in ranked_ratios.column
         for column in ["company_id", "company_name", "composite_quality_score", "return_on_equity_pct", "net_profit_margin_pct"]
         if column in ranked_ratios.columns
     ]
-    st.subheader("Top 5 companies by composite quality score")
-    st.dataframe(ranked_ratios[display_columns].reset_index(drop=True), use_container_width=True)
+    render_section_header("Top 5 by Composite Quality")
+    present = ranked_ratios[display_columns].reset_index(drop=True).copy()
+    if "composite_quality_score" in present.columns:
+        present["composite_quality_score"] = pd.to_numeric(present["composite_quality_score"], errors="coerce").round(2)
+    if "return_on_equity_pct" in present.columns:
+        present["return_on_equity_pct"] = pd.to_numeric(present["return_on_equity_pct"], errors="coerce").round(2)
+    if "net_profit_margin_pct" in present.columns:
+        present["net_profit_margin_pct"] = pd.to_numeric(present["net_profit_margin_pct"], errors="coerce").round(2)
+
+    st.dataframe(present, use_container_width=True)
 else:
     st.info("No ranked company data is available for this year.")

@@ -7,7 +7,6 @@ into the processed CSV files and database.
 
 import re
 
-
 # ============================================================
 # COMPANY ID NORMALIZATION
 # ============================================================

@@ -1,8 +1,10 @@
-from pathlib import Path
 import sqlite3
+from pathlib import Path
+
 import pandas as pd
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
+
 print("=" * 70)
 print("DAY 20 - PEER COMPARISON REPORT")
 print("=" * 70)

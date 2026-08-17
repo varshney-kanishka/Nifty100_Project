@@ -26,34 +26,28 @@ Day 33 requirements:
 - Test mode generates 5 sample companies.
 """
 
-from pathlib import Path
+import argparse
 import io
 import sqlite3
-import argparse
-import textwrap
+from pathlib import Path
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_LEFT, TA_CENTER
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import (
-    SimpleDocTemplate,
+    Image,
+    PageBreak,
     Paragraph,
+    SimpleDocTemplate,
     Spacer,
     Table,
     TableStyle,
-    Image,
-    PageBreak,
-    KeepTogether,
 )
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfbase import pdfmetrics
-
 
 # ============================================================
 # PATHS
@@ -208,7 +202,7 @@ def safe_float(value):
     try:
         if pd.isna(value):
             return np.nan
-    except Exception:
+    except (TypeError, ValueError):
         pass
 
     try:
@@ -528,13 +522,11 @@ def get_sector(company_id, company_row, sectors):
             sectors["company_id"] == company_id
         ]
 
-        if not match.empty:
+        if not match.empty and "broad_sector" in match.columns:
+            value = match.iloc[0]["broad_sector"]
 
-            if "broad_sector" in match.columns:
-                value = match.iloc[0]["broad_sector"]
-
-                if pd.notna(value):
-                    return str(value)
+            if pd.notna(value):
+                return str(value)
 
     return "Unknown Sector"
 
@@ -624,16 +616,14 @@ def calculate_kpis(
     # If company-level ROE unavailable,
     # try latest profit ratio fields.
 
-    if pd.isna(roe):
-
-        if (
-            latest_profit is not None
-            and "roe_percentage"
-            in latest_profit.index
-        ):
-            roe = safe_float(
-                latest_profit["roe_percentage"]
-            )
+    if pd.isna(roe) and (
+        latest_profit is not None
+        and "roe_percentage"
+        in latest_profit.index
+    ):
+        roe = safe_float(
+            latest_profit["roe_percentage"]
+        )
 
     # -------------------------
     # ROCE
@@ -2571,7 +2561,7 @@ def main():
                 output_path
             )
 
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
 
             print(
                 f"ERROR generating {company_id}:"

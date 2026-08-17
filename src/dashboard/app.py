@@ -1,8 +1,8 @@
-import os
 import runpy
 from pathlib import Path
 
 import streamlit as st
+from utils.theme import apply_theme
 
 st.set_page_config(
     page_title="Nifty 100 Analytics",
@@ -10,9 +10,19 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.title("Nifty 100 Analytics Dashboard")
+apply_theme()
 
-st.write("Welcome to the Nifty 100 Analytics Project")
+st.sidebar.markdown(
+    """
+    <div class="theme-brand">
+        <div class="brand-title">Nifty 100</div>
+        <div class="brand-subtitle">Analytics Intelligence</div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.sidebar.caption("Portfolio monitoring and company analytics")
 
 from utils import db as db_utils
 
@@ -21,9 +31,9 @@ try:
     conn = db_utils.get_connection()
     conn.execute("SELECT 1")
     conn.close()
-    st.sidebar.success("DB connected")
-except Exception as exc:  # pragma: no cover - surface errors to user
-    st.sidebar.error(f"DB connection error: {exc}")
+    st.sidebar.markdown("<div class='status-badge positive-badge'>DB connected</div>", unsafe_allow_html=True)
+except Exception as exc:  # noqa: BLE001
+    st.sidebar.markdown(f"<div class='status-badge negative-badge'>DB error: {exc}</div>", unsafe_allow_html=True)
 
 
 def _pretty_name(filename: str) -> str:
@@ -42,6 +52,7 @@ page_map = { _pretty_name(f): f for f in page_files }
 if not page_map:
     st.sidebar.info("No pages found in the pages/ directory.")
 else:
+    st.sidebar.markdown("<div class='nav-section'>Navigation</div>", unsafe_allow_html=True)
     selected = st.sidebar.selectbox("Select a page", list(page_map.keys()))
     page_path = PAGES_DIR / page_map[selected]
     # Execute the selected page file in its own namespace so top-level code runs

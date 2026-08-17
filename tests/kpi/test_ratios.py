@@ -1,20 +1,19 @@
-import pytest
 
 from src.analytics.ratios import (
-    net_profit_margin,
-    operating_profit_margin,
-    roe,
-    roce,
-    roa,
-    opm_cross_check,
+    asset_turnover,
     debt_to_equity,
     high_leverage_flag,
-    interest_coverage,
     icr_label,
-    icr_warning,
+    interest_coverage,
     net_debt,
-    asset_turnover,
+    net_profit_margin,
+    operating_profit_margin,
+    opm_cross_check,
+    roa,
+    roce,
+    roe,
 )
+
 
 def test_net_profit_margin():
     assert net_profit_margin(100, 500) == 20

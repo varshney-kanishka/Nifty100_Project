@@ -17,7 +17,6 @@ from pathlib import Path
 import pandas as pd
 from sqlalchemy import create_engine
 
-
 # ======================================================
 # Project Paths
 # ======================================================
@@ -305,7 +304,7 @@ for file in csv_files:
         )
 
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
 
         print(
             f"❌ Error loading {file.name}"

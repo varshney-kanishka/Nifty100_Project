@@ -1,4 +1,3 @@
-import pandas as pd
 def quality_compounder(df):
 
     result = df.copy()

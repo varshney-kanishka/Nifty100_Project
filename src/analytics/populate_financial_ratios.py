@@ -1,9 +1,9 @@
-from pathlib import Path
 import sqlite3
-import pandas as pd
+from pathlib import Path
 
-from ratios import *
+import pandas as pd
 from cashflow_kpis import *
+from ratios import *
 
 # =====================================================
 # Database Connection

@@ -1,11 +1,23 @@
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-
 from utils.db import get_companies, get_peers, get_pl, get_ratios
+from utils.theme import (
+    apply_theme,
+    format_percentage,
+    format_ratio,
+    render_metric_card,
+    render_page_header,
+    render_section_header,
+)
 
-st.title("Peer Comparison")
-st.markdown("Compare companies within the same peer group.")
+apply_theme()
+
+render_page_header(
+    "Peer Comparison",
+    "Benchmark a company against its peer group on quality, profitability, leverage, and cash flow.",
+    status="Relative analysis",
+)
 
 peer = get_peers()
 ratios = get_ratios()
@@ -79,9 +91,23 @@ fig = go.Figure()
 fig.add_trace(go.Scatterpolar(r=selected_values, theta=metrics, fill="toself", name=selected_company))
 fig.add_trace(go.Scatterpolar(r=peer_averages, theta=metrics, name="Peer Average"))
 fig.update_layout(
-    polar=dict(radialaxis=dict(visible=True, range=[0, max(100, max(selected_values + peer_averages) * 1.2)])),
+    title="Company vs Peer Radar",
+    polar={"radialaxis": {"visible": True, "range": [0, max(100, max(selected_values + peer_averages) * 1.2)]}},
+    paper_bgcolor="#111827",
+    plot_bgcolor="#111827",
+    font={"color": "#F8FAFC"},
     showlegend=True,
 )
+
+render_section_header("Peer Snapshot")
+summary = st.columns(3)
+with summary[0]:
+    render_metric_card("ROE vs Peers", f"{format_percentage(selected_values[0])} / {format_percentage(peer_averages[0])}", "Selected / average")
+with summary[1]:
+    render_metric_card("Debt/Equity vs Peers", f"{format_ratio(selected_values[3])} / {format_ratio(peer_averages[3])}", "Selected / average")
+with summary[2]:
+    render_metric_card("NPM vs Peers", f"{format_percentage(selected_values[2])} / {format_percentage(peer_averages[2])}", "Selected / average")
+
 st.plotly_chart(fig, use_container_width=True)
 
 table = group_df.merge(
@@ -91,9 +117,23 @@ table = group_df.merge(
     how="left",
 )
 
-st.subheader("Peer Companies")
-st.dataframe(table, use_container_width=True)
+render_section_header("Peer Companies")
+
+display_cols = [
+    col
+    for col in ["company_id", "company_name", "peer_group_name", "is_benchmark", "roce_percentage", "roe_percentage"]
+    if col in table.columns
+]
+peer_display = table[display_cols].copy()
+if "is_benchmark" in peer_display.columns:
+    peer_display["is_benchmark"] = peer_display["is_benchmark"].map({1: "Yes", 0: "No"}).fillna("No")
+
+st.dataframe(peer_display, use_container_width=True)
 
 benchmark = table[table["is_benchmark"] == 1]
-st.subheader("Benchmark Company")
-st.dataframe(benchmark, use_container_width=True)     
+render_section_header("Benchmark Company")
+if benchmark.empty:
+    st.info("No benchmark company is tagged for this peer group.")
+else:
+    benchmark_cols = [col for col in ["company_id", "company_name", "peer_group_name"] if col in benchmark.columns]
+    st.dataframe(benchmark[benchmark_cols], use_container_width=True)

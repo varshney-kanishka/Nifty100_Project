@@ -1,10 +1,11 @@
-from pathlib import Path
 import sqlite3
+from pathlib import Path
+
 import pandas as pd
 
-from src.analytics.ratios import *
 from src.analytics.cagr import *
 from src.analytics.cashflow_kpis import *
+from src.analytics.ratios import *
 
 # =====================================================
 # DATABASE CONNECTION

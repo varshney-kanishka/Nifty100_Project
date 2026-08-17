@@ -7,7 +7,6 @@ Manual review of SQLite database.
 """
 
 from pathlib import Path
-import random
 
 import pandas as pd
 from sqlalchemy import create_engine

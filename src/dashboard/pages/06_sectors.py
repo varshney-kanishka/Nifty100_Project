@@ -1,15 +1,23 @@
-import streamlit as st
-
-st.title("🏭 Sectors")
-
-st.write("Sector Analysis")
-
-import streamlit as st
+import pandas as pd
 import plotly.express as px
+import streamlit as st
+from utils.db import get_companies, get_ratios, get_sectors
+from utils.theme import (
+    apply_theme,
+    format_percentage,
+    render_metric_card,
+    render_page_header,
+    render_section_header,
+)
 
-from utils.db import get_sectors
-from utils.db import get_companies
-from utils.db import get_ratios
+apply_theme()
+
+render_page_header(
+    "Sector Analysis",
+    "Compare company performance and capital efficiency by sector and business model.",
+    status="Portfolio structure",
+)
+
 companies = get_companies()
 sectors = get_sectors()
 ratios = get_ratios()
@@ -32,8 +40,6 @@ sector = st.selectbox(
 filtered = df[
     df["broad_sector"] == sector
 ]
-import pandas as pd
-
 filtered = filtered.copy()
 
 filtered["bubble_size"] = (
@@ -48,6 +54,18 @@ filtered["bubble_size"] = (
 filtered = filtered[
     filtered["bubble_size"] > 0
 ]
+render_section_header("Sector Snapshot")
+summary_cols = st.columns(3)
+with summary_cols[0]:
+    render_metric_card("Companies", int(filtered["company_id"].nunique()) if not filtered.empty else 0, "In selected sector")
+with summary_cols[1]:
+    sector_roe = pd.to_numeric(filtered.get("return_on_equity_pct", pd.Series(dtype=float)), errors="coerce").median()
+    render_metric_card("Median ROE", format_percentage(sector_roe), "Sector quality")
+with summary_cols[2]:
+    sector_turnover = pd.to_numeric(filtered.get("asset_turnover", pd.Series(dtype=float)), errors="coerce").median()
+    turnover_text = "N/A" if pd.isna(sector_turnover) else f"{sector_turnover:.2f}x"
+    render_metric_card("Median Asset Turnover", turnover_text, "Operating efficiency")
+
 fig = px.scatter(
     filtered,
     x="asset_turnover",
@@ -58,7 +76,44 @@ fig = px.scatter(
     title=f"{sector} Company Analysis",
 )
 
+fig.update_layout(
+    paper_bgcolor="#111827",
+    plot_bgcolor="#111827",
+    font={"color": "#F8FAFC"},
+    margin={"l": 10, "r": 10, "t": 60, "b": 10},
+)
+
 st.plotly_chart(
     fig,
     use_container_width=True,
 )
+
+render_section_header("Top ROE Companies in Sector")
+leader_cols = [col for col in ["company_id", "return_on_equity_pct", "asset_turnover", "free_cash_flow_cr"] if col in filtered.columns]
+leaders = filtered[leader_cols].copy()
+if "return_on_equity_pct" in leaders.columns:
+    leaders = leaders.sort_values("return_on_equity_pct", ascending=False)
+leaders = leaders.head(10)
+for col in ["return_on_equity_pct", "asset_turnover", "free_cash_flow_cr"]:
+    if col in leaders.columns:
+        leaders[col] = pd.to_numeric(leaders[col], errors="coerce").round(2)
+
+st.plotly_chart(
+    px.bar(
+        leaders,
+        x="company_id",
+        y="return_on_equity_pct" if "return_on_equity_pct" in leaders.columns else leaders.columns[1],
+        color="return_on_equity_pct" if "return_on_equity_pct" in leaders.columns else None,
+        color_continuous_scale="Blues",
+        title="Top 10 by ROE",
+    ).update_layout(
+        paper_bgcolor="#111827",
+        plot_bgcolor="#111827",
+        font={"color": "#F8FAFC"},
+        coloraxis_showscale=False,
+        margin={"l": 10, "r": 10, "t": 60, "b": 10},
+    ),
+    use_container_width=True,
+)
+
+st.dataframe(leaders.reset_index(drop=True), use_container_width=True)

@@ -1,16 +1,17 @@
-from .presets import (
-    quality_compounder,
-    value_pick,
-    growth_accelerator,
-    dividend_champion,
-    debt_free_bluechip,
-    turnaround_watch,
-)
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
-import yaml
 import pandas as pd
+import yaml
+
+from .presets import (
+    debt_free_bluechip,
+    dividend_champion,
+    growth_accelerator,
+    quality_compounder,
+    turnaround_watch,
+    value_pick,
+)
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
@@ -85,7 +86,7 @@ def apply_filters(data, config):
 
     filtered = data.copy()
 
-    filters = config["filters"]
+    config["filters"]
 
     return filtered
 result = apply_filters(df, config)

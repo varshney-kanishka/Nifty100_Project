@@ -44,6 +44,6 @@ if __name__ == "__main__":
 
     for company_id in test_ids:
         print(
-            f"{str(company_id):<12} -> "
+            f"{company_id!s:<12} -> "
             f"{normalize_company_id(company_id)}"
         )

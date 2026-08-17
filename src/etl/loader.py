@@ -2,11 +2,12 @@
 Nifty100 Project - Clean Excel -> CSV ETL
 """
 
-from .normaliser import normalize_company_id
-from pathlib import Path
 import re
+from pathlib import Path
+
 import pandas as pd
 
+from .normaliser import normalize_company_id
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 

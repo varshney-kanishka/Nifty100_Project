@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 DB_PATH = BASE_DIR / "data" / "database" / "nifty100.db"

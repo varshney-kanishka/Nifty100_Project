@@ -1,18 +1,16 @@
-from pathlib import Path
 import sqlite3
-
-
+from pathlib import Path
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 
 from src.screener.presets import (
-    quality_compounder,
-    value_pick,
-    growth_accelerator,
-    dividend_champion,
     debt_free_bluechip,
+    dividend_champion,
+    growth_accelerator,
+    quality_compounder,
     turnaround_watch,
+    value_pick,
 )
 
 # ============================================================
@@ -96,7 +94,7 @@ def database_health():
             "companies": company_count,
         }
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
 
         return {
             "status": "unhealthy",
@@ -117,14 +115,11 @@ def get_companies(
     """
 
     # Basic validation
-    if limit < 1:
-        limit = 1
+    limit = max(limit, 1)
 
-    if limit > 100:
-        limit = 100
+    limit = min(limit, 100)
 
-    if offset < 0:
-        offset = 0
+    offset = max(offset, 0)
 
     conn = get_connection()
 
@@ -342,11 +337,9 @@ def run_screener(
             },
         )
 
-    if limit < 1:
-        limit = 1
+    limit = max(limit, 1)
 
-    if limit > 100:
-        limit = 100
+    limit = min(limit, 100)
 
     conn = get_connection()
 
@@ -589,11 +582,9 @@ def get_peers(
 
     company_id = company_id.upper().strip()
 
-    if limit < 1:
-        limit = 1
+    limit = max(limit, 1)
 
-    if limit > 20:
-        limit = 20
+    limit = min(limit, 20)
 
     conn = get_connection()
 
@@ -1081,14 +1072,11 @@ def get_company_prices(
 
     company_id = company_id.upper().strip()
 
-    if limit < 1:
-        limit = 1
+    limit = max(limit, 1)
 
-    if limit > 1000:
-        limit = 1000
+    limit = min(limit, 1000)
 
-    if offset < 0:
-        offset = 0
+    offset = max(offset, 0)
 
     conn = get_connection()
 

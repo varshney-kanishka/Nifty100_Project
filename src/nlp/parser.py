@@ -1,9 +1,8 @@
-import sqlite3
 import re
+import sqlite3
 from pathlib import Path
 
 import pandas as pd
-
 
 print("=" * 70)
 print("DAY 29 - NLP ANALYSIS PARSER")

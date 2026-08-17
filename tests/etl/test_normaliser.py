@@ -1,4 +1,4 @@
-from src.etl.normaliser import normalize_year, normalize_ticker
+from src.etl.normaliser import normalize_ticker, normalize_year
 
 
 def test_normalize_year():

@@ -7,7 +7,6 @@ Validates processed CSV files using Data Quality Rules.
 """
 
 from pathlib import Path
-from typing import List
 
 import pandas as pd
 
@@ -30,7 +29,7 @@ FINANCIAL_TABLES = [
 VALIDATION_COLUMNS = ["file", "rule", "severity", "message"]
 
 
-def list_csv_files(directory: Path) -> List[Path]:
+def list_csv_files(directory: Path) -> list[Path]:
     return sorted(directory.glob("*.csv"))
 
 
@@ -43,8 +42,8 @@ def load_csv(file_path: Path) -> pd.DataFrame:
     return df
 
 
-def validate_companies(df: pd.DataFrame, file_name: str) -> List[dict]:
-    results: List[dict] = []
+def validate_companies(df: pd.DataFrame, file_name: str) -> list[dict]:
+    results: list[dict] = []
 
     if "id" not in df.columns:
         results.append(
@@ -71,8 +70,8 @@ def validate_companies(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_financial_table(df: pd.DataFrame, file_name: str) -> List[dict]:
-    results: List[dict] = []
+def validate_financial_table(df: pd.DataFrame, file_name: str) -> list[dict]:
+    results: list[dict] = []
 
     required_columns = ["company_id", "year"]
 
@@ -108,8 +107,8 @@ def validate_financial_table(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_primary_key(df: pd.DataFrame, file_name: str) -> List[dict]:
-    results: List[dict] = []
+def validate_primary_key(df: pd.DataFrame, file_name: str) -> list[dict]:
+    results: list[dict] = []
 
     # Check if id column exists
     if "id" not in df.columns:
@@ -172,7 +171,7 @@ def validate_foreign_key(df, file_name, valid_company_ids):
     return results
 
 
-def validate_company_id(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_company_id(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     if "company_id" not in df.columns:
@@ -197,7 +196,7 @@ def validate_company_id(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_year(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_year(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     if "year" not in df.columns:
@@ -222,7 +221,7 @@ def validate_year(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_empty_strings(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_empty_strings(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     object_cols = df.select_dtypes(include=["object", "string"]).columns
@@ -249,7 +248,7 @@ def validate_empty_strings(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_missing_values(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_missing_values(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     missing_by_column = df.isna().sum()
@@ -281,7 +280,7 @@ def validate_missing_values(df: pd.DataFrame, file_name: str) -> List[dict]:
 
     return results
 
-def validate_duplicate_rows(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_duplicate_rows(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     duplicate_rows = df[df.duplicated(keep=False)]
@@ -303,7 +302,7 @@ def validate_duplicate_rows(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_negative_values(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_negative_values(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     # Columns where negative values are legitimate
@@ -383,7 +382,7 @@ def validate_negative_values(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_future_dates(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_future_dates(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     if "date" not in df.columns:
@@ -410,7 +409,7 @@ def validate_future_dates(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_year_format(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_year_format(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     if "year" not in df.columns:
@@ -435,7 +434,7 @@ def validate_year_format(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_data_types(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_data_types(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     numeric_columns = df.select_dtypes(
@@ -470,7 +469,7 @@ def validate_data_types(df: pd.DataFrame, file_name: str) -> List[dict]:
 
     return results
 
-def validate_date_format(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_date_format(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     if "date" not in df.columns:
@@ -495,7 +494,7 @@ def validate_date_format(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_duplicate_columns(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_duplicate_columns(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     duplicate_columns = df.columns[df.columns.duplicated()]
@@ -517,7 +516,7 @@ def validate_duplicate_columns(df: pd.DataFrame, file_name: str) -> List[dict]:
     return results
 
 
-def validate_empty_dataset(df: pd.DataFrame, file_name: str) -> List[dict]:
+def validate_empty_dataset(df: pd.DataFrame, file_name: str) -> list[dict]:
     results = []
 
     if df.empty:
@@ -552,7 +551,7 @@ def summarize_dataset(df: pd.DataFrame) -> str:
     return "\n".join(summary_lines)
 
 
-def validate_file(file_path: Path, valid_company_ids: set) -> List[dict]:
+def validate_file(file_path: Path, valid_company_ids: set) -> list[dict]:
 
     print("\n" + "=" * 70)
     print(f"Reading File : {file_path.name}")
@@ -560,7 +559,7 @@ def validate_file(file_path: Path, valid_company_ids: set) -> List[dict]:
 
     try:
         df = load_csv(file_path)
-    except Exception as error:
+    except Exception as error:  # noqa: BLE001
         print(f"\n❌ Error reading {file_path.name}")
         print(error)
         return [
@@ -572,7 +571,7 @@ def validate_file(file_path: Path, valid_company_ids: set) -> List[dict]:
             }
         ]
 
-    results: List[dict] = []
+    results: list[dict] = []
 
     # DQ-01
     if file_path.name == "companies.csv":
@@ -635,7 +634,7 @@ def run_validation() -> pd.DataFrame:
     print(f"Total CSV Files : {len(csv_files)}")
     print("=" * 70)
 
-    validation_results: List[dict] = []
+    validation_results: list[dict] = []
     for csv_file in csv_files:
         validation_results.extend(validate_file(csv_file, valid_company_ids))
 

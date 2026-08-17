@@ -18,14 +18,13 @@ Outputs:
     output/cashflow_intelligence.xlsx
 """
 
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 from .cashflow_kpis import capital_allocation_pattern
-
 
 # ============================================================
 # PATHS

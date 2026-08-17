@@ -5,7 +5,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-
 print("=" * 70)
 print("DAY 30 - AUTO PROS & CONS GENERATOR")
 print("=" * 70)

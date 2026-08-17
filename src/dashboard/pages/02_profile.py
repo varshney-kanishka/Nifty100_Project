@@ -2,13 +2,32 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+from utils.db import (
+    get_bs,
+    get_company_list,
+    get_company_profile,
+    get_pl,
+    get_pros_cons,
+    get_ratios,
+    get_sectors,
+)
+from utils.theme import (
+    apply_theme,
+    format_currency,
+    format_percentage,
+    format_ratio,
+    render_metric_card,
+    render_page_header,
+    render_section_header,
+)
 
-from utils.db import get_bs, get_company_list, get_company_profile, get_pl, get_pros_cons, get_ratios, get_sectors
+apply_theme()
 
-
-st.title("Company Profile")
-
-
+render_page_header(
+    "Company Profile",
+    "Deep-dive view into a company’s operating performance, key metrics, and qualitative strengths.",
+    status="Companion research",
+)
 def _extract_year(value):
     if pd.isna(value):
         return None
@@ -127,13 +146,25 @@ if not sector_df.empty and "company_id" in sector_df.columns:
     sector_info = sector_df[sector_df["company_id"] == selected_ticker]
 
 company_meta = st.columns([1.2, 1.2, 1.2, 1.2])
-company_meta[0].metric("Ticker", selected_ticker)
-company_meta[1].metric("Sector", sector_info.iloc[0]["broad_sector"] if not sector_info.empty and "broad_sector" in sector_info.columns else "N/A")
-company_meta[2].metric("Sub-sector", sector_info.iloc[0]["sub_sector"] if not sector_info.empty and "sub_sector" in sector_info.columns else "N/A")
-company_meta[3].metric("Website", company_info.get("website", "N/A") if pd.notna(company_info.get("website", None)) else "N/A")
+
+render_section_header("Company Identity")
+with company_meta[0]:
+    render_metric_card("Ticker", selected_ticker, "Selected company")
+with company_meta[1]:
+    render_metric_card(
+        "Sector",
+        sector_info.iloc[0]["broad_sector"] if not sector_info.empty and "broad_sector" in sector_info.columns else "N/A",
+    )
+with company_meta[2]:
+    render_metric_card(
+        "Sub-sector",
+        sector_info.iloc[0]["sub_sector"] if not sector_info.empty and "sub_sector" in sector_info.columns else "N/A",
+    )
+with company_meta[3]:
+    render_metric_card("Website", company_info.get("website", "N/A") if pd.notna(company_info.get("website", None)) else "N/A")
 
 if "about_company" in profile.columns and pd.notna(company_info.get("about_company", None)):
-    st.markdown("### About company")
+    render_section_header("About Company")
     st.write(company_info["about_company"])
 
 ratios = get_ratios(ticker=selected_ticker)
@@ -145,8 +176,7 @@ else:
     ratios = ratios.sort_values(["year_sort", "year"], ascending=[False, False])
     latest = ratios.iloc[0]
 
-    st.markdown("---")
-    st.subheader("Key performance indicators")
+    render_section_header("Key Performance Indicators")
     metric_columns = st.columns(3)
     card_values = [
         ("ROE", latest.get("return_on_equity_pct", None), "%"),
@@ -161,83 +191,104 @@ else:
         if label == "Revenue CAGR":
             pl_df = get_pl(selected_ticker)
             value = _build_revenue_cagr(pl_df)
-        display_value = _format_metric(value, suffix=suffix)
-        metric_columns[index % 3].metric(label, display_value)
+        if suffix == "%":
+            display_value = format_percentage(value)
+        elif suffix == "x":
+            display_value = format_ratio(value)
+        elif suffix == "₹ Cr":
+            display_value = format_currency(value)
+        else:
+            display_value = _format_metric(value, suffix=suffix)
+        with metric_columns[index % 3]:
+            render_metric_card(label, display_value)
 
-    st.markdown("---")
-    st.subheader("Performance trends")
+    trend_tab, profitability_tab, qualitative_tab = st.tabs(["Trendlines", "Profitability", "Qualitative Signals"])
 
     pl_df = get_pl(selected_ticker)
-    if not pl_df.empty and "sales" in pl_df.columns:
-        revenue_history = pl_df[["year", "sales"]].copy()
-        revenue_history["year_num"] = revenue_history["year"].apply(_extract_year)
-        revenue_history = revenue_history.dropna(subset=["year_num", "sales"]).sort_values("year_num")
-        revenue_history = revenue_history.tail(10)
-        revenue_fig = px.bar(
-            revenue_history,
-            x="year",
-            y="sales",
-            text="sales",
-            title="10-year Revenue",
-        )
-        revenue_fig.update_traces(texttemplate="%{text:,.0f}", textposition="outside")
-        st.plotly_chart(revenue_fig, use_container_width=True)
 
-    if not pl_df.empty and "net_profit" in pl_df.columns:
-        profit_history = pl_df[["year", "net_profit"]].copy()
-        profit_history["year_num"] = profit_history["year"].apply(_extract_year)
-        profit_history = profit_history.dropna(subset=["year_num", "net_profit"]).sort_values("year_num")
-        profit_history = profit_history.tail(10)
-        profit_fig = px.bar(
-            profit_history,
-            x="year",
-            y="net_profit",
-            text="net_profit",
-            title="10-year Net Profit",
-        )
-        profit_fig.update_traces(texttemplate="%{text:,.0f}", textposition="outside")
-        st.plotly_chart(profit_fig, use_container_width=True)
+    with trend_tab:
+        render_section_header("Revenue and Profit Trajectory")
+        if not pl_df.empty and "sales" in pl_df.columns:
+            revenue_history = pl_df[["year", "sales"]].copy()
+            revenue_history["year_num"] = revenue_history["year"].apply(_extract_year)
+            revenue_history = revenue_history.dropna(subset=["year_num", "sales"]).sort_values("year_num")
+            revenue_history = revenue_history.tail(10)
+            revenue_fig = px.bar(
+                revenue_history,
+                x="year",
+                y="sales",
+                text="sales",
+                title="10-year Revenue",
+                color_discrete_sequence=["#3B82F6"],
+            )
+            revenue_fig.update_traces(texttemplate="%{text:,.0f}", textposition="outside")
+            revenue_fig.update_layout(paper_bgcolor="#111827", plot_bgcolor="#111827", font={"color": "#F8FAFC"})
+            st.plotly_chart(revenue_fig, use_container_width=True)
 
-    roe_history = ratios[["year", "return_on_equity_pct"]].copy().rename(columns={"return_on_equity_pct": "roe"})
-    roce_history = _build_roce_history(selected_ticker).rename(columns={"roce_pct": "roce"})
-    chart_df = roe_history.merge(roce_history, on="year", how="outer")
-    chart_df = chart_df.dropna(subset=["roe", "roce"], how="all")
-    if not chart_df.empty:
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=chart_df["year"], y=chart_df["roe"], mode="lines+markers", name="ROE", yaxis="y"))
-        fig.add_trace(go.Scatter(x=chart_df["year"], y=chart_df["roce"], mode="lines+markers", name="ROCE", yaxis="y2"))
-        fig.update_layout(
-            title="ROE vs ROCE",
-            yaxis=dict(title="ROE (%)"),
-            yaxis2=dict(title="ROCE (%)", overlaying="y", side="right"),
-        )
-        st.plotly_chart(fig, use_container_width=True)
+        if not pl_df.empty and "net_profit" in pl_df.columns:
+            profit_history = pl_df[["year", "net_profit"]].copy()
+            profit_history["year_num"] = profit_history["year"].apply(_extract_year)
+            profit_history = profit_history.dropna(subset=["year_num", "net_profit"]).sort_values("year_num")
+            profit_history = profit_history.tail(10)
+            profit_fig = px.bar(
+                profit_history,
+                x="year",
+                y="net_profit",
+                text="net_profit",
+                title="10-year Net Profit",
+                color_discrete_sequence=["#22C55E"],
+            )
+            profit_fig.update_traces(texttemplate="%{text:,.0f}", textposition="outside")
+            profit_fig.update_layout(paper_bgcolor="#111827", plot_bgcolor="#111827", font={"color": "#F8FAFC"})
+            st.plotly_chart(profit_fig, use_container_width=True)
 
-pros_cons = get_pros_cons(selected_ticker)
-st.markdown("---")
-st.subheader("Pros & Cons")
-if pros_cons.empty:
-    st.info("No pros and cons are available for this company.")
-else:
-    if "pros" in pros_cons.columns:
-        st.markdown("**Pros**")
-        for _, row in pros_cons.iterrows():
-            if pd.notna(row["pros"]):
-                for item in str(row["pros"]).split("\n"):
-                    item = item.strip()
-                    if item:
-                        st.markdown(
-                            f"<span style='display:inline-block;padding:4px 10px;margin:4px 0;border-radius:999px;background:#e8f5e9;color:#2e7d32;'>{item}</span>",
-                            unsafe_allow_html=True,
-                        )
-    if "cons" in pros_cons.columns:
-        st.markdown("**Cons**")
-        for _, row in pros_cons.iterrows():
-            if pd.notna(row["cons"]):
-                for item in str(row["cons"]).split("\n"):
-                    item = item.strip()
-                    if item:
-                        st.markdown(
-                            f"<span style='display:inline-block;padding:4px 10px;margin:4px 0;border-radius:999px;background:#ffebee;color:#c62828;'>{item}</span>",
-                            unsafe_allow_html=True,
-                        )
+    with profitability_tab:
+        render_section_header("ROE vs ROCE")
+        roe_history = ratios[["year", "return_on_equity_pct"]].copy().rename(columns={"return_on_equity_pct": "roe"})
+        roce_history = _build_roce_history(selected_ticker).rename(columns={"roce_pct": "roce"})
+        chart_df = roe_history.merge(roce_history, on="year", how="outer")
+        chart_df = chart_df.dropna(subset=["roe", "roce"], how="all")
+        if chart_df.empty:
+            st.info("Not enough data to compare ROE and ROCE.")
+        else:
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=chart_df["year"], y=chart_df["roe"], mode="lines+markers", name="ROE", yaxis="y"))
+            fig.add_trace(go.Scatter(x=chart_df["year"], y=chart_df["roce"], mode="lines+markers", name="ROCE", yaxis="y2"))
+            fig.update_layout(
+                title="ROE vs ROCE",
+                yaxis={"title": "ROE (%)"},
+                yaxis2={"title": "ROCE (%)", "overlaying": "y", "side": "right"},
+                paper_bgcolor="#111827",
+                plot_bgcolor="#111827",
+                font={"color": "#F8FAFC"},
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+    with qualitative_tab:
+        render_section_header("Pros & Cons")
+        pros_cons = get_pros_cons(selected_ticker)
+        if pros_cons.empty:
+            st.info("No pros and cons are available for this company.")
+        else:
+            if "pros" in pros_cons.columns:
+                st.markdown("**Pros**")
+                for _, row in pros_cons.iterrows():
+                    if pd.notna(row["pros"]):
+                        for item in str(row["pros"]).split("\n"):
+                            item = item.strip()
+                            if item:
+                                st.markdown(
+                                    f"<span style='display:inline-block;padding:4px 10px;margin:4px 0;border-radius:999px;background:#123422;color:#a7f3d0;border:1px solid #1f6f46;'>{item}</span>",
+                                    unsafe_allow_html=True,
+                                )
+            if "cons" in pros_cons.columns:
+                st.markdown("**Cons**")
+                for _, row in pros_cons.iterrows():
+                    if pd.notna(row["cons"]):
+                        for item in str(row["cons"]).split("\n"):
+                            item = item.strip()
+                            if item:
+                                st.markdown(
+                                    f"<span style='display:inline-block;padding:4px 10px;margin:4px 0;border-radius:999px;background:#3a1318;color:#fecaca;border:1px solid #7f1d1d;'>{item}</span>",
+                                    unsafe_allow_html=True,
+                                )

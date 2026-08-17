@@ -1,8 +1,9 @@
-from pathlib import Path
 import sqlite3
-import pandas as pd
+from pathlib import Path
 
+import pandas as pd
 from presets import *
+
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 DB = BASE_DIR / "data/database/nifty100.db"
