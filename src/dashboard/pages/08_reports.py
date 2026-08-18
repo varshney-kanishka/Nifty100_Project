@@ -1,6 +1,6 @@
-import pandas as pd
+﻿import pandas as pd
 import streamlit as st
-from utils.db import get_companies
+from utils.db import get_companies, get_company_profile
 from utils.theme import (
     apply_theme,
     render_metric_card,
@@ -23,27 +23,44 @@ ticker = st.selectbox(
     "Company",
     options=companies["id"].tolist(),
     format_func=lambda ticker: (
-        f"{ticker} — "
+        f"{ticker} â€” "
         f"{companies.loc[companies['id'] == ticker, 'company_name'].iloc[0]}"
     ),
 )
 
 render_section_header("Report Coverage")
-st.caption(f"Showing placeholder report availability timeline for {ticker}.")
+st.caption("Coverage is derived from available company profile links in the database.")
+
+company_profile = get_company_profile(ticker)
+
+if company_profile.empty:
+    st.info("No profile records found for this company.")
+    st.stop()
+
+profile = company_profile.iloc[0]
 
 report_df = pd.DataFrame(
     {
-        "Year": [2024, 2023, 2022],
-        "Report": ["Available", "Available", "Unavailable"],
+        "Source": ["Company Website", "NSE Profile", "BSE Profile"],
+        "Link": [
+            profile.get("website"),
+            profile.get("nse_profile"),
+            profile.get("bse_profile"),
+        ],
     }
 )
+report_df["Available"] = report_df["Link"].notna() & (report_df["Link"].astype(str).str.strip() != "")
 
 summary_cols = st.columns(3)
 with summary_cols[0]:
-    render_metric_card("Available Reports", int((report_df["Report"] == "Available").sum()), "Last 3 fiscal years")
+    render_metric_card("Available Sources", int(report_df["Available"].sum()), "Current link coverage")
 with summary_cols[1]:
-    render_metric_card("Missing Reports", int((report_df["Report"] == "Unavailable").sum()), "Requires follow-up")
+    render_metric_card("Missing Sources", int((~report_df["Available"]).sum()), "Needs enrichment")
 with summary_cols[2]:
-    render_metric_card("Coverage Ratio", f"{((report_df['Report'] == 'Available').mean() * 100):.0f}%", "Availability share")
+    render_metric_card("Coverage Ratio", f"{(report_df['Available'].mean() * 100):.0f}%", "Availability share")
 
-st.dataframe(report_df, use_container_width=True)
+display = report_df.copy()
+display["Link"] = display["Link"].fillna("Not available")
+display["Available"] = display["Available"].map({True: "Yes", False: "No"})
+st.dataframe(display, width="stretch")
+

@@ -321,3 +321,21 @@ def get_pros_cons(ticker):
 
     conn.close()
     return df
+
+
+@st.cache_data(ttl=600)
+def get_stock_prices(ticker=None):
+    conn = get_connection()
+    if not _table_exists(conn, "stock_prices"):
+        conn.close()
+        return pd.DataFrame()
+
+    query = "SELECT * FROM stock_prices"
+    params = []
+    if ticker is not None:
+        query += " WHERE company_id = ?"
+        params.append(ticker)
+
+    df = pd.read_sql_query(query, conn, params=params)
+    conn.close()
+    return df

@@ -6,16 +6,16 @@ import pandas as pd
 import streamlit as st
 
 COLORS = {
-    "bg": "#0B1220",
+    "bg": "#0F172A",
     "surface": "#111827",
-    "panel": "#172033",
-    "primary": "#3B82F6",
-    "positive": "#22C55E",
-    "negative": "#EF4444",
-    "warning": "#F59E0B",
-    "text": "#F8FAFC",
-    "muted": "#94A3B8",
-    "border": "#263244",
+    "panel": "#1A2438",
+    "primary": "#2563EB",
+    "positive": "#16A34A",
+    "negative": "#DC2626",
+    "warning": "#D97706",
+    "text": "#E5E7EB",
+    "muted": "#9CA3AF",
+    "border": "#2B3851",
 }
 
 
@@ -23,6 +23,8 @@ def apply_theme() -> None:
     st.markdown(
         f"""
         <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
         :root {{
             --bg: {COLORS['bg']};
             --surface: {COLORS['surface']};
@@ -34,17 +36,22 @@ def apply_theme() -> None:
             --text: {COLORS['text']};
             --muted: {COLORS['muted']};
             --border: {COLORS['border']};
+            --font-ui: 'IBM Plex Sans', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'IBM Plex Mono', 'Consolas', 'Monaco', monospace;
         }}
 
         .stApp {{
             background: var(--bg);
             color: var(--text);
+            font-family: var(--font-ui);
+            font-feature-settings: 'tnum' 1, 'lnum' 1;
+            letter-spacing: 0.005em;
         }}
 
         .stApp .main .block-container {{
-            padding-top: 1.25rem;
+            padding-top: 1rem;
             padding-bottom: 2.5rem;
-            max-width: 1480px;
+            max-width: 1540px;
         }}
 
         div[data-testid="stSidebar"] {{
@@ -53,7 +60,7 @@ def apply_theme() -> None:
         }}
 
         .theme-brand {{
-            background: linear-gradient(180deg, rgba(59,130,246,0.12), rgba(15,23,42,0.0));
+            background: rgba(37, 99, 235, 0.08);
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 0.9rem 0.9rem 0.75rem 0.9rem;
@@ -67,6 +74,7 @@ def apply_theme() -> None:
             text-transform: uppercase;
             color: var(--text);
             margin: 0;
+            font-family: var(--font-ui);
         }}
 
         .brand-subtitle {{
@@ -88,7 +96,7 @@ def apply_theme() -> None:
 
         .theme-header {{
             border: 1px solid var(--border);
-            background: linear-gradient(180deg, rgba(17,24,39,1), rgba(17,24,39,0.8));
+            background: rgba(17, 24, 39, 0.92);
             border-radius: 16px;
             padding: 1rem 1.25rem;
             margin-bottom: 1.25rem;
@@ -100,6 +108,7 @@ def apply_theme() -> None:
             font-weight: 700;
             letter-spacing: 0.02em;
             color: var(--text);
+            font-family: var(--font-ui);
         }}
 
         .theme-page-subtitle {{
@@ -126,11 +135,12 @@ def apply_theme() -> None:
         }}
 
         .metric-card {{
-            background: linear-gradient(180deg, rgba(17,24,39,1), rgba(23,32,51,1));
+            background: rgba(17, 24, 39, 0.96);
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 0.9rem 1rem;
             min-height: 110px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
         }}
 
         .metric-card .label {{
@@ -143,9 +153,10 @@ def apply_theme() -> None:
 
         .metric-card .value {{
             color: var(--text);
-            font-size: 1.7rem;
+            font-size: 1.55rem;
             font-weight: 700;
             line-height: 1.2;
+            font-family: var(--font-ui);
         }}
 
         .metric-card .delta {{
@@ -208,6 +219,16 @@ def apply_theme() -> None:
             padding: 0.7rem 0.8rem;
         }}
 
+        [data-testid="stMetricValue"],
+        [data-testid="stMetricDelta"] {{
+            font-family: var(--font-ui);
+        }}
+
+        [data-testid="stMetricValue"] {{
+            font-weight: 700;
+            color: var(--text);
+        }}
+
         .stDataFrame {{
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -233,10 +254,43 @@ def apply_theme() -> None:
             color: var(--text);
             border: 1px solid var(--border);
             border-radius: 10px;
+            font-weight: 600;
+        }}
+
+        .stButton > button {{
+            background: rgba(37, 99, 235, 0.12);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-weight: 600;
+        }}
+
+        .stButton > button:hover,
+        .stDownloadButton > button:hover {{
+            border-color: rgba(37, 99, 235, 0.7);
+            background: rgba(37, 99, 235, 0.2);
+        }}
+
+        .stSelectbox [data-baseweb="select"] > div,
+        .stTextInput input,
+        .stNumberInput input {{
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+        }}
+
+        [data-baseweb="tooltip"] {{
+            font-family: var(--font-ui);
+            font-size: 0.78rem;
+            border: 1px solid var(--border);
+            background: #111827;
+            color: var(--text);
         }}
 
         .stSelectbox label, .stSlider label, .stNumberInput label, .stTextInput label {{
             color: var(--muted);
+            font-weight: 600;
         }}
 
         .stTabs [role="tablist"] {{
@@ -343,3 +397,46 @@ def format_ratio(value: Any, digits: int = 2) -> str:
     except (TypeError, ValueError):
         return str(value)
     return f"{numeric:.{digits}f}x"
+
+
+def apply_chart_theme(
+    fig: Any,
+    title: str | None = None,
+    x_title: str | None = None,
+    y_title: str | None = None,
+    show_legend: bool = True,
+) -> Any:
+    if title is not None:
+        fig.update_layout(title=title)
+
+    fig.update_layout(
+        paper_bgcolor=COLORS["surface"],
+        plot_bgcolor=COLORS["surface"],
+        font={"color": COLORS["text"], "family": "IBM Plex Sans, Segoe UI, sans-serif", "size": 13},
+        title_font={"size": 16, "color": COLORS["text"]},
+        margin={"l": 14, "r": 14, "t": 56, "b": 14},
+        showlegend=show_legend,
+        legend={"bgcolor": "rgba(15, 23, 42, 0.55)", "bordercolor": COLORS["border"], "borderwidth": 1},
+        hoverlabel={"bgcolor": "#0F172A", "bordercolor": COLORS["border"], "font": {"color": COLORS["text"], "size": 12}},
+    )
+
+    fig.update_xaxes(
+        title_text=x_title,
+        showline=True,
+        linewidth=1,
+        linecolor=COLORS["border"],
+        showgrid=False,
+        zeroline=False,
+    )
+
+    fig.update_yaxes(
+        title_text=y_title,
+        showline=True,
+        linewidth=1,
+        linecolor=COLORS["border"],
+        showgrid=True,
+        gridcolor="rgba(156, 163, 175, 0.12)",
+        zeroline=False,
+    )
+
+    return fig

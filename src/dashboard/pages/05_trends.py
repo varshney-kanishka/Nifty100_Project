@@ -1,8 +1,9 @@
-import pandas as pd
+﻿import pandas as pd
 import plotly.express as px
 import streamlit as st
 from utils.db import get_companies, get_pl
 from utils.theme import (
+    apply_chart_theme,
     apply_theme,
     format_currency,
     render_metric_card,
@@ -25,7 +26,7 @@ ticker = st.selectbox(
     "Select Company",
     options=companies["id"].tolist(),
     format_func=lambda ticker: (
-        f"{ticker} — "
+        f"{ticker} â€” "
         f"{companies.loc[companies['id'] == ticker, 'company_name'].iloc[0]}"
     ),
 )
@@ -67,11 +68,9 @@ fig = px.line(
 )
 
 fig.update_layout(
-    paper_bgcolor="#111827",
-    plot_bgcolor="#111827",
-    font={"color": "#F8FAFC"},
-    margin={"l": 10, "r": 10, "t": 60, "b": 10},
+    title=metric,
 )
+apply_chart_theme(fig, x_title="Year", y_title=metric.replace("_", " ").title(), show_legend=False)
 
 render_section_header("Trend Snapshot")
 latest = pl.dropna(subset=[metric]).tail(1)
@@ -92,5 +91,6 @@ with summary_cols[2]:
 
 st.plotly_chart(
     fig,
-    use_container_width=True
+    width="stretch"
 )
+

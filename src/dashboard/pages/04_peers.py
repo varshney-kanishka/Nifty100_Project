@@ -1,8 +1,10 @@
-import pandas as pd
+﻿import pandas as pd
+import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 from utils.db import get_companies, get_peers, get_pl, get_ratios
 from utils.theme import (
+    apply_chart_theme,
     apply_theme,
     format_percentage,
     format_ratio,
@@ -38,6 +40,9 @@ if group_df.empty:
 
 company_ids = [str(company_id) for company_id in group_df["company_id"].dropna().astype(str).tolist()]
 selected_company = st.selectbox("Select Company", company_ids)
+selected_name = companies.loc[companies["id"] == selected_company, "company_name"].iloc[0] if not companies.empty and "id" in companies.columns and (companies["id"] == selected_company).any() else selected_company
+
+st.markdown(f"### Focus Company: {selected_name} ({selected_company})")
 
 company_lookup = companies.set_index("id") if not companies.empty and "id" in companies.columns else pd.DataFrame(index=[])
 
@@ -87,17 +92,23 @@ for index in range(len(metrics)):
     values = [row[index] for row in peer_values]
     peer_averages.append(sum(values) / len(values) if values else 0.0)
 
+comparison_df = pd.DataFrame(
+    {
+        "Metric": metrics,
+        "Selected Company": selected_values,
+        "Peer Average": peer_averages,
+    }
+)
+
 fig = go.Figure()
 fig.add_trace(go.Scatterpolar(r=selected_values, theta=metrics, fill="toself", name=selected_company))
 fig.add_trace(go.Scatterpolar(r=peer_averages, theta=metrics, name="Peer Average"))
 fig.update_layout(
     title="Company vs Peer Radar",
     polar={"radialaxis": {"visible": True, "range": [0, max(100, max(selected_values + peer_averages) * 1.2)]}},
-    paper_bgcolor="#111827",
-    plot_bgcolor="#111827",
-    font={"color": "#F8FAFC"},
     showlegend=True,
 )
+apply_chart_theme(fig)
 
 render_section_header("Peer Snapshot")
 summary = st.columns(3)
@@ -108,7 +119,29 @@ with summary[1]:
 with summary[2]:
     render_metric_card("NPM vs Peers", f"{format_percentage(selected_values[2])} / {format_percentage(peer_averages[2])}", "Selected / average")
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
+
+render_section_header("Metric-by-Metric Comparison")
+long_df = comparison_df.melt(id_vars=["Metric"], var_name="Series", value_name="Value")
+bar_fig = px.bar(
+    long_df,
+    x="Metric",
+    y="Value",
+    color="Series",
+    barmode="group",
+    title="Selected Company vs Peer Average",
+    color_discrete_map={"Selected Company": "#3B82F6", "Peer Average": "#94A3B8"},
+)
+bar_fig.update_layout(
+    legend_title_text="Series",
+)
+apply_chart_theme(bar_fig, x_title="Metric", y_title="Value")
+bar_fig.update_traces(hovertemplate="%{x}<br>%{fullData.name}: %{y:,.2f}<extra></extra>")
+st.plotly_chart(bar_fig, width="stretch")
+
+comparison_df["Gap (Selected - Peer)"] = comparison_df["Selected Company"] - comparison_df["Peer Average"]
+comparison_df["Gap (Selected - Peer)"] = comparison_df["Gap (Selected - Peer)"].round(2)
+st.dataframe(comparison_df, width="stretch")
 
 table = group_df.merge(
     companies,
@@ -128,7 +161,7 @@ peer_display = table[display_cols].copy()
 if "is_benchmark" in peer_display.columns:
     peer_display["is_benchmark"] = peer_display["is_benchmark"].map({1: "Yes", 0: "No"}).fillna("No")
 
-st.dataframe(peer_display, use_container_width=True)
+st.dataframe(peer_display, width="stretch")
 
 benchmark = table[table["is_benchmark"] == 1]
 render_section_header("Benchmark Company")
@@ -136,4 +169,4 @@ if benchmark.empty:
     st.info("No benchmark company is tagged for this peer group.")
 else:
     benchmark_cols = [col for col in ["company_id", "company_name", "peer_group_name"] if col in benchmark.columns]
-    st.dataframe(benchmark[benchmark_cols], use_container_width=True)
+    st.dataframe(benchmark[benchmark_cols], width="stretch")

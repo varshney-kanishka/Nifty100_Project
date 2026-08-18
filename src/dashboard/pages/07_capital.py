@@ -1,8 +1,9 @@
-import pandas as pd
+﻿import pandas as pd
 import plotly.express as px
 import streamlit as st
 from utils.db import get_ratios
 from utils.theme import (
+    apply_chart_theme,
     apply_theme,
     format_currency,
     format_percentage,
@@ -84,15 +85,13 @@ else:
     )
 
     fig.update_layout(
-        paper_bgcolor="#111827",
-        plot_bgcolor="#111827",
-        font={"color": "#F8FAFC"},
-        margin={"l": 10, "r": 10, "t": 60, "b": 10},
+        title="Capital Allocation by Company",
     )
+    apply_chart_theme(fig)
 
     st.plotly_chart(
         fig,
-        use_container_width=True,
+        width="stretch",
     )
 
     render_section_header("Allocation Patterns")
@@ -102,4 +101,4 @@ else:
         .reset_index(name="company_count")
         .sort_values("company_count", ascending=False)
     )
-    st.dataframe(pattern_summary, use_container_width=True)
+    st.dataframe(pattern_summary, width="stretch")

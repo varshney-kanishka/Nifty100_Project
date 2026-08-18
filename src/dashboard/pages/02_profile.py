@@ -1,4 +1,4 @@
-import pandas as pd
+﻿import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
@@ -12,6 +12,7 @@ from utils.db import (
     get_sectors,
 )
 from utils.theme import (
+    apply_chart_theme,
     apply_theme,
     format_currency,
     format_percentage,
@@ -25,7 +26,7 @@ apply_theme()
 
 render_page_header(
     "Company Profile",
-    "Deep-dive view into a company’s operating performance, key metrics, and qualitative strengths.",
+    "Deep-dive view into a companyâ€™s operating performance, key metrics, and qualitative strengths.",
     status="Companion research",
 )
 def _extract_year(value):
@@ -128,7 +129,7 @@ if filtered.empty:
 selected_ticker = st.selectbox(
     "Select company",
     options=filtered["id"].tolist(),
-    format_func=lambda ticker: f"{ticker} — {company_list.loc[company_list['id'] == ticker, 'company_name'].iat[0]}",
+    format_func=lambda ticker: f"{ticker} â€” {company_list.loc[company_list['id'] == ticker, 'company_name'].iat[0]}",
 )
 
 profile = get_company_profile(selected_ticker)
@@ -184,7 +185,7 @@ else:
         ("Net Profit Margin", latest.get("net_profit_margin_pct", None), "%"),
         ("Debt to Equity", latest.get("debt_to_equity", None), "x"),
         ("Revenue CAGR", None, "%"),
-        ("Free Cash Flow", latest.get("free_cash_flow_cr", None), "₹ Cr"),
+        ("Free Cash Flow", latest.get("free_cash_flow_cr", None), "â‚¹ Cr"),
     ]
 
     for index, (label, value, suffix) in enumerate(card_values):
@@ -195,7 +196,7 @@ else:
             display_value = format_percentage(value)
         elif suffix == "x":
             display_value = format_ratio(value)
-        elif suffix == "₹ Cr":
+        elif suffix == "â‚¹ Cr":
             display_value = format_currency(value)
         else:
             display_value = _format_metric(value, suffix=suffix)
@@ -222,8 +223,8 @@ else:
                 color_discrete_sequence=["#3B82F6"],
             )
             revenue_fig.update_traces(texttemplate="%{text:,.0f}", textposition="outside")
-            revenue_fig.update_layout(paper_bgcolor="#111827", plot_bgcolor="#111827", font={"color": "#F8FAFC"})
-            st.plotly_chart(revenue_fig, use_container_width=True)
+            apply_chart_theme(revenue_fig, x_title="Year", y_title="Sales", show_legend=False)
+            st.plotly_chart(revenue_fig, width="stretch")
 
         if not pl_df.empty and "net_profit" in pl_df.columns:
             profit_history = pl_df[["year", "net_profit"]].copy()
@@ -239,8 +240,8 @@ else:
                 color_discrete_sequence=["#22C55E"],
             )
             profit_fig.update_traces(texttemplate="%{text:,.0f}", textposition="outside")
-            profit_fig.update_layout(paper_bgcolor="#111827", plot_bgcolor="#111827", font={"color": "#F8FAFC"})
-            st.plotly_chart(profit_fig, use_container_width=True)
+            apply_chart_theme(profit_fig, x_title="Year", y_title="Net Profit", show_legend=False)
+            st.plotly_chart(profit_fig, width="stretch")
 
     with profitability_tab:
         render_section_header("ROE vs ROCE")
@@ -258,11 +259,9 @@ else:
                 title="ROE vs ROCE",
                 yaxis={"title": "ROE (%)"},
                 yaxis2={"title": "ROCE (%)", "overlaying": "y", "side": "right"},
-                paper_bgcolor="#111827",
-                plot_bgcolor="#111827",
-                font={"color": "#F8FAFC"},
             )
-            st.plotly_chart(fig, use_container_width=True)
+            apply_chart_theme(fig, x_title="Year", y_title="ROE (%)")
+            st.plotly_chart(fig, width="stretch")
 
     with qualitative_tab:
         render_section_header("Pros & Cons")
@@ -292,3 +291,4 @@ else:
                                     f"<span style='display:inline-block;padding:4px 10px;margin:4px 0;border-radius:999px;background:#3a1318;color:#fecaca;border:1px solid #7f1d1d;'>{item}</span>",
                                     unsafe_allow_html=True,
                                 )
+

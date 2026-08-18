@@ -1,8 +1,9 @@
-import pandas as pd
+﻿import pandas as pd
 import plotly.express as px
 import streamlit as st
 from utils.db import get_companies, get_ratios, get_sectors
 from utils.theme import (
+    apply_chart_theme,
     apply_theme,
     format_percentage,
     render_metric_card,
@@ -77,15 +78,13 @@ fig = px.scatter(
 )
 
 fig.update_layout(
-    paper_bgcolor="#111827",
-    plot_bgcolor="#111827",
-    font={"color": "#F8FAFC"},
-    margin={"l": 10, "r": 10, "t": 60, "b": 10},
+    title=f"{sector} Company Analysis",
 )
+apply_chart_theme(fig, x_title="Asset Turnover", y_title="ROE (%)")
 
 st.plotly_chart(
     fig,
-    use_container_width=True,
+    width="stretch",
 )
 
 render_section_header("Top ROE Companies in Sector")
@@ -99,21 +98,19 @@ for col in ["return_on_equity_pct", "asset_turnover", "free_cash_flow_cr"]:
         leaders[col] = pd.to_numeric(leaders[col], errors="coerce").round(2)
 
 st.plotly_chart(
-    px.bar(
+    apply_chart_theme(
+        px.bar(
         leaders,
         x="company_id",
         y="return_on_equity_pct" if "return_on_equity_pct" in leaders.columns else leaders.columns[1],
         color="return_on_equity_pct" if "return_on_equity_pct" in leaders.columns else None,
         color_continuous_scale="Blues",
         title="Top 10 by ROE",
-    ).update_layout(
-        paper_bgcolor="#111827",
-        plot_bgcolor="#111827",
-        font={"color": "#F8FAFC"},
-        coloraxis_showscale=False,
-        margin={"l": 10, "r": 10, "t": 60, "b": 10},
-    ),
-    use_container_width=True,
+        ),
+        x_title="Company",
+        y_title="ROE (%)",
+    ).update_layout(coloraxis_showscale=False),
+    width="stretch",
 )
 
-st.dataframe(leaders.reset_index(drop=True), use_container_width=True)
+st.dataframe(leaders.reset_index(drop=True), width="stretch")
