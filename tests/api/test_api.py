@@ -347,3 +347,86 @@ def test_company_performance_case_insensitive():
     assert data["company_id"] == "RELIANCE"
     assert "start_date" in data
     assert "end_date" in data
+# ============================================================
+# VALUATION ROUTES
+# ============================================================
+
+def test_valuation_summary():
+    response = client.get("/valuation")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["count"] == 92
+    assert "companies" in data
+    assert len(data["companies"]) > 0
+
+
+def test_valuation_flags():
+    response = client.get("/valuation/flags")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert "count" in data
+    assert "flags" in data
+
+
+# ============================================================
+# DOCUMENT ROUTES
+# ============================================================
+
+def test_documents():
+    response = client.get("/documents")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["total"] == 1456
+    assert "documents" in data
+    assert len(data["documents"]) > 0
+
+
+def test_documents_pagination():
+    response = client.get("/documents?limit=5&offset=0")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["limit"] == 5
+    assert data["offset"] == 0
+    assert data["count"] <= 5
+
+
+def test_company_documents():
+    response = client.get("/documents/RELIANCE")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["company_id"] == "RELIANCE"
+    assert "documents" in data
+    assert data["count"] > 0
+
+
+def test_company_documents_case_insensitive():
+    response = client.get("/documents/reliance")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["company_id"] == "RELIANCE"
+
+
+def test_company_documents_not_found():
+    response = client.get(
+        "/documents/INVALID_COMPANY"
+    )
+
+    assert response.status_code == 404
