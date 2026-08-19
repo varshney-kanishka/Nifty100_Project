@@ -49,7 +49,19 @@ engine = create_engine(f"sqlite:///{DB_PATH}")
 # ======================================================
 
 csv_files = sorted(PROCESSED_FOLDER.glob("*.csv"))
+# ======================================================
+# NLP Pros/Cons Source Override
+# ======================================================
+# The generated NLP output is the authoritative source
+# for the prosandcons table.
+NLP_PROS_CONS_FILE = OUTPUT_FOLDER / "pros_cons_generated.csv"
 
+if NLP_PROS_CONS_FILE.exists():
+    csv_files = [
+        f for f in csv_files
+        if f.name != "prosandcons.csv"
+    ]
+    csv_files.append(NLP_PROS_CONS_FILE)
 print("=" * 70)
 print(f"Database : {DB_PATH}")
 print(f"Total CSV Files : {len(csv_files)}")
@@ -273,8 +285,13 @@ for file in csv_files:
         # --------------------------------------------------
         # Load valid rows into SQLite
         # --------------------------------------------------
+        # Use the canonical database table name
+        # for generated NLP output.
+        if file.name == "pros_cons_generated.csv":
+           table_name = "prosandcons"
+        else:
+           table_name = file.stem
 
-        table_name = file.stem
 
         df.to_sql(
             table_name,

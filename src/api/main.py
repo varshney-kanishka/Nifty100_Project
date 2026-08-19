@@ -633,7 +633,6 @@ def get_peers(
                 s.broad_sector,
                 fr.year,
                 fr.return_on_equity_pct,
-                fr.return_on_capital_employed_pct,
                 fr.net_profit_margin_pct,
                 fr.operating_profit_margin_pct,
                 fr.debt_to_equity,
@@ -709,9 +708,6 @@ def get_peers(
                 "year": row["year"],
                 "return_on_equity_pct": row[
                     "return_on_equity_pct"
-                ],
-                "return_on_capital_employed_pct": row[
-                    "return_on_capital_employed_pct"
                 ],
                 "net_profit_margin_pct": row[
                     "net_profit_margin_pct"
