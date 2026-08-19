@@ -583,7 +583,6 @@ def get_peers(
     company_id = company_id.upper().strip()
 
     limit = max(limit, 1)
-
     limit = min(limit, 20)
 
     conn = get_connection()
@@ -623,7 +622,7 @@ def get_peers(
         target_sector = target_df.iloc[0]["broad_sector"]
 
         # ----------------------------------------------------
-        # Get all companies in same sector
+        # Get companies in same sector
         # ----------------------------------------------------
 
         peers_query = """
@@ -638,9 +637,7 @@ def get_peers(
                 fr.debt_to_equity,
                 fr.interest_coverage,
                 fr.asset_turnover,
-                fr.free_cash_flow_cr,
-                fr.earnings_per_share,
-                fr.dividend_payout_ratio_pct
+                fr.free_cash_flow_cr
             FROM companies c
             INNER JOIN sectors s
                 ON c.id = s.company_id
@@ -657,7 +654,6 @@ def get_peers(
         )
 
     finally:
-
         conn.close()
 
     # --------------------------------------------------------
@@ -683,9 +679,11 @@ def get_peers(
             .tail(1)
         )
 
-        peers_df = peers_df.sort_values(
-            "company_name"
-        ).head(limit)
+        peers_df = (
+            peers_df
+            .sort_values("company_name")
+            .head(limit)
+        )
 
     # --------------------------------------------------------
     # Convert NaN to None
@@ -727,12 +725,6 @@ def get_peers(
                 "free_cash_flow_cr": row[
                     "free_cash_flow_cr"
                 ],
-                "earnings_per_share": row[
-                    "earnings_per_share"
-                ],
-                "dividend_payout_ratio_pct": row[
-                    "dividend_payout_ratio_pct"
-                ],
             }
         )
 
@@ -743,6 +735,7 @@ def get_peers(
         "count": len(peers),
         "peers": peers,
     }
+    
 # ============================================================
 # PORTFOLIO STATISTICS
 # ============================================================

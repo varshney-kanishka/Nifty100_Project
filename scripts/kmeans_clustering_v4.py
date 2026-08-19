@@ -4,8 +4,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
-from sklearn.metrics import davies_bouldin_score, silhouette_score
 from sklearn.preprocessing import RobustScaler
+from sklearn.metrics import davies_bouldin_score, silhouette_score
 
 
 # ============================================================
@@ -37,7 +37,6 @@ FEATURES = [
     "net_profit_margin_pct",
     "operating_profit_margin_pct",
     "return_on_equity_pct",
-    "return_on_capital_employed_pct",
     # Financial strength
     "debt_to_equity",
     "interest_coverage",
@@ -55,7 +54,6 @@ FEATURES = [
 
 RATIO_FEATURES = [
     "return_on_equity_pct",
-    "return_on_capital_employed_pct",
     "interest_coverage",
     "cfo_pat_ratio",
     "fcf_conversion_pct",
@@ -74,7 +72,6 @@ GENERAL_FEATURES = [
 
 LOG_FEATURES = [
     "return_on_equity_pct",
-    "return_on_capital_employed_pct",
     "interest_coverage",
     "cfo_pat_ratio",
     "fcf_conversion_pct",
@@ -84,7 +81,6 @@ FEATURE_LABELS = {
     "net_profit_margin_pct": "net profit margin",
     "operating_profit_margin_pct": "operating margin",
     "return_on_equity_pct": "ROE",
-    "return_on_capital_employed_pct": "ROCE",
     "debt_to_equity": "debt-to-equity",
     "interest_coverage": "interest coverage",
     "cfo_pat_ratio": "CFO/PAT",
@@ -98,7 +94,6 @@ FEATURE_LABELS = {
 
 OUTLIER_PRONE_FEATURES = {
     "return_on_equity_pct",
-    "return_on_capital_employed_pct",
     "interest_coverage",
     "cfo_pat_ratio",
     "fcf_conversion_pct",
@@ -190,12 +185,8 @@ def summarize_profitability(cluster_median_row, overall_median_row):
 
 def summarize_capital_efficiency(cluster_median_row, overall_median_row):
     roe = float(cluster_median_row["return_on_equity_pct"])
-    roce = float(cluster_median_row["return_on_capital_employed_pct"])
     roe_ref = float(overall_median_row["return_on_equity_pct"])
-    roce_ref = float(overall_median_row["return_on_capital_employed_pct"])
     return (
-        f"ROE {roe:.2f}% and ROCE {roce:.2f}% "
-        f"vs universe medians {roe_ref:.2f}%/{roce_ref:.2f}% "
         f"(use medians due to extreme outliers)."
     )
 
@@ -298,9 +289,7 @@ try:
             company_id,
             year,
             net_profit_margin_pct,
-            operating_profit_margin_pct,
             return_on_equity_pct,
-            return_on_capital_employed_pct,
             debt_to_equity,
             interest_coverage
         FROM financial_ratios
@@ -407,6 +396,12 @@ assert_condition((df["sector"].astype(str).str.strip() != "").all(), "Blank sect
 # ============================================================
 # FEATURE ENGINEERING
 # ============================================================
+# Recalculate operating margin from trusted raw P&L values.
+# Do not use financial_ratios.operating_profit_margin_pct because
+# the database column contains invalid values for 2024.
+df.loc[:, "operating_profit_margin_pct"] = (
+    safe_divide(df["operating_profit"], df["sales"]) * 100
+)
 
 df.loc[:, "cfo_pat_ratio"] = safe_divide(df["operating_activity"], df["net_profit"])
 df.loc[:, "fcf"] = df["operating_activity"] + df["investing_activity"]

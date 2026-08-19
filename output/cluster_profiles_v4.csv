@@ -1,6 +1,6 @@
-cluster,net_profit_margin_pct,operating_profit_margin_pct,return_on_equity_pct,return_on_capital_employed_pct,debt_to_equity,interest_coverage,cfo_pat_ratio,fcf_conversion_pct,capex_intensity_pct,pe_ratio,pb_ratio,ev_ebitda,dividend_yield_pct
-0,22.99,61.48,16.48,5.26,8.12,1.48,0.24,-59.69,32.79,30.09,5.29,22.73,2.34
-1,13.54,18.67,211.65,182.61,0.36,81.23,1.28,40.17,7.35,45.6,7.09,23.12,2.3
-2,12.05,82.06,128.82,874.56,0.1,81.64,2.17,9.27,9.33,51.83,10.19,26.94,2.83
-3,8.66,28.13,16.14,72.88,2.65,230.96,-4.91,-187.52,9.05,38.48,7.72,23.3,1.98
-4,51.02,43.43,10.01,10.09,0.93,287.44,3.27,-43.81,35.37,49.99,8.69,26.86,2.19
+cluster,net_profit_margin_pct,operating_profit_margin_pct,return_on_equity_pct,debt_to_equity,interest_coverage,cfo_pat_ratio,fcf_conversion_pct,capex_intensity_pct,pe_ratio,pb_ratio,ev_ebitda,dividend_yield_pct
+0,12.96,18.83,188.41,0.44,77.55,1.68,17.09,9.32,46.6,7.26,23.88,2.25
+1,18.87,37.69,25.07,5.42,303.51,-4.17,-250.18,5.72,34.56,6.65,21.91,1.77
+2,47.55,69.86,65.67,0.48,275.34,2.24,22.15,26.99,49.34,9.46,25.91,2.6
+3,2.07,29.06,4.81,0.81,7.33,-5.19,-87.24,11.01,37.79,7.93,25.15,1.97
+4,21.84,62.54,15.06,8.44,1.52,1.54,-16.46,43.97,31.86,5.42,22.7,2.72

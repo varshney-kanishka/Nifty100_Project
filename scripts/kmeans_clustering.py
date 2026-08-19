@@ -59,7 +59,6 @@ ratios = pd.read_sql_query(
         net_profit_margin_pct,
         operating_profit_margin_pct,
         return_on_equity_pct,
-        return_on_capital_employed_pct,
         debt_to_equity,
         interest_coverage,
         asset_turnover,
