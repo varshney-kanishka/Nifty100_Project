@@ -91,6 +91,7 @@ def database_health():
             "database": "disconnected",
             "error": str(e),
         }
+
 # ============================================================
 # MARKET CAP ANALYTICS
 # ============================================================
@@ -879,3 +880,5 @@ def get_company_performance(company_id: str):
 from src.api.router_registration import register_routers
 
 register_routers(app)
+
+
