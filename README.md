@@ -349,7 +349,7 @@ The project includes automated tests covering:
 ### Current test status
 
 ```text
-60 passed
+67 passed
 0 failed
 ```
 
@@ -359,7 +359,7 @@ Run the complete test suite with:
 pytest -q
 ```
 
-The current test suite produces one dependency deprecation warning related to the `httpx`/Starlette TestClient combination, but **all 60 tests pass successfully**.
+The current test suite produces one dependency deprecation warning related to the `httpx`/Starlette TestClient combination, but **all 67 tests pass successfully**.
 
 ---
 
@@ -659,7 +659,7 @@ Clusters:                     5
 Company tear sheets:         92
 Sector reports:              10
 FastAPI application routes:  16
-Automated tests:             60
+Automated tests:             67
 Test failures:                0
 ```
 
@@ -756,7 +756,7 @@ Provides programmatic access to company, sector, screening, peer, market-cap, po
 * Automated **10 sector reports**
 * Built a **FastAPI REST API**
 * Implemented **16 application endpoints**
-* Built automated testing with **60 passing tests**
+* Built automated testing with **67 passing tests**
 * Maintained a clean Git/GitHub workflow
 
 ---
